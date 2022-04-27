@@ -1,0 +1,24 @@
+.root {
+  width: max-content;
+  min-width: 100%;
+  min-height: 100vh;
+
+  background: #eef0f3;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.main {
+  margin: 0 auto;
+  padding: 16px 50px;
+  max-width: 1440px;
+  width: 100%;
+  box-sizing: border-box;
+
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+}

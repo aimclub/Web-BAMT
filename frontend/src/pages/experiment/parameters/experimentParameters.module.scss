@@ -1,0 +1,41 @@
+.root {
+  display: grid;
+  gap: 1px;
+  grid-template: 1fr auto/ 15fr 17fr;
+}
+
+.form {
+  padding: 12px;
+
+  border-radius: 4px;
+  background: #ffffff;
+
+  grid-column: span 2;
+}
+
+.title {
+  margin: 0;
+  padding: 4px 16px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.15px;
+
+  color: #000000;
+  background: #f1f3f5;
+}
+
+.displayName {
+  margin: 20px 0 12px 16px;
+}
+
+.item {
+  margin: 4px 0;
+  padding: 12px 16px;
+
+  border-radius: 2px;
+  background: #f4f6f8;
+}

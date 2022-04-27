@@ -1,0 +1,108 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.box {
+  margin-bottom: 1px;
+  padding: 12px;
+
+  border-radius: 4px;
+  background-color: #ffffff;
+
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.head {
+  padding: 4px 20px;
+
+  background: #f1f3f5;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.15px;
+
+  color: #000000;
+}
+
+.score {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 19px;
+  color: #3d484d;
+
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+  gap: 4px;
+
+  .value {
+    min-width: 30px;
+    font-weight: 400;
+    text-align: center;
+  }
+}
+
+.info {
+  margin-top: 6px;
+  min-width: 980px;
+  min-height: 500px;
+  height: 100%;
+
+  border: 1px solid transparent;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .text {
+    margin: 0;
+    font-family: "Open Sans";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 150%;
+    letter-spacing: 0.15px;
+
+    color: #000000;
+  }
+}
+
+.graph {
+  margin-top: 6px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    font-family: "Roboto";
+    font-style: normal;
+    letter-spacing: 0.15px;
+
+    border: 1px solid black;
+
+    display: block;
+  }
+
+  position: relative;
+}

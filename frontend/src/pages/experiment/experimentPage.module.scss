@@ -1,0 +1,8 @@
+.root {
+  width: 100%;
+
+  align-self: flex-start;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 15px;
+}

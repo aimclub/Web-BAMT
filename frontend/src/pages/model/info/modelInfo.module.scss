@@ -1,0 +1,94 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.info {
+  padding: 12px;
+  margin-bottom: 1px;
+
+  flex: 1;
+
+  border-radius: 4px;
+  background: #ffffff;
+}
+
+.title {
+  margin: 0;
+  padding: 4px 16px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.15px;
+
+  color: #000000;
+  background: #f1f3f5;
+}
+
+.nameLabel {
+  margin: 12px 0 8px 16px;
+
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+
+  display: flex;
+  align-items: center;
+
+  color: #3d484d;
+}
+
+.name {
+  margin-left: 8px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.15px;
+
+  color: #263238;
+}
+
+.description {
+  margin: 8px 0 27px 16px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  display: flex;
+  align-items: center;
+
+  color: #000000;
+}
+
+.additional {
+  margin: 8px 0 8px 16px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.15px;
+
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.link {
+  text-decoration: none;
+}

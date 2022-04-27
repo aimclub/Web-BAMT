@@ -1,0 +1,18 @@
+.root {
+  display: flex;
+  justify-content: stretch;
+  align-items: flex-start;
+}
+
+.label {
+  margin: 0 10px 0 0;
+  min-width: 100px;
+
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+
+  color: #000000;
+}

@@ -1,0 +1,39 @@
+.root {
+  padding: 12px 32px;
+
+  align-self: flex-start;
+  display: grid;
+  grid-template: "desc net" "comp comp" / 1fr auto;
+
+  border-radius: 4px;
+  background-color: #ffffff;
+}
+
+.info {
+  padding: 0 0 0 20px;
+
+  .title {
+    margin: 0 0 18px;
+
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0.15px;
+
+    color: #263238;
+  }
+
+  .text {
+    margin: 6px 0;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 145%;
+    letter-spacing: 0.15px;
+
+    color: #263238;
+  }
+}

@@ -1,0 +1,71 @@
+.root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  margin-bottom: 20px;
+}
+
+.paper {
+  margin: 0 10px;
+  padding: 30px 55px 50px;
+  width: 100%;
+  max-width: 566px;
+  box-sizing: border-box;
+}
+
+.title {
+  margin: 0 0 24px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 120%;
+  letter-spacing: 0.1px;
+
+  color: #000000;
+}
+
+.foot {
+  margin-top: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: stretch;
+}
+
+.footLink {
+  margin: 0 0 0 30px;
+  padding: 0;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  text-decoration: underline;
+
+  outline: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: rgba(0, 0, 0, 0.7);
+
+  transition: all 0.5s ease-in-out;
+
+  &:first-child {
+    flex: 1;
+    margin-left: 0;
+  }
+
+  &:hover {
+    cursor: "pointer";
+    opacity: 0.7;
+  }
+}

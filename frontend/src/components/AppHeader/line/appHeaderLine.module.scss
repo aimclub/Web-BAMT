@@ -1,0 +1,54 @@
+.line {
+  margin: 0 auto;
+  padding: 0 48px;
+  width: 100%;
+  max-width: 1440px;
+  min-height: 48px;
+  box-sizing: border-box;
+
+  background-color: aqua;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.line_home {
+  background-color: #b0bec5;
+}
+
+.line_social {
+  background-color: #8bdeff;
+  background-image: url("../../../assets/images/line_social.png");
+}
+
+.line_geological {
+  background-color: #86bd24;
+  background-image: url("../../../assets/images/line_geological.png");
+}
+
+.icon {
+  margin-right: 12px;
+  min-height: 24px;
+  min-width: 24px;
+
+  background: #ffffff;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.title {
+  margin: 0;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 150%;
+  letter-spacing: 0.15px;
+
+  color: #263238;
+}

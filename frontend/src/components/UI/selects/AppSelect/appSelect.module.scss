@@ -1,0 +1,52 @@
+.root {
+  display: flex;
+  justify-content: stretch;
+  align-items: flex-start;
+}
+
+.label {
+  margin: 0 32px 0 0;
+  min-width: 75px;
+
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: 0.15px;
+
+  color: #000000;
+}
+
+.item {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: 0.15px;
+  text-transform: capitalize;
+
+  color: #000000;
+}
+
+.select {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+}
+
+.helperText {
+  margin: 2px 0 0;
+
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 16px;
+
+  color: #878787;
+}

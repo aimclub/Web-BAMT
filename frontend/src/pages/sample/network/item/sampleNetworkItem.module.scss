@@ -1,0 +1,64 @@
+.head {
+  margin-bottom: 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .select {
+    min-width: 130px;
+  }
+
+  .score {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 16px;
+
+    color: #3d484d;
+
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+
+    .title {
+      margin: 0 6px;
+    }
+
+    .value {
+      font-weight: 400;
+    }
+  }
+}
+
+.graph {
+  min-width: 290px;
+  min-height: 160px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .info {
+    margin: 0;
+
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 16px;
+
+    color: #878787;
+  }
+
+  svg {
+    font-family: "Roboto";
+    font-style: normal;
+    letter-spacing: 0.15px;
+
+    border: 1px solid black;
+
+    display: block;
+  }
+}

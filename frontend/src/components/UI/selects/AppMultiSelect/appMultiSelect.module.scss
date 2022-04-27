@@ -1,0 +1,110 @@
+.input {
+  display: flex;
+  justify-content: stretch;
+  align-items: flex-start;
+}
+
+.label {
+  margin: 0 32px 0 0;
+  min-width: 75px;
+
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: 0.15px;
+
+  color: #000000;
+}
+
+.item {
+  width: 100%;
+
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 120%;
+  letter-spacing: 0.15px;
+
+  color: #000000;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.itemIcon {
+  margin-left: 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.select {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  overflow: hidden;
+}
+
+.helperText {
+  margin: 2px 0 0;
+
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 16px;
+
+  color: #878787;
+}
+
+.values {
+  margin: 0;
+  padding: 0;
+
+  max-height: 126px;
+
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+
+  overflow-y: auto;
+
+  scrollbar-width: thin;
+  scrollbar-color: #263238 #a6acb0;
+
+  &::-webkit-scrollbar {
+    width: 2px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 6px;
+    background-color: #a6acb0;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background-color: #263238;
+  }
+}
+
+.valuesItem {
+  margin: 2px 0;
+
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 150%;
+  letter-spacing: 0.15px;
+
+  color: #000000;
+}

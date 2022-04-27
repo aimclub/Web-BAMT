@@ -1,0 +1,56 @@
+{
+  "nodes": [
+    { "id": "N1" },
+    { "id": "N2" },
+    { "id": "N3" },
+    { "id": "N4" },
+    { "id": "N5" },
+    { "id": "N6" },
+    { "id": "N7" },
+    { "id": "N8" },
+    { "id": "N9" },
+    { "id": "N10" }
+  ],
+  "links": [
+    {
+      "source": "N1",
+      "target": "N5"
+    },
+    {
+      "source": "N2",
+      "target": "N5",
+      "isHightLight": true
+    },
+    {
+      "source": "N2",
+      "target": "N6",
+      "isHightLight": true
+    },
+    {
+      "source": "N3",
+      "target": "N7",
+      "isHightLight": true
+    },
+    {
+      "source": "N4",
+      "target": "N6"
+    },
+    {
+      "source": "N4",
+      "target": "N8"
+    },
+    {
+      "source": "N4",
+      "target": "N9"
+    },
+    {
+      "source": "N6",
+      "target": "N10"
+    },
+    {
+      "source": "N7",
+      "target": "N10",
+      "isHightLight": true
+    }
+  ]
+}

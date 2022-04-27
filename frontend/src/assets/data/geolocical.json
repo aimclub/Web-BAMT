@@ -1,0 +1,18 @@
+{
+  "name": "Geological Example",
+  "description": "Данный граф построен с использованием различных методов обарботки ресурсов полученных из социальных сетей.",
+  "logit": false,
+  "mixture": false,
+  "score_function": "BICGMM",
+  "root_nodes": [
+    "Tectonic regime",
+    "Period",
+    "Lithology",
+    "Structural setting",
+    "Gross",
+    "Netpay",
+    "Porosity",
+    "Permeability",
+    "Depth"
+  ]
+}

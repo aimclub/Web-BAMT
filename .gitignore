@@ -1,0 +1,8 @@
+*\venv
+*\env
+*\.idea
+*\.ipynb_checkpoints
+__pycache__/
+*.log
+*.ini
+tests/

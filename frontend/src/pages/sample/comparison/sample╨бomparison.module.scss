@@ -1,0 +1,42 @@
+.root {
+  grid-area: comp;
+}
+
+.title {
+  margin: 0;
+  padding: 4px 20px;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.15px;
+
+  color: #000000;
+  background: #f1f3f5;
+}
+
+.content {
+  min-height: 300px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .infо {
+    margin: 0;
+
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 16px;
+
+    color: #878787;
+  }
+}
+
+.chart {
+  padding: 30px;
+  flex: 1;
+}
