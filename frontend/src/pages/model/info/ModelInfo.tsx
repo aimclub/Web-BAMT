@@ -7,7 +7,7 @@ import socailData from "../../../assets/data/social.json";
 import ModelButton from "../../../components/UI/buttons/ModelButton/ModelButton";
 import { useAppSelector } from "../../../hooks/redux";
 import { TRANSITION_TIMEOUT } from "../../../utils/constants";
-import { AppRoutes } from "../../../utils/routes";
+import { AppRoutes } from "../../../router/routes";
 import ModelInfoItem from "./item/ModelInfoItem";
 import styles from "./modelInfo.module.scss";
 

@@ -1,7 +1,7 @@
 import WorkIcon from "@mui/icons-material/Work";
 import cl from "classnames";
 import { useMatch, useParams } from "react-router-dom";
-import { AppRoutes } from "../../../utils/routes";
+import { AppRoutes } from "../../../router/routes";
 import { stringToCapitalize } from "../../../utils/string";
 import styles from "./appHeaderLine.module.scss";
 

@@ -1,6 +1,6 @@
 import cl from "classnames";
 import { Link } from "react-router-dom";
-import { goToPage } from "../../utils/routes";
+import { goToPage } from "../../router/routes";
 import styles from "./homePage.module.scss";
 
 const HomePage = () => {

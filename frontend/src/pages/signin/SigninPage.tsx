@@ -4,7 +4,7 @@ import { Link, Outlet, useMatch } from "react-router-dom";
 import AppLogo from "../../components/AppLogo/AppLogo";
 import { useAppDispatch } from "../../hooks/redux";
 import { login } from "../../redux/auth/auth";
-import { AppRoutes } from "../../utils/routes";
+import { AppRoutes } from "../../router/routes";
 import styles from "./signinPage.module.scss";
 
 const SigninPage = () => {

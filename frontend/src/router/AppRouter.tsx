@@ -1,16 +1,16 @@
 import { Navigate, RouteObject, useRoutes } from "react-router-dom";
-import { useAppSelector } from "../../hooks/redux";
-import ExperimentPage from "../../pages/experiment/ExperimentPage";
-import HomePage from "../../pages/home/HomePage";
-import ModelPage from "../../pages/model/ModelPage";
-import SamplePage from "../../pages/sample/SamplePage";
-import RestorePasswordForm from "../../pages/signin/forms/RestorePasswordForm";
-import SigninForm from "../../pages/signin/forms/SigninForm";
-import SignupForm from "../../pages/signin/forms/SignupForm";
-import SigninPage from "../../pages/signin/SigninPage";
-import { AppRoutes } from "../../utils/routes";
-import AppOutlet from "../AppOutlet/AppOutlet";
-import ModelOutlet from "../ModelOutlet/ModelOutlet";
+import AppOutlet from "../components/AppOutlet/AppOutlet";
+import ModelOutlet from "../components/ModelOutlet/ModelOutlet";
+import { useAppSelector } from "../hooks/redux";
+import ExperimentPage from "../pages/experiment/ExperimentPage";
+import HomePage from "../pages/home/HomePage";
+import ModelPage from "../pages/model/ModelPage";
+import SamplePage from "../pages/sample/SamplePage";
+import RestorePasswordForm from "../pages/signin/forms/RestorePasswordForm";
+import SigninForm from "../pages/signin/forms/SigninForm";
+import SignupForm from "../pages/signin/forms/SignupForm";
+import SigninPage from "../pages/signin/SigninPage";
+import { AppRoutes } from "./routes";
 
 const publicRoutes: RouteObject[] = [
   {

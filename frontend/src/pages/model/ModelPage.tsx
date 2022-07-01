@@ -6,7 +6,7 @@ import ModelInfo from "./info/ModelInfo";
 import styles from "./modelPage.module.scss";
 import ModelGraph from "./graph/ModelGraph";
 import { Link } from "react-router-dom";
-import { AppRoutes } from "../../utils/routes";
+import { AppRoutes } from "../../router/routes";
 
 const ModelPage = () => {
   return (
