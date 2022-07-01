@@ -5,7 +5,7 @@ const HTMLWebpackPlugin = require("html-webpack-plugin");
 module.exports = {
   entry: path.resolve(__dirname, "..", "./src/index.tsx"),
   output: {
-    path: path.resolve(__dirname, "..", "./prod"),
+    path: path.resolve(__dirname, "..", "./build"),
     filename: "[name].[hash].js",
     publicPath: "/",
   },
