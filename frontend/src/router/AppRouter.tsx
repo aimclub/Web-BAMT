@@ -1,5 +1,6 @@
+import { lazy } from "react";
 import { Navigate, RouteObject, useRoutes } from "react-router-dom";
-import AppOutlet from "../components/AppOutlet/AppOutlet";
+// import AppOutlet from "../components/AppOutlet/AppOutlet";
 import ModelOutlet from "../components/ModelOutlet/ModelOutlet";
 import { useAppSelector } from "../hooks/redux";
 import ExperimentPage from "../pages/experiment/ExperimentPage";
@@ -11,6 +12,9 @@ import SigninForm from "../pages/signin/forms/SigninForm";
 import SignupForm from "../pages/signin/forms/SignupForm";
 import SigninPage from "../pages/signin/SigninPage";
 import { AppRoutes } from "./routes";
+
+// TODO: add lazy loading for pages
+const AppOutlet = lazy(() => import("../components/AppOutlet/AppOutlet"));
 
 const publicRoutes: RouteObject[] = [
   {
