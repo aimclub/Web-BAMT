@@ -3,7 +3,7 @@ import ReactApexChart from "react-apexcharts";
 import { nodeRealData } from "../../../assets/data/sample";
 import { useAppSelector } from "../../../hooks/redux";
 import { configChart } from "../../../utils/configChart";
-import styles from "./sampleСomparison.module.scss";
+import styles from "./sampleComparison.module.scss";
 
 const SampleСomparison = () => {
   const { selectedNode } = useAppSelector((state) => state.sample);

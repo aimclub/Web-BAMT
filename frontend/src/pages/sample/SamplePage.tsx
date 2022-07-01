@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "../../hooks/redux";
 import { clearSample } from "../../redux/sample/sample";
-import SampleСomparison from "./comparison/SampleСomparison";
+import SampleСomparison from "./comparison/SampleComparison";
 import SampleNetwork from "./network/SampleNetwork";
 import styles from "./samplePage.module.scss";
 
