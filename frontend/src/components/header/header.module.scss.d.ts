@@ -1,10 +1,11 @@
 declare namespace HeaderModuleScssNamespace {
   export interface IHeaderModuleScss {
+    auth: string;
+    email: string;
     head: string;
     item: string;
     link: string;
     list: string;
-    logout: string;
   }
 }
 

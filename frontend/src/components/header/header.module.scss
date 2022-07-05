@@ -61,9 +61,14 @@
   }
 }
 
-.logout {
-  margin: 0;
-  padding: 0;
+.auth {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.email {
+  margin: 0 10px 0 0;
 
   font-family: "Open Sans";
   font-style: normal;
@@ -73,10 +78,5 @@
   letter-spacing: 0.15px;
   text-decoration: none;
 
-  background-color: transparent;
-  border-radius: 0;
-  border: 0;
-  outline: 0;
-
-  color: rgba(0, 0, 0, 0.87);
+  color: rgba(0, 0, 0, 0.5);
 }
