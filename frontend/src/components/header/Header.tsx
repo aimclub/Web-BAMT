@@ -4,8 +4,8 @@ import { Button } from "@mui/material";
 import { useAppDispatch } from "../../hooks/redux";
 import { logout } from "../../redux/auth/auth";
 import AppLogo from "../AppLogo/AppLogo";
-import styles from "./appheader.module.scss";
-import AppHeaderLine from "./line/AppHeaderLine";
+import styles from "./header.module.scss";
+import AppHeaderLine from "./line/HeaderLine";
 
 const navLinks: { name: string; link: string }[] = [
   // TODO: add links
@@ -15,7 +15,7 @@ const navLinks: { name: string; link: string }[] = [
   { name: "Laboratory", link: "#" },
 ];
 
-const AppHeader = () => {
+const Header = () => {
   const dispatch = useAppDispatch();
 
   const handleLogout = () => {
@@ -52,4 +52,4 @@ const AppHeader = () => {
   );
 };
 
-export default AppHeader;
+export default Header;

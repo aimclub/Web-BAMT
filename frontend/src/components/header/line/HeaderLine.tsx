@@ -3,9 +3,9 @@ import cl from "classnames";
 import { useMatch, useParams } from "react-router-dom";
 import { AppRoutes } from "../../../router/routes";
 import { stringToCapitalize } from "../../../utils/string";
-import styles from "./appHeaderLine.module.scss";
+import styles from "./headerLine.module.scss";
 
-const AppHeaderLine = () => {
+const HeaderLine = () => {
   const { model } = useParams();
   const isCorrectModel = model === "social" || model === "geological";
   const isExperiment = useMatch(`${AppRoutes.MODEL}/${AppRoutes.EXPERIMENT}`);
@@ -32,4 +32,4 @@ const AppHeaderLine = () => {
   );
 };
 
-export default AppHeaderLine;
+export default HeaderLine;

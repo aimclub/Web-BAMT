@@ -16,7 +16,8 @@ import { AppRoutes } from "./routes";
 
 // TODO: add lazy loading for pages
 const SigninPage = lazy(() => import("../pages/signin/SigninPage"));
-const AppOutlet = lazy(() => import("../components/AppOutlet/AppOutlet"));
+
+const AppOutlet = lazy(() => import("../components/outlets/app/AppOutlet"));
 
 const publicRoutes: RouteObject[] = [
   {

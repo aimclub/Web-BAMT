@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import AppHeader from "../AppHeader/AppHeader";
+import Header from "../../header/Header";
 import styles from "./appOutlet.module.scss";
 
 const AppOutlet = () => {
   return (
     <div className={styles.root}>
-      <AppHeader />
+      <Header />
       <main className={styles.main}>
         <Outlet />
       </main>
