@@ -13,7 +13,7 @@ const SigninPage = () => {
   const isSignin = useMatch(AppRoutes.SIGNIN);
 
   const handleSkip = () => {
-    dispatch(login());
+    dispatch(login({ email: "not auth", token: "" }));
   };
 
   return (
