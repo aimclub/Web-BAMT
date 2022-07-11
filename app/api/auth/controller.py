@@ -1,7 +1,7 @@
 # from typing import Dict
 
 from flask import request
-from flask_accepts import accepts, responds
+from flask_accepts import accepts
 from flask_restx import Namespace, Resource
 from werkzeug.exceptions import BadRequest, Unauthorized
 from werkzeug.security import check_password_hash
@@ -37,6 +37,9 @@ class AuthTokenResource(Resource):
 
         return {"token": token}
 
+
+@api.route("/signin")
+class SignInResource(Resource):
     @accepts(schema=TokenSchema, api=api)
     @api.doc(responses={401: 'No User found'})
     def put(self):
@@ -51,6 +54,8 @@ class AuthTokenResource(Resource):
             raise BadRequest("No users is found")
 
         set_user_data(user=user, token=token)
+        return {"message": "Success"}
+
 
 @api.route("/signup")
 class RegisterResource(Resource):
