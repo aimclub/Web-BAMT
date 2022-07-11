@@ -1,6 +1,6 @@
 import { useTheme, styled } from "@mui/material/styles";
 import { FC } from "react";
-import styles from "./timeProgress.module.scss";
+import scss from "./timeProgress.module.scss";
 import cl from "classnames";
 
 const SpinerSlice = styled("div")(({ theme }) => ({
@@ -15,8 +15,8 @@ const TimeProgreess: FC<{ time?: string; className?: string }> = ({
 }) => {
   const color = useTheme().palette.primary.main;
   return (
-    <div className={cl(className, styles.root)} style={{ color: color }}>
-      <div className={styles.spiner}>
+    <div className={cl(className, scss.root)} style={{ color: color }}>
+      <div className={scss.spiner}>
         <SpinerSlice />
         <SpinerSlice />
         <SpinerSlice />
@@ -30,7 +30,7 @@ const TimeProgreess: FC<{ time?: string; className?: string }> = ({
         <SpinerSlice />
         <SpinerSlice />
       </div>
-      <p className={styles.timer}>{time}</p>
+      <p className={scss.timer}>{time}</p>
     </div>
   );
 };

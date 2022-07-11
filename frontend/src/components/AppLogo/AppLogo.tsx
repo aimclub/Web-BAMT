@@ -2,10 +2,10 @@ import cl from "classnames";
 import { FC } from "react";
 import { Link } from "react-router-dom";
 import { AppRoutes } from "../../router/routes";
-import styles from "./appLogo.module.scss";
+import scss from "./appLogo.module.scss";
 
 const AppLogo: FC<{ className?: string }> = ({ className }) => {
-  return <Link className={cl(styles.logo, className)} to={AppRoutes.HOME} />;
+  return <Link className={cl(scss.logo, className)} to={AppRoutes.HOME} />;
 };
 
 export default AppLogo;

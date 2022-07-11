@@ -2,13 +2,13 @@ import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../../header/Header";
 import Loader from "../../loader/Loader";
-import styles from "./appOutlet.module.scss";
+import scss from "./appOutlet.module.scss";
 
 const AppOutlet = () => {
   return (
-    <div className={styles.root}>
+    <div className={scss.root}>
       <Header />
-      <main className={styles.main}>
+      <main className={scss.main}>
         <Suspense fallback={<Loader />}>
           <Outlet />
         </Suspense>

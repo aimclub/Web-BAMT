@@ -3,7 +3,7 @@ import ReactApexChart from "react-apexcharts";
 import { nodeRealData } from "../../../assets/data/sample";
 import { useAppSelector } from "../../../hooks/redux";
 import { configChart } from "../../../utils/configChart";
-import styles from "./sampleComparison.module.scss";
+import scss from "./sampleComparison.module.scss";
 
 const SampleСomparison = () => {
   const { selectedNode } = useAppSelector((state) => state.sample);
@@ -21,20 +21,20 @@ const SampleСomparison = () => {
   });
 
   return (
-    <section className={styles.root}>
-      <h2 className={styles.title}>Сomparison window</h2>
-      <div className={styles.content}>
+    <section className={scss.root}>
+      <h2 className={scss.title}>Сomparison window</h2>
+      <div className={scss.content}>
         {selectedNode ? (
           <>
-            <article className={styles.chart}>
+            <article className={scss.chart}>
               <ReactApexChart {...realData} type="bar" height={300} />
             </article>
-            <article className={styles.chart}>
+            <article className={scss.chart}>
               <ReactApexChart {...sampledData} type="bar" height={300} />
             </article>
           </>
         ) : (
-          <p className={styles.infо}>Select node</p>
+          <p className={scss.infо}>Select node</p>
         )}
       </div>
     </section>

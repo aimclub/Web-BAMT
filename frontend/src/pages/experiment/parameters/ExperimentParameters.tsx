@@ -15,7 +15,7 @@ import {
 import { NODES, SCORE_FUNCTION_VALUES } from "../../../types/model";
 import { TRANSITION_TIMEOUT } from "../../../utils/constants";
 import { createNodes } from "../../../utils/graph";
-import styles from "./experimentParameters.module.scss";
+import scss from "./experimentParameters.module.scss";
 import { validationSchema } from "./ExperimentParametersValidator";
 
 const ExperimentParameters = () => {
@@ -65,24 +65,24 @@ const ExperimentParameters = () => {
 
   return (
     <Fade in={true} timeout={TRANSITION_TIMEOUT}>
-      <section className={styles.root}>
+      <section className={scss.root}>
         <form
-          className={styles.form}
+          className={scss.form}
           onSubmit={formik.handleSubmit}
           id="model_parameters"
         >
-          <h2 className={styles.title}>Model Parameters</h2>
+          <h2 className={scss.title}>Model Parameters</h2>
           <div>
             <TextFieldUnderline
               value={formik.values.display_name}
               onChange={formik.handleChange}
               name="display_name"
               label="Display_name"
-              className={styles.displayName}
+              className={scss.displayName}
               placeholder="Name"
             />
             <AppSelect
-              className={styles.item}
+              className={scss.item}
               options={["true", "false"]}
               value={formik.values.logit}
               onChange={formik.handleChange}
@@ -91,7 +91,7 @@ const ExperimentParameters = () => {
               helperText="select node type"
             />
             <AppSelect
-              className={styles.item}
+              className={scss.item}
               options={["true", "false"]}
               value={formik.values.mixture}
               onChange={formik.handleChange}
@@ -100,7 +100,7 @@ const ExperimentParameters = () => {
               helperText="select node type"
             />
             <AppSelect
-              className={styles.item}
+              className={scss.item}
               options={SCORE_FUNCTION_VALUES}
               value={formik.values.score_function}
               onChange={formik.handleChange}
@@ -109,7 +109,7 @@ const ExperimentParameters = () => {
               helperText="select node type"
             />
             <AppMultiSelect
-              className={styles.item}
+              className={scss.item}
               options={NODES[model]}
               value={formik.values.root_nodes}
               onChange={formik.handleChange}

@@ -2,7 +2,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import { MenuItem, Select, SelectProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { FC } from "react";
-import styles from "./appMultiSelect.module.scss";
+import scss from "./appMultiSelect.module.scss";
 
 const CustomSelect = styled(Select)({
   width: "100%",
@@ -48,9 +48,9 @@ const AppMultiSelect: FC<
 }) => {
   return (
     <div className={className}>
-      <div className={styles.input}>
-        <p className={styles.label}>{label || props.name}</p>
-        <div className={styles.select}>
+      <div className={scss.input}>
+        <p className={scss.label}>{label || props.name}</p>
+        <div className={scss.select}>
           <CustomSelect
             multiple
             renderValue={(selected) => (selected as string[]).join(", ")}
@@ -59,9 +59,9 @@ const AppMultiSelect: FC<
           >
             {options.map((item) => (
               <MenuItem key={item} value={item}>
-                <span className={styles.item}>
+                <span className={scss.item}>
                   <span>{item}</span>
-                  <span className={styles.itemIcon}>
+                  <span className={scss.itemIcon}>
                     {props.value.indexOf(item) > -1 && (
                       <CheckIcon fontSize="small" color="primary" />
                     )}
@@ -70,14 +70,14 @@ const AppMultiSelect: FC<
               </MenuItem>
             ))}
           </CustomSelect>
-          {helperText && <p className={styles.helperText}>{helperText}</p>}
+          {helperText && <p className={scss.helperText}>{helperText}</p>}
         </div>
       </div>
       {props.value.length > 0 && (
-        <ol className={styles.values}>
+        <ol className={scss.values}>
           {props.value.map((item, index) => (
             <li key={item}>
-              <p className={styles.valuesItem}>{`${index + 1} ${item}`}</p>
+              <p className={scss.valuesItem}>{`${index + 1} ${item}`}</p>
             </li>
           ))}
         </ol>

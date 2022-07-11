@@ -5,7 +5,7 @@ import AppLogo from "../../components/AppLogo/AppLogo";
 import { useAppDispatch } from "../../hooks/redux";
 import { login } from "../../redux/auth/auth";
 import { AppRoutes } from "../../router/routes";
-import styles from "./signinPage.module.scss";
+import scss from "./signinPage.module.scss";
 
 const SigninPage = () => {
   const dispatch = useAppDispatch();
@@ -17,30 +17,26 @@ const SigninPage = () => {
   };
 
   return (
-    <main className={styles.root}>
-      <AppLogo className={styles.logo} />
-      <Paper className={styles.paper} elevation={3} component="section">
+    <main className={scss.root}>
+      <AppLogo className={scss.logo} />
+      <Paper className={scss.paper} elevation={3} component="section">
         <Outlet />
-        <div className={styles.foot}>
+        <div className={scss.foot}>
           {isSignin ? (
-            <Link to={AppRoutes.SIGNUP} className={styles.footLink}>
+            <Link to={AppRoutes.SIGNUP} className={scss.footLink}>
               Not registered yet? Register
             </Link>
           ) : (
-            <Link to={AppRoutes.SIGNIN} className={styles.footLink}>
+            <Link to={AppRoutes.SIGNIN} className={scss.footLink}>
               Already registered? Sign In
             </Link>
           )}
           {!isRestorePassword && (
-            <Link to={AppRoutes.RESTORE_PASSWORD} className={styles.footLink}>
+            <Link to={AppRoutes.RESTORE_PASSWORD} className={scss.footLink}>
               Forgot password?
             </Link>
           )}
-          <button
-            type="button"
-            className={styles.footLink}
-            onClick={handleSkip}
-          >
+          <button type="button" className={scss.footLink} onClick={handleSkip}>
             SKIP
           </button>
         </div>
