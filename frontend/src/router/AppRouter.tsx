@@ -1,5 +1,6 @@
 import { lazy } from "react";
 import { Navigate, RouteObject, useRoutes } from "react-router-dom";
+import RestorePasswordForm from "../components/forms/auth/RestorePasswordForm";
 
 import SigninForm from "../components/forms/auth/SigninForm";
 import SignupForm from "../components/forms/auth/SignupForm";
@@ -10,7 +11,7 @@ import ExperimentPage from "../pages/experiment/ExperimentPage";
 // import HomePage from "../pages/home/HomePage";
 import ModelPage from "../pages/model/ModelPage";
 import SamplePage from "../pages/sample/SamplePage";
-import RestorePasswordForm from "../pages/signin/forms/RestorePasswordForm";
+// import RestorePasswordForm from "../pages/signin/forms/RestorePasswordForm";
 // import SigninForm from "../pages/signin/forms/SigninForm";
 // import SignupForm from "../pages/signin/forms/SignupForm";
 // import SigninPage from "../pages/signin/SigninPage";
