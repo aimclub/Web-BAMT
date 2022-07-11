@@ -1,5 +1,6 @@
 import { Suspense, useEffect } from "react";
 import { authAPI } from "./API/auth/authAPI";
+import Loader from "./components/loader/Loader";
 import { useAppDispatch, useAppSelector } from "./hooks/redux";
 import { logout } from "./redux/auth/auth";
 import AppRouter from "./router/AppRouter";
@@ -20,8 +21,7 @@ const App = () => {
   }, []);
 
   return (
-    // TODO: style loader
-    <Suspense fallback={<div>loading...</div>}>
+    <Suspense fallback={<Loader />}>
       <AppRouter />
     </Suspense>
   );

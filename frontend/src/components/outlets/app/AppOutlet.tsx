@@ -1,5 +1,7 @@
+import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../../header/Header";
+import Loader from "../../loader/Loader";
 import styles from "./appOutlet.module.scss";
 
 const AppOutlet = () => {
@@ -7,7 +9,9 @@ const AppOutlet = () => {
     <div className={styles.root}>
       <Header />
       <main className={styles.main}>
-        <Outlet />
+        <Suspense fallback={<Loader />}>
+          <Outlet />
+        </Suspense>
       </main>
     </div>
   );
