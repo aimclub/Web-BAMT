@@ -1,5 +1,5 @@
-import { TextField, TextFieldProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import TextField, { TextFieldProps } from "@mui/material/TextField";
 import cl from "classnames";
 import { FC } from "react";
 import scss from "./textFieldUnderline.module.scss";

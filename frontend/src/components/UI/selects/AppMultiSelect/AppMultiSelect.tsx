@@ -1,5 +1,6 @@
 import CheckIcon from "@mui/icons-material/Check";
-import { MenuItem, Select, SelectProps } from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectProps } from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
 import { FC } from "react";
 import scss from "./appMultiSelect.module.scss";

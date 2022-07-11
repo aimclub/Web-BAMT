@@ -1,4 +1,4 @@
-import { Fade } from "@mui/material";
+import Fade from "@mui/material/Fade";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 

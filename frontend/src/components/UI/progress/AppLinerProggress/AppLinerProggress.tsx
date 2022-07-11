@@ -1,4 +1,4 @@
-import { LinearProgress } from "@mui/material";
+import LinearProgress from "@mui/material/LinearProgress";
 import { styled } from "@mui/material/styles";
 
 const AppLinerProggress = styled(LinearProgress)({

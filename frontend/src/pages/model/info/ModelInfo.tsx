@@ -1,4 +1,3 @@
-import { Fade } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import geolocicalData from "../../../assets/data/geolocical.json";
@@ -10,6 +9,7 @@ import { TRANSITION_TIMEOUT } from "../../../utils/constants";
 import { AppRoutes } from "../../../router/routes";
 import ModelInfoItem from "./item/ModelInfoItem";
 import scss from "./modelInfo.module.scss";
+import Fade from "@mui/material/Fade";
 
 const ModelInfo = () => {
   const { model } = useAppSelector((s) => s.model);

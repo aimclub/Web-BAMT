@@ -1,5 +1,5 @@
 import StarIcon from "@mui/icons-material/Star";
-import { SelectChangeEvent } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material/Select";
 import { FC, useEffect } from "react";
 
 import { Graph, GraphConfiguration } from "react-d3-graph";

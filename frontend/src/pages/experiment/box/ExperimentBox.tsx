@@ -1,5 +1,6 @@
 import StarIcon from "@mui/icons-material/Star";
-import { Fade } from "@mui/material";
+import Fade from "@mui/material/Fade";
+
 import ModelButton from "../../../components/UI/buttons/ModelButton/ModelButton";
 import { useAppSelector } from "../../../hooks/redux";
 import { TRANSITION_TIMEOUT } from "../../../utils/constants";

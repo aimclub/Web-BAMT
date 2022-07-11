@@ -1,4 +1,4 @@
-import { Paper } from "@mui/material";
+import Paper from "@mui/material/Paper";
 import { Link, Outlet, useMatch } from "react-router-dom";
 
 import AppLogo from "../../components/AppLogo/AppLogo";
