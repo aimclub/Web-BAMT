@@ -7,7 +7,7 @@ import SignupForm from "../components/forms/auth/SignupForm";
 import ModelOutlet from "../components/ModelOutlet/ModelOutlet";
 import { useAppSelector } from "../hooks/redux";
 import ExperimentPage from "../pages/experiment/ExperimentPage";
-import HomePage from "../pages/home/HomePage";
+// import HomePage from "../pages/home/HomePage";
 import ModelPage from "../pages/model/ModelPage";
 import SamplePage from "../pages/sample/SamplePage";
 import RestorePasswordForm from "../pages/signin/forms/RestorePasswordForm";
@@ -20,6 +20,7 @@ import { AppRoutes } from "./routes";
 const SigninPage = lazy(() => import("../pages/signin/SigninPage"));
 
 const AppOutlet = lazy(() => import("../components/outlets/app/AppOutlet"));
+const HomePage = lazy(() => import("../pages/home/HomePage"));
 
 const publicRoutes: RouteObject[] = [
   {

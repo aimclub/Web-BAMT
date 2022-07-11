@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { authAPI } from "../../API/auth/authAPI";
 import { IUser } from "../../API/auth/authInterface";
 
 const initialState = {
@@ -21,6 +22,19 @@ export const userSlice = createSlice({
       state.token = null;
       state.user = null;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(authAPI.endpoints.signin.matchFulfilled, (state, action) => {
+        state.isAuth = true;
+        state.token = action.payload.token;
+        state.user = { email: action.meta.arg.originalArgs.email };
+      })
+      .addMatcher(authAPI.endpoints.checkToken.matchRejected, (state) => {
+        state.isAuth = false;
+        state.token = null;
+        state.user = null;
+      });
   },
 });
 
