@@ -13,7 +13,7 @@ class BNSchema(Schema):
     scoring_function = fields.String(attribute='scoring_function')
 
     params = fields.Dict(
-        default={"init_nodes": fields.String, "init_edges": fields.String, "white_list": fields.String, "bl_add": "", "remove_init_edges": False})
+        default={"init_nodes": fields.String, "init_edges": fields.String, "white_list": fields.String, "bl_add": fields.String, "remove_init_edges": fields.Boolean()})
 
 
 class BNGetSchema(Schema):
