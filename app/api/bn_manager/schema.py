@@ -12,8 +12,14 @@ class BNSchema(Schema):
     has_logit = fields.Boolean(attribute='has_logit', default=False)
     scoring_function = fields.String(attribute='scoring_function')
 
-    params = fields.Dict(
-        default={"init_nodes": fields.String, "init_edges": fields.String, "white_list": fields.String, "bl_add": fields.String, "remove_init_edges": fields.Boolean()})
+    class ParamsSchema(Schema):
+        init_nodes = fields.String()
+        init_edges = fields.String()
+        white_list = fields.String()
+        bl_add = fields.String()
+        remove_init_edges = fields.Boolean(default=False)
+
+    params = fields.Nested(ParamsSchema)
 
 
 class BNGetSchema(Schema):
