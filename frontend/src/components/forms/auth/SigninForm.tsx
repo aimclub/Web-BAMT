@@ -1,33 +1,24 @@
 import { useFormik } from "formik";
-import { useState } from "react";
-
-import { useAppDispatch } from "../../../hooks/redux";
-import { login } from "../../../redux/auth/auth";
+import { authAPI } from "../../../API/auth/authAPI";
 import SubmitSignin from "../../../components/UI/buttons/SubmitSignin/SubmitSignin";
 import TextFieldSignin from "../../../components/UI/textfields/TextFieldSignin/TextFieldSignin";
-import styles from "./signinForm.module.scss";
-import { validationSchema } from "./signinFormValidator";
+import scss from "./authForms.module.scss";
+import { validationSchema } from "./authFormsValidator";
 
 const SigninForm = () => {
-  const [authError, setAuthError] = useState<string | null>(null);
-  const dispatch = useAppDispatch();
+  const [signin, { isError, isLoading }] = authAPI.useSigninMutation();
 
   const formik = useFormik({
-    initialValues: {
-      login: "",
-      password: "",
-    },
+    initialValues: { login: "", password: "" },
     validationSchema,
     onSubmit: (values) => {
-      // TODO: add API
-      console.log("log in", values);
-      !authError ? setAuthError("Authorization error!") : dispatch(login());
+      signin({ email: values.login, password: values.password });
     },
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className={styles.root}>
-      <h1 className={styles.title}>Sign In</h1>
+    <form onSubmit={formik.handleSubmit} className={scss.root}>
+      <h1 className={scss.title}>Sign In</h1>
       <TextFieldSignin
         name="login"
         label="Login*"
@@ -46,10 +37,10 @@ const SigninForm = () => {
         helperText={formik.touched.password && formik.errors.password}
       />
 
-      <p className={styles.error}>{authError}</p>
+      <p className={scss.error}>{isError && "Authorization error!"}</p>
 
-      <SubmitSignin type="submit">
-        <span>Sign In</span>
+      <SubmitSignin type="submit" disabled={isLoading}>
+        <span>{isLoading ? "Loading..." : "Sign In"}</span>
       </SubmitSignin>
     </form>
   );

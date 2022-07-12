@@ -4,7 +4,7 @@ import {
   GraphNode,
   GraphLink,
 } from "react-d3-graph";
-import styles from "./modelGraph.module.scss";
+import scss from "./modelGraph.module.scss";
 
 import graphData from "../../../assets/data/graph.json";
 import { colorizeGraph } from "../../../utils/graph";
@@ -48,7 +48,7 @@ const ModelGraph = () => {
   const { model } = useAppSelector((state) => state.model);
 
   return (
-    <div className={styles.root}>
+    <div className={scss.root}>
       <Graph
         id="graph-id"
         data={colorizeGraph(graphData, model)}

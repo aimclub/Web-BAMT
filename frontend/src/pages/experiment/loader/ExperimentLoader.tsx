@@ -4,7 +4,7 @@ import AppLinerProggress from "../../../components/UI/progress/AppLinerProggress
 import TimeProgreess from "../../../components/UI/progress/TimeProgress.tsx/TimeProgress";
 
 import { useAppSelector } from "../../../hooks/redux";
-import styles from "./experimentLoader.module.scss";
+import scss from "./experimentLoader.module.scss";
 
 const ExperimentLoader = () => {
   const { isTraining } = useAppSelector((state) => state.experiment);
@@ -27,10 +27,10 @@ const ExperimentLoader = () => {
   }, [isTraining, seconds]);
 
   return (
-    <div className={cl(styles.root, isTraining && styles.root_visible)}>
-      <div className={styles.info}>
+    <div className={cl(scss.root, isTraining && scss.root_visible)}>
+      <div className={scss.info}>
         <TimeProgreess time={`${seconds}`} />
-        <p className={styles.msg}>Model is Training. Please wait</p>
+        <p className={scss.msg}>Model is Training. Please wait</p>
         <AppLinerProggress />
       </div>
     </div>

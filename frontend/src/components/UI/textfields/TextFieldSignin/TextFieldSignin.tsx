@@ -1,5 +1,5 @@
-import { TextField } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import TextField from "@mui/material/TextField";
 
 const TextFieldSignin = styled(TextField)({
   width: "100%",
@@ -14,6 +14,9 @@ const TextFieldSignin = styled(TextField)({
   "& label.Mui-focused.Mui-error": {
     color: "#d32f2f",
   },
+  "&.Mui-disabled label": {
+    color: "rgba(0, 0, 0, 0.26)",
+  },
   "& .MuiInput-underline:after": {
     borderBottomColor: "#90A4AE",
   },
@@ -21,11 +24,17 @@ const TextFieldSignin = styled(TextField)({
     "& fieldset": {
       border: "1px solid #90A4AE",
     },
-    "&:hover fieldset": {
+    "&:hover:not(.Mui-disabled) fieldset": {
       border: "1px solid #000",
     },
     "&.Mui-focused fieldset": {
       border: "2px solid #000",
+    },
+  },
+  "& .Mui-disabled.MuiOutlinedInput-root": {
+    background: "#ECEFF1",
+    "& fieldset": {
+      border: "1px solid #ECEFF1",
     },
   },
   "& .MuiInputLabel-root,& .MuiInputBase-root": {

@@ -1,5 +1,5 @@
 import StarIcon from "@mui/icons-material/Star";
-import { SelectChangeEvent } from "@mui/material";
+import { SelectChangeEvent } from "@mui/material/Select";
 import { FC, useEffect } from "react";
 
 import { Graph, GraphConfiguration } from "react-d3-graph";
@@ -17,7 +17,7 @@ import {
 } from "../../../../redux/sample/sample";
 import { ILink, INode } from "../../../../types/graph";
 import { colorizeGraph, markCommonLinks } from "../../../../utils/graph";
-import styles from "./sampleNetworkItem.module.scss";
+import scss from "./sampleNetworkItem.module.scss";
 
 const myConfig: Partial<GraphConfiguration<INode, ILink>> = {
   directed: true,
@@ -89,9 +89,9 @@ const SampleNetworkItem: FC<I> = ({ index }) => {
 
   return (
     <article>
-      <div className={styles.head}>
+      <div className={scss.head}>
         <AppSelect
-          className={styles.select}
+          className={scss.select}
           options={networks.map((name) => ({
             name,
             disabled: selectedNetworks.includes(name),
@@ -100,13 +100,13 @@ const SampleNetworkItem: FC<I> = ({ index }) => {
           helperText="select network"
           onChange={handleNetworkChange}
         />
-        <div className={styles.score}>
+        <div className={scss.score}>
           <StarIcon fontSize="small" />
-          <span className={styles.title}>Score</span>
-          <span className={styles.value}>200</span>
+          <span className={scss.title}>Score</span>
+          <span className={scss.value}>200</span>
         </div>
       </div>
-      <div className={styles.graph}>
+      <div className={scss.graph}>
         {graph ? (
           <Graph
             id={`graph-${index}`}
@@ -115,7 +115,7 @@ const SampleNetworkItem: FC<I> = ({ index }) => {
             onClickNode={handleNodeClick}
           />
         ) : (
-          <p className={styles.info}>choose networks</p>
+          <p className={scss.info}>choose networks</p>
         )}
       </div>
     </article>

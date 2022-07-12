@@ -1,11 +1,11 @@
 import WorkIcon from "@mui/icons-material/Work";
 import cl from "classnames";
 import { useMatch, useParams } from "react-router-dom";
-import { AppRoutes } from "../../../utils/routes";
+import { AppRoutes } from "../../../router/routes";
 import { stringToCapitalize } from "../../../utils/string";
-import styles from "./appHeaderLine.module.scss";
+import scss from "./headerLine.module.scss";
 
-const AppHeaderLine = () => {
+const HeaderLine = () => {
   const { model } = useParams();
   const isCorrectModel = model === "social" || model === "geological";
   const isExperiment = useMatch(`${AppRoutes.MODEL}/${AppRoutes.EXPERIMENT}`);
@@ -14,14 +14,14 @@ const AppHeaderLine = () => {
   return (
     <div
       className={cl(
-        styles.line,
-        isCorrectModel ? styles[`line_${model}`] : styles.line_home
+        scss.line,
+        isCorrectModel ? scss[`line_${model}`] : scss.line_home
       )}
     >
-      <div className={styles.icon}>
+      <div className={scss.icon}>
         <WorkIcon sx={{ height: "14px" }} />
       </div>
-      <h1 className={styles.title}>
+      <h1 className={scss.title}>
         {isCorrectModel
           ? `${stringToCapitalize(model)} Dataset - ${
               isExperiment ? "Experiment" : isSample ? "Sample" : "Example"
@@ -32,4 +32,4 @@ const AppHeaderLine = () => {
   );
 };
 
-export default AppHeaderLine;
+export default HeaderLine;

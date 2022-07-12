@@ -9,6 +9,7 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage/session";
+import { authAPI } from "../API/auth/authAPI";
 
 import authReducer from "./auth/auth";
 import experimentReducer from "./experiment/experiment";
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   model: modelReducer,
   experiment: experimentReducer,
   sample: sampleReducer,
+  [authAPI.reducerPath]: authAPI.reducer,
 });
 
 const persistConfig = {
@@ -38,7 +40,7 @@ export const setupstore = () => {
         serializableCheck: {
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
-      });
+      }).concat(authAPI.middleware);
     },
   });
 };

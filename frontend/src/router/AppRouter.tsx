@@ -1,16 +1,25 @@
+import { lazy } from "react";
 import { Navigate, RouteObject, useRoutes } from "react-router-dom";
-import { useAppSelector } from "../../hooks/redux";
-import ExperimentPage from "../../pages/experiment/ExperimentPage";
-import HomePage from "../../pages/home/HomePage";
-import ModelPage from "../../pages/model/ModelPage";
-import SamplePage from "../../pages/sample/SamplePage";
-import RestorePasswordForm from "../../pages/signin/forms/RestorePasswordForm";
-import SigninForm from "../../pages/signin/forms/SigninForm";
-import SignupForm from "../../pages/signin/forms/SignupForm";
-import SigninPage from "../../pages/signin/SigninPage";
-import { AppRoutes } from "../../utils/routes";
-import AppOutlet from "../AppOutlet/AppOutlet";
-import ModelOutlet from "../ModelOutlet/ModelOutlet";
+
+import RestorePasswordForm from "../components/forms/auth/RestorePasswordForm";
+import SigninForm from "../components/forms/auth/SigninForm";
+import SignupForm from "../components/forms/auth/SignupForm";
+import { useAppSelector } from "../hooks/redux";
+
+import ExperimentPage from "../pages/experiment/ExperimentPage";
+import ModelPage from "../pages/model/ModelPage";
+import SamplePage from "../pages/sample/SamplePage";
+import { AppRoutes } from "./routes";
+
+// TODO: add lazy loading for pages
+const SigninPage = lazy(() => import("../pages/signin/SigninPage"));
+
+const AppOutlet = lazy(() => import("../components/outlets/app/AppOutlet"));
+const HomePage = lazy(() => import("../pages/home/HomePage"));
+
+const ModelOutlet = lazy(
+  () => import("../components/outlets/model/ModelOutlet")
+);
 
 const publicRoutes: RouteObject[] = [
   {

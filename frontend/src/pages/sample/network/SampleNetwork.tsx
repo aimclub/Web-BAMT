@@ -1,16 +1,16 @@
 import { useAppSelector } from "../../../hooks/redux";
 import SampleNetworkItem from "./item/SampleNetworkItem";
-import styles from "./sampleNetwork.module.scss";
+import scss from "./sampleNetwork.module.scss";
 
 const SampleNetwork = () => {
   const { networks } = useAppSelector((state) => state.sample);
 
   return (
     <section>
-      <h2 className={styles.title}>Network</h2>
-      <ul className={styles.list}>
+      <h2 className={scss.title}>Network</h2>
+      <ul className={scss.list}>
         {networks.map((_, index) => (
-          <li key={index} className={styles.item}>
+          <li key={index} className={scss.item}>
             <SampleNetworkItem index={index} />
           </li>
         ))}

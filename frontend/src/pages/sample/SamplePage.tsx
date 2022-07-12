@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 import { useAppDispatch } from "../../hooks/redux";
 import { clearSample } from "../../redux/sample/sample";
-import SampleСomparison from "./comparison/SampleСomparison";
+import SampleСomparison from "./comparison/SampleComparison";
 import SampleNetwork from "./network/SampleNetwork";
-import styles from "./samplePage.module.scss";
+import scss from "./samplePage.module.scss";
 
 const SamplePage = () => {
   const dispatch = useAppDispatch();
@@ -13,17 +13,17 @@ const SamplePage = () => {
   }, [dispatch]);
 
   return (
-    <div className={styles.root}>
-      <section className={styles.info}>
-        <h2 className={styles.title}>Сравнение сетей между собой</h2>
-        <p className={styles.text}>
+    <div className={scss.root}>
+      <section className={scss.info}>
+        <h2 className={scss.title}>Сравнение сетей между собой</h2>
+        <p className={scss.text}>
           Выпадающий список содержит созданные графы. Сервис поможет сравнить
           параметры между собой.
         </p>
-        <p className={styles.text}>
+        <p className={scss.text}>
           Равные друг другу линии связи выделены цветом.
         </p>
-        <p className={styles.text}>
+        <p className={scss.text}>
           Нажатие на узел связи отобразит параметры сети
         </p>
       </section>

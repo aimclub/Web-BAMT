@@ -1,38 +1,25 @@
 import { useFormik } from "formik";
-import { useState } from "react";
 
-import { useAppDispatch } from "../../../hooks/redux";
-import { login } from "../../../redux/auth/auth";
 import SubmitSignin from "../../../components/UI/buttons/SubmitSignin/SubmitSignin";
 import TextFieldSignin from "../../../components/UI/textfields/TextFieldSignin/TextFieldSignin";
-import styles from "./signinForm.module.scss";
-import { validationSchemaTwoPassword } from "./signinFormValidator";
+import scss from "./authForms.module.scss";
 
 const RestorePasswordForm = () => {
-  const [authError, setAuthError] = useState<string | null>(null);
-  const dispatch = useAppDispatch();
-
   const formik = useFormik({
     initialValues: {
       login: "",
       password: "",
       confirm_password: "",
     },
-    validationSchema: validationSchemaTwoPassword,
+    // validationSchema: ,
     onSubmit: (values) => {
       console.log("restore password up", values);
-      if (values.password !== values.confirm_password) {
-        setAuthError("Passwords don`t match");
-      } else {
-        // TODO: add API
-        !authError ? setAuthError("Authorization error!") : dispatch(login());
-      }
     },
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className={styles.root}>
-      <h1 className={styles.title}>Restore password</h1>
+    <form onSubmit={formik.handleSubmit} className={scss.root}>
+      <h1 className={scss.title}>Restore password</h1>
       <TextFieldSignin
         name="login"
         label="Login*"
@@ -40,6 +27,7 @@ const RestorePasswordForm = () => {
         onChange={formik.handleChange}
         error={formik.touched.password && !!formik.errors.login}
         helperText={formik.touched.password && formik.errors.login}
+        disabled
       />
       <TextFieldSignin
         name="password"
@@ -49,6 +37,7 @@ const RestorePasswordForm = () => {
         onChange={formik.handleChange}
         error={formik.touched.password && !!formik.errors.password}
         helperText={formik.touched.password && formik.errors.password}
+        disabled
       />
       <TextFieldSignin
         name="confirm_password"
@@ -62,11 +51,12 @@ const RestorePasswordForm = () => {
         helperText={
           formik.touched.confirm_password && formik.errors.confirm_password
         }
+        disabled
       />
 
-      <p className={styles.error}>{authError}</p>
+      <p className={scss.error}>{"Sorry: not available"}</p>
 
-      <SubmitSignin type="submit">
+      <SubmitSignin type="submit" disabled>
         <span>Restore</span>
       </SubmitSignin>
     </form>

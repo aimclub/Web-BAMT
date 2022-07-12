@@ -1,9 +1,10 @@
-import { MenuItem, Select, SelectProps } from "@mui/material";
+import MenuItem from "@mui/material/MenuItem";
+import Select, { SelectProps } from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
 import cl from "classnames";
 import { FC } from "react";
 
-import styles from "./appSelect.module.scss";
+import scss from "./appSelect.module.scss";
 
 const CustomSelect = styled(Select)({
   width: "100%",
@@ -46,14 +47,14 @@ const AppSelect: FC<
   }
 > = ({ className, options, label, helperText = "select", ...props }) => {
   return (
-    <div className={cl(styles.root, className)}>
-      {label && <p className={styles.label}>{label}</p>}
-      <div className={styles.select}>
+    <div className={cl(scss.root, className)}>
+      {label && <p className={scss.label}>{label}</p>}
+      <div className={scss.select}>
         <CustomSelect {...props}>
           {options.map((item) =>
             typeof item === "string" ? (
               <MenuItem key={item} value={item}>
-                <span className={styles.item}>{item}</span>
+                <span className={scss.item}>{item}</span>
               </MenuItem>
             ) : (
               <MenuItem
@@ -61,12 +62,12 @@ const AppSelect: FC<
                 value={item.id || item.name}
                 disabled={item.disabled}
               >
-                <span className={styles.item}>{item.name}</span>
+                <span className={scss.item}>{item.name}</span>
               </MenuItem>
             )
           )}
         </CustomSelect>
-        {helperText && <p className={styles.helperText}>{helperText}</p>}
+        {helperText && <p className={scss.helperText}>{helperText}</p>}
       </div>
     </div>
   );

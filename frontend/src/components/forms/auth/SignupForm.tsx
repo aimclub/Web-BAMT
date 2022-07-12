@@ -1,16 +1,21 @@
+import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { useFormik } from "formik";
 import { useState } from "react";
 
-import { useAppDispatch } from "../../../hooks/redux";
-import { login } from "../../../redux/auth/auth";
+import { authAPI } from "../../../API/auth/authAPI";
 import SubmitSignin from "../../../components/UI/buttons/SubmitSignin/SubmitSignin";
 import TextFieldSignin from "../../../components/UI/textfields/TextFieldSignin/TextFieldSignin";
-import styles from "./signinForm.module.scss";
-import { validationSchemaTwoPassword } from "./signinFormValidator";
+import scss from "./authForms.module.scss";
+import { validationSchemaTwoPassword } from "./authFormsValidator";
 
 const SignupForm = () => {
-  const [authError, setAuthError] = useState<string | null>(null);
-  const dispatch = useAppDispatch();
+  const [passwordMatch, setPasswordMatch] = useState<boolean>(true);
+
+  const [signup, { isLoading, isError, error, isSuccess }] =
+    authAPI.useRegisterMutation();
+
+  const [login, { isLoading: isLoadingLogin, isError: isErrorLogin }] =
+    authAPI.useSigninMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -20,19 +25,24 @@ const SignupForm = () => {
     },
     validationSchema: validationSchemaTwoPassword,
     onSubmit: (values) => {
-      console.log("log up", values);
-      if (values.password !== values.confirm_password) {
-        setAuthError("Passwords don`t match");
-      } else {
-        // TODO: add API
-        !authError ? setAuthError("Authorization error!") : dispatch(login());
+      const passMatch = values.password === values.confirm_password;
+      setPasswordMatch(passMatch);
+
+      if (passMatch) {
+        signup({ email: values.login, password: values.password }).then(
+          (res) => {
+            if ((res as { data: { message: string } })?.data) {
+              login({ email: values.login, password: values.password });
+            }
+          }
+        );
       }
     },
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className={styles.root}>
-      <h1 className={styles.title}>Sign Up</h1>
+    <form onSubmit={formik.handleSubmit} className={scss.root}>
+      <h1 className={scss.title}>Sign Up</h1>
       <TextFieldSignin
         name="login"
         label="Login*"
@@ -64,10 +74,21 @@ const SignupForm = () => {
         }
       />
 
-      <p className={styles.error}>{authError}</p>
+      <p className={scss.error}>
+        {!passwordMatch
+          ? "Passwords don`t match"
+          : isError
+          ? `Registration error! ${
+              ((error as FetchBaseQueryError).data as { message: string })
+                .message
+            } `
+          : isErrorLogin
+          ? "Authorization error!"
+          : isSuccess && "Registration sucess!!!"}
+      </p>
 
-      <SubmitSignin type="submit">
-        <span>Sign Up</span>
+      <SubmitSignin type="submit" disabled={isLoading || isLoadingLogin}>
+        <span>{isLoading || isLoadingLogin ? "Loading..." : "Sign Up"}</span>
       </SubmitSignin>
     </form>
   );

@@ -1,51 +1,51 @@
 import cl from "classnames";
 import { Link } from "react-router-dom";
-import { goToPage } from "../../utils/routes";
-import styles from "./homePage.module.scss";
+import { goToPage } from "../../router/routes";
+import scss from "./homePage.module.scss";
 
 const HomePage = () => {
   return (
-    <section className={styles.root}>
-      <h2 className={styles.heading}>Выберите модуль для дальнейшей работы</h2>
-      <div className={styles.content}>
-        <article className={cl(styles.article, styles.article_social)}>
-          <div className={styles.articleContent}>
-            <h3 className={cl(styles.title, styles.title_social)}>
+    <section className={scss.root}>
+      <h2 className={scss.heading}>Выберите модуль для дальнейшей работы</h2>
+      <div className={scss.content}>
+        <article className={cl(scss.article, scss.article_social)}>
+          <div className={scss.articleContent}>
+            <h3 className={cl(scss.title, scss.title_social)}>
               Модуль обрабатывает данные полученные из соц.сетей
             </h3>
-            <p className={styles.info}>
+            <p className={scss.info}>
               “Example” позволяет посмотреть собранный граф с возможностью
               добавления в список сравнения. “Experiment” - конструктор графа.
             </p>
-            <p className={styles.name}>Social Dataset</p>
-            <p className={styles.description}>
+            <p className={scss.name}>Social Dataset</p>
+            <p className={scss.description}>
               Меняется, как и все технологии, внимательно рефлексируя, на
               внешнее воздействие и на технологические изменения в рамках
               IT-индустрии...
             </p>
             <Link
               to={goToPage.example("social")}
-              className={cl(styles.link, styles.link_light)}
+              className={cl(scss.link, scss.link_light)}
             >
               Example
             </Link>
-            <Link to={goToPage.experiment("social")} className={styles.link}>
+            <Link to={goToPage.experiment("social")} className={scss.link}>
               Experiment
             </Link>
           </div>
         </article>
-        <div className={styles.line} />
-        <article className={cl(styles.article, styles.article_geological)}>
-          <div className={styles.articleContent}>
-            <h3 className={cl(styles.title, styles.title_geological)}>
+        <div className={scss.line} />
+        <article className={cl(scss.article, scss.article_geological)}>
+          <div className={scss.articleContent}>
+            <h3 className={cl(scss.title, scss.title_geological)}>
               Модуль создает и анализирует Хакатоны
             </h3>
-            <p className={styles.info}>
+            <p className={scss.info}>
               “Example” позволяет посмотреть собранный граф с возможностью
               добавления в список сравнения. “Experiment” - конструктор графа.
             </p>
-            <p className={styles.name}>Geological dataset</p>
-            <p className={styles.description}>
+            <p className={scss.name}>Geological dataset</p>
+            <p className={scss.description}>
               Меняется, как и все технологии, внимательно рефлексируя, на
               внешнее воздействие и на технологические изменения в рамках
               IT-индустрии...
@@ -53,13 +53,13 @@ const HomePage = () => {
             <div>
               <Link
                 to={goToPage.example("geological")}
-                className={cl(styles.link, styles.link_light)}
+                className={cl(scss.link, scss.link_light)}
               >
                 Example
               </Link>
               <Link
                 to={goToPage.experiment("geological")}
-                className={styles.link}
+                className={scss.link}
               >
                 Experiment
               </Link>
