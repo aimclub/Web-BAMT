@@ -1,6 +1,8 @@
 import Fade from "@mui/material/Fade";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
+import { experimentAPI } from "../../../API/experiment/experimentAPI";
+import AlertError from "../../../components/UI/alerts/error/AlertError";
 
 import ModelButton from "../../../components/UI/buttons/ModelButton/ModelButton";
 import AppMultiSelect from "../../../components/UI/selects/AppMultiSelect/AppMultiSelect";
@@ -12,17 +14,24 @@ import {
   setNodes,
   setTraining,
 } from "../../../redux/experiment/experiment";
-import { NODES, SCORE_FUNCTION_VALUES } from "../../../types/model";
+import { SCORE_FUNCTION_VALUES } from "../../../types/model";
 import { TRANSITION_TIMEOUT } from "../../../utils/constants";
 import { createNodes } from "../../../utils/graph";
+import { getCaseId } from "../../../utils/model";
 import scss from "./experimentParameters.module.scss";
 import { validationSchema } from "./ExperimentParametersValidator";
 
 const ExperimentParameters = () => {
+  // const [apiError, setAPIError] = useState(false);
+
   const [isTrainDisable, setTrainDasible] = useState<boolean>(true);
   const { model } = useAppSelector((s) => s.model);
   const { links, nodes } = useAppSelector((s) => s.experiment);
   const dispatch = useAppDispatch();
+
+  const { data, isError } = experimentAPI.useGetRootNodesQuery({
+    case_id: getCaseId(model),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -110,7 +119,7 @@ const ExperimentParameters = () => {
             />
             <AppMultiSelect
               className={scss.item}
-              options={NODES[model]}
+              options={data ? data.root_nodes : [""]}
               value={formik.values.root_nodes}
               onChange={formik.handleChange}
               name="root_nodes"
@@ -129,6 +138,7 @@ const ExperimentParameters = () => {
         <ModelButton disabled={isTrainDisable} onClick={handleTrainModel}>
           Train the model
         </ModelButton>
+        <AlertError isError={isError} />
       </section>
     </Fade>
   );

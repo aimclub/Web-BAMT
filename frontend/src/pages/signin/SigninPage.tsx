@@ -2,19 +2,19 @@ import Paper from "@mui/material/Paper";
 import { Link, Outlet, useMatch } from "react-router-dom";
 
 import AppLogo from "../../components/AppLogo/AppLogo";
-import { useAppDispatch } from "../../hooks/redux";
-import { login } from "../../redux/auth/auth";
+// import { useAppDispatch } from "../../hooks/redux";
+// import { login } from "../../redux/auth/auth";
 import { AppRoutes } from "../../router/routes";
 import scss from "./signinPage.module.scss";
 
 const SigninPage = () => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const isRestorePassword = useMatch(AppRoutes.RESTORE_PASSWORD);
   const isSignin = useMatch(AppRoutes.SIGNIN);
 
-  const handleSkip = () => {
+  /*  const handleSkip = () => {
     dispatch(login({ email: "not auth", token: "" }));
-  };
+  }; */
 
   return (
     <main className={scss.root}>
@@ -36,9 +36,9 @@ const SigninPage = () => {
               Forgot password?
             </Link>
           )}
-          <button type="button" className={scss.footLink} onClick={handleSkip}>
+          {/* <button type="button" className={scss.footLink} onClick={handleSkip}>
             SKIP
-          </button>
+          </button> */}
         </div>
       </Paper>
     </main>
