@@ -23,7 +23,7 @@ export type IExperimentParameters = typeof initialValues;
 
 const ExperimentForm: FC<{
   onSubmit: (values: IExperimentParameters) => void;
-  onTrain: () => void;
+  onTrain: (values: IExperimentParameters) => void;
   rootNodes: string[];
 }> = ({ onSubmit, onTrain, rootNodes }) => {
   const dispatch = useAppDispatch();
@@ -108,7 +108,10 @@ const ExperimentForm: FC<{
       >
         Start edges
       </ModelButton>
-      <ModelButton disabled={trainDisabled} onClick={onTrain}>
+      <ModelButton
+        disabled={trainDisabled}
+        onClick={() => onTrain(formik.values)}
+      >
         Train the model
       </ModelButton>
     </form>

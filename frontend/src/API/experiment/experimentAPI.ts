@@ -1,7 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
 import { BASE_URL, URLendpoints } from "../baseURL";
-import { IBNParams, IExperimentRootNodes } from "./experimentInterface";
+import {
+  IBNParams,
+  IExperimentRootNodes,
+  ITrainBN,
+} from "./experimentInterface";
 
 export const experimentAPI = createApi({
   reducerPath: "experimentAPI",
@@ -14,9 +18,10 @@ export const experimentAPI = createApi({
         url: `get_root_nodes/${case_id}`,
       }),
     }),
-    train: build.query<null, { case_id: number; bn_params: IBNParams }>({
+    train: build.mutation<ITrainBN, { case_id: number; bn_params: IBNParams }>({
       query: ({ case_id, bn_params }) => ({
         url: `${case_id}/${JSON.stringify(bn_params)}`,
+        method: "GET",
       }),
     }),
   }),

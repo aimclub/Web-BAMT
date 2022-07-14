@@ -9,7 +9,6 @@ const AlertError: FC<{ message?: string; isError: boolean }> = ({
   const [opened, setOpened] = useState(false);
 
   const handleClose = () => {
-    console.log("close");
     setOpened(false);
   };
 

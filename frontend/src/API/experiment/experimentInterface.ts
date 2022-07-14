@@ -13,9 +13,9 @@ export interface IBNParams {
   has_logit: boolean;
   params: {
     init_nodes: string[];
-    bl_add: string; // don't touch yet
+    // bl_add: string; // don't touch yet
     init_edges: [string, string][];
     remove_init_edges: boolean;
-    white_list: string; // don't touch yet
+    // white_list: string; // don't touch yet
   };
 }
