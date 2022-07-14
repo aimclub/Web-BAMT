@@ -1,10 +1,12 @@
 .root {
+  height: 100%;
+
   display: grid;
   gap: 1px;
   grid-template: 1fr auto/ 15fr 17fr;
 }
 
-.form {
+.content {
   padding: 12px;
 
   border-radius: 4px;
