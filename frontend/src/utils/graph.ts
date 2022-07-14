@@ -40,8 +40,8 @@ const WIDTH = 980 - 2 * STEP_X;
 
 export const createNodes = (arr: string[]) =>
   arr.map((node, index) => ({
-    id: `N${index + 1}`,
-    name: node,
+    id: node,
+    name: `${index + 1} ${node}`,
     x: STEP_X + ((STEP_X * index) % WIDTH),
     y: STEP_Y * Math.floor((STEP_X * index) / WIDTH + 1),
   }));

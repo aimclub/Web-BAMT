@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from "react";
 import {
   Graph,
   GraphConfiguration,
@@ -32,6 +33,7 @@ const myConfig: Partial<GraphConfiguration<GraphNode, GraphLink>> = {
     highlightFontSize: 16,
     highlightFontWeight: "lighter",
     labelPosition: "top",
+    labelProperty: "name",
     mouseCursor: "pointer",
     renderLabel: true,
     size: 2000,
@@ -58,30 +60,41 @@ const ExperimentBoxGraph = () => {
     (state) => state.experiment
   );
 
-  const handleAddLink = (nodeId: string) => {
-    if (sourceNodeId) {
-      if (sourceNodeId === nodeId) {
-        dispatch(recolourNode({ nodeId }));
-        dispatch(setSourceNode(null));
+  const handleAddLink = useCallback(
+    (nodeId: string) => {
+      if (sourceNodeId) {
+        if (sourceNodeId === nodeId) {
+          dispatch(recolourNode({ nodeId }));
+          dispatch(setSourceNode(null));
+        } else {
+          dispatch(addLink({ source: sourceNodeId, target: nodeId }));
+          dispatch(recolourNode({ nodeId: sourceNodeId }));
+          dispatch(setSourceNode(null));
+        }
       } else {
-        dispatch(addLink({ source: sourceNodeId, target: nodeId }));
-        dispatch(recolourNode({ nodeId: sourceNodeId }));
-        dispatch(setSourceNode(null));
+        dispatch(recolourNode({ nodeId, color: getModelColor(model) }));
+        dispatch(setSourceNode(nodeId));
       }
-    } else {
-      dispatch(recolourNode({ nodeId, color: getModelColor(model) }));
-      dispatch(setSourceNode(nodeId));
-    }
-  };
+    },
+    [dispatch, model, sourceNodeId]
+  );
 
-  const handleDeleteLink = (source: string, target: string) => {
-    dispatch(deleteLink({ source, target }));
-  };
+  const handleDeleteLink = useCallback(
+    (source: string, target: string) => {
+      dispatch(deleteLink({ source, target }));
+    },
+    [dispatch]
+  );
+
+  const data = useMemo(
+    () => colorizeGraph({ nodes, links }, model),
+    [links, model, nodes]
+  );
 
   return (
     <Graph
       id="graph-id"
-      data={colorizeGraph({ nodes, links }, model)}
+      data={data}
       config={myConfig}
       onClickNode={handleAddLink}
       onClickLink={handleDeleteLink}
