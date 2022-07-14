@@ -64,7 +64,7 @@ const ExperimentForm: FC<{
           />
           <AppSelect
             className={scss.item}
-            options={["true", "false"]}
+            options={["True", "False"]}
             value={formik.values.logit}
             onChange={formik.handleChange}
             name="logit"
@@ -73,7 +73,7 @@ const ExperimentForm: FC<{
           />
           <AppSelect
             className={scss.item}
-            options={["true", "false"]}
+            options={["True", "False"]}
             value={formik.values.mixture}
             onChange={formik.handleChange}
             name="mixture"

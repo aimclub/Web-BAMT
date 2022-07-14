@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
+import { formatBNParamsToString } from "../../utils/model";
 
 import { BASE_URL, URLendpoints } from "../baseURL";
 import {
@@ -20,7 +21,7 @@ export const experimentAPI = createApi({
     }),
     train: build.mutation<ITrainBN, { case_id: number; bn_params: IBNParams }>({
       query: ({ case_id, bn_params }) => ({
-        url: `${case_id}/${JSON.stringify(bn_params)}`,
+        url: `${case_id}/${formatBNParamsToString(bn_params)}`,
         method: "GET",
       }),
     }),

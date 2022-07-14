@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
 import Header from "../../header/Header";
-import Loader from "../../loader/Loader";
+import TimeProgreess from "../../UI/progress/TimeProgress.tsx/TimeProgress";
 import scss from "./appOutlet.module.scss";
 
 const AppOutlet = () => {
@@ -9,7 +9,7 @@ const AppOutlet = () => {
     <div className={scss.root}>
       <Header />
       <main className={scss.main}>
-        <Suspense fallback={<Loader />}>
+        <Suspense fallback={<TimeProgreess className={scss.loader} />}>
           <Outlet />
         </Suspense>
       </main>

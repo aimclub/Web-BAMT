@@ -50,10 +50,7 @@ const ExperimentParameters = () => {
           has_logit: Boolean(values.logit),
           params: {
             init_nodes: nodes.map((n) => n.id),
-            init_edges: links.map(
-              ({ source, target }) => [source, target] as [string, string]
-            ),
-            remove_init_edges: false,
+            init_edges: links.map(({ source, target }) => [source, target]),
           },
         },
       }).then((res) => {

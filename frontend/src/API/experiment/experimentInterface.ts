@@ -15,7 +15,7 @@ export interface IBNParams {
     init_nodes: string[];
     // bl_add: string; // don't touch yet
     init_edges: [string, string][];
-    remove_init_edges: boolean;
+    // remove_init_edges: boolean; // TODO: add parameter
     // white_list: string; // don't touch yet
   };
 }

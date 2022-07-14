@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 // import { authAPI } from "./API/auth/authAPI";
-import Loader from "./components/loader/Loader";
+import TimeProgreess from "./components/UI/progress/TimeProgress.tsx/TimeProgress";
 // import { useAppDispatch, useAppSelector } from "./hooks/redux";
 // import { logout } from "./redux/auth/auth";
 import AppRouter from "./router/AppRouter";
@@ -23,7 +23,7 @@ const App = () => {
   }, []); */
 
   return (
-    <Suspense fallback={<Loader />}>
+    <Suspense fallback={<TimeProgreess className="loader" />}>
       <AppRouter />
     </Suspense>
   );

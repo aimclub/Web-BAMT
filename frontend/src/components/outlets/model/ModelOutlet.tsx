@@ -1,9 +1,11 @@
 import { ThemeProvider } from "@mui/material/styles";
+import { Suspense } from "react";
 import { Navigate, Outlet, useParams } from "react-router-dom";
 import { useAppDispatch } from "../../../hooks/redux";
 import { setModel } from "../../../redux/model/model";
 import { AppRoutes } from "../../../router/routes";
 import { createModelTheme } from "../../../utils/theme";
+import TimeProgreess from "../../UI/progress/TimeProgress.tsx/TimeProgress";
 
 const ModelOutlet = () => {
   const { model } = useParams();
@@ -15,7 +17,9 @@ const ModelOutlet = () => {
     dispatch(setModel(model));
     return (
       <ThemeProvider theme={createModelTheme(model)}>
-        <Outlet />
+        <Suspense fallback={<TimeProgreess />}>
+          <Outlet />
+        </Suspense>
       </ThemeProvider>
     );
   }
