@@ -4,6 +4,6 @@ api = Namespace("htest", description="Connection test")
 
 
 @api.route("/health")
-class HealthResons(Resource):
-    def post(self):
+class HealthResource(Resource):
+    def get(self):
         return {"status": "healthy"}

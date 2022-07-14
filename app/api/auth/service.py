@@ -22,6 +22,10 @@ def find_user_by_email(email: str) -> Optional[User]:
     return user
 
 
+def find_user_by_token(token: str) -> Optional[User]:
+    return User.query.filter_by(tokens=token).first()
+
+
 def create_user(email: str, password) -> User:
     password_hash: Optional[str] = None
     if password:
