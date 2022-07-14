@@ -1,5 +1,7 @@
 from flask_restx import Namespace, Resource
-from flask_accepts import accepts
+# from flask_accepts import accepts, responds
+
+# from .schema import BNResSchema
 import ast
 
 from werkzeug.exceptions import BadRequest
@@ -7,15 +9,16 @@ from werkzeug.exceptions import BadRequest
 api = Namespace("experiment", description="Operations with BNs")
 
 
-@api.route("/<int:case_id>/<string:bn_params>")
+@api.route("/<int:case_id>/<bn_params>")
 class BNResource(Resource):
     """
     BN Resource
     :param: case_id = 0 | 1
     """
 
-    @api.doc(responses={200: 'success'})
-    @api.doc(responses={400: 'failed'})
+    # @api.doc(responses={200: 'success'})
+    # @api.doc(responses={400: 'failed'})
+    # @responds(api=api, schema=BNResSchema)
     def get(self, case_id, bn_params):
         """Get trained BN"""
         bn_params = ast.literal_eval(bn_params)

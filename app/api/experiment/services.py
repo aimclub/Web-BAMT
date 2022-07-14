@@ -1,3 +1,4 @@
+import numpy as np
 from bamt.Preprocessors import Preprocessor
 import pandas as pd
 from sklearn import preprocessing as pp
@@ -35,10 +36,29 @@ def BN_learning(directory, parameters):
     for node in bn.nodes:
         nodes.append({"name": node.name, "type": node.type})
 
-    sample = bn.sample(500, as_df=False)
+    sample = bn.sample(5, as_df=False)
+
+    new = {i: [] for i in sample[0].keys()}
+    for n in sample:
+        for node, val in n.items():
+            if isinstance(val, float):
+                if val < 0:
+                    # new[node].append(np.nan)
+                    continue
+                else:
+                    new[node].append(val)
+            else:
+                new[node].append(val)
+
+    for node, val in new.items():
+        if isinstance(val[0], float):
+            continue
+        else:
+            vals, counts = np.unique(val, return_counts=True)
+            new[node] = {n: int(v) for n, v in zip(vals, counts)}
 
     return {"network": {"nodes": nodes, "edges": bn.edges},
-            "sample": sample}
+            "sample": new}
 
 
 def get_header_from_csv(file):

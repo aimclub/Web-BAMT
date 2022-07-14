@@ -1,8 +1,8 @@
 from flask import request
-import ast
+# import ast
 from flask_accepts import accepts
 from flask_restx import Namespace, Resource
-from werkzeug.exceptions import BadRequest
+# from werkzeug.exceptions import BadRequest
 
 # from .models import
 from .schema import BNSchema, BNGetSchema
@@ -21,16 +21,17 @@ class BNManagerResource(Resource):
         """Assign new BN to user. In current version - to user's session"""
         obtained = request.get_json()
 
-        for value in ast.literal_eval(obtained["edges"]):
-            if not any([type(i) == str for i in value]):
-                raise BadRequest("TypeError in edges")
-
-        if not any([type(i) == str for i in ast.literal_eval(obtained["nodes"])]):
-            raise BadRequest("TypeError in vertices")
+        # for value in ast.literal_eval(obtained["edges"]):
+        #     if not any([type(i) == str for i in value]):
+        #         raise BadRequest("TypeError in edges")
+        #
+        # if not any([type(i) == str for i in ast.literal_eval(obtained["nodes"])]):
+        #     raise BadRequest("TypeError in nodes")
 
         # if not find_user_by_token(token=obtained["token"]):
         #     raise BadRequest("No user (token) was found")
 
+        # params unpacking
         for k, v in obtained['params'].items():
             if k != "remove_init_edges":
                 val = str(v)
