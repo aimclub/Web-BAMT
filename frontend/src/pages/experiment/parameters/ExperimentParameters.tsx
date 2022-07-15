@@ -11,8 +11,7 @@ import AlertError from "../../../components/UI/alerts/error/AlertError";
 
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { setTraining } from "../../../redux/experiment/experiment";
-import { TRANSITION_TIMEOUT } from "../../../utils/constants";
-import { getCaseId } from "../../../utils/model";
+import { CASES_IDS, TRANSITION_TIMEOUT } from "../../../utils/constants";
 
 const ExperimentParameters = () => {
   const [successOpened, setSuccessOpened] = useState(false);
@@ -20,7 +19,7 @@ const ExperimentParameters = () => {
   const { model } = useAppSelector((s) => s.model);
   const { nodes, links } = useAppSelector((s) => s.experiment);
   const dispatch = useAppDispatch();
-  const case_id = getCaseId(model);
+  const case_id = CASES_IDS[model];
 
   const { data: rootNodesData, isError: isRootNodesError } =
     experimentAPI.useGetRootNodesQuery({
