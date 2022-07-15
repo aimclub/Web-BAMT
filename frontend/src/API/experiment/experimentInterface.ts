@@ -19,3 +19,14 @@ export interface IBNParams {
     // white_list: string; // don't touch yet
   };
 }
+
+export interface IBNManagerModel extends IBNParams {
+  name: string;
+  owner: string;
+  nodes: string;
+  edges: string;
+}
+
+export interface IBNData {
+  networks: string;
+}
