@@ -21,7 +21,10 @@ class BNResource(Resource):
     # @responds(api=api, schema=BNResSchema)
     def get(self, case_id, bn_params):
         """Get trained BN"""
-        bn_params = ast.literal_eval(bn_params)
+        try:
+            bn_params = ast.literal_eval(bn_params)
+        except Exception:
+            raise BadRequest("Malformed string")
         if not "use_mixture" in bn_params.keys():
             print("1")
             return False, 400
