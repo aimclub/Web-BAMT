@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
+import { formatObject } from "../../utils/format";
 
 import { BASE_URL, URLendpoints } from "../baseURL";
 import { IBNData, IBNManagerModel } from "../experiment/experimentInterface";
@@ -13,14 +14,18 @@ export const bn_managerAPI = createApi({
       query: (data) => ({
         url: "assign_BN",
         method: "PUT",
-        body: data,
+        body: formatObject(data),
       }),
     }),
-    getBNData: build.mutation<IBNData, { owner: string }>({
-      query: (data) => ({
-        url: "get_BN",
-        method: "POST",
-        body: data,
+    getBNData: build.query<IBNData, { owner: string }>({
+      query: ({ owner }) => ({
+        url: `get_BN/${owner}`,
+      }),
+    }),
+    removeBN: build.mutation<null, { owner: string; name: string }>({
+      query: ({ owner, name }) => ({
+        url: `remove/${owner}/${name}`,
+        method: "DELETE",
       }),
     }),
   }),

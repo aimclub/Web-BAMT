@@ -1,5 +1,5 @@
 .root {
-  padding: 16px 12px;
+  padding: 16px 0 16px 12px;
   min-width: 380px;
   box-sizing: border-box;
 }
@@ -16,5 +16,26 @@
 }
 
 .list {
-  max-height: 180px;
+  margin-bottom: 20px;
+  padding-right: 8px;
+  height: 180px;
+  box-sizing: border-box;
+
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #c4c4c4 #f7f8f8;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 6px;
+    background-color: #f7f8f8;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 6px;
+    background-color: #c4c4c4;
+  }
 }

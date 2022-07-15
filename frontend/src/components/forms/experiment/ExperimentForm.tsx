@@ -2,7 +2,12 @@ import { useFormik } from "formik";
 import { FC, useEffect, useState } from "react";
 import { useAppDispatch } from "../../../hooks/redux";
 import { useTrainDisabled } from "../../../hooks/useTrainDisabled";
-import { cleanExperiment } from "../../../redux/experiment/experiment";
+import {
+  cleanExperiment,
+  setLinks,
+  setNodes,
+} from "../../../redux/experiment/experiment";
+import { createNodes } from "../../../utils/graph";
 import { SCORE_FUNCTION_VALUES } from "../../../utils/model";
 import ModelButton from "../../UI/buttons/ModelButton/ModelButton";
 import AppMultiSelect from "../../UI/selects/AppMultiSelect/AppMultiSelect";
@@ -22,10 +27,9 @@ const initialValues = {
 export type IExperimentParameters = typeof initialValues;
 
 const ExperimentForm: FC<{
-  onSubmit: (values: IExperimentParameters) => void;
   onTrain: (values: IExperimentParameters) => void;
   rootNodes: string[];
-}> = ({ onSubmit, onTrain, rootNodes }) => {
+}> = ({ onTrain, rootNodes }) => {
   const dispatch = useAppDispatch();
   const [parametersCorrect, setParametersCorrect] = useState(false);
   const { trainDisabled } = useTrainDisabled(parametersCorrect);
@@ -34,7 +38,10 @@ const ExperimentForm: FC<{
     initialValues,
     initialErrors: { logit: "" },
     validationSchema,
-    onSubmit,
+    onSubmit: (values) => {
+      dispatch(setNodes(createNodes(values.root_nodes)));
+      dispatch(setLinks([]));
+    },
   });
 
   useEffect(() => {

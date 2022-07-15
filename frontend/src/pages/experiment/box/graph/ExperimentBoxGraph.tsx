@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 import {
   Graph,
   GraphConfiguration,
@@ -102,4 +102,4 @@ const ExperimentBoxGraph = () => {
   );
 };
 
-export default ExperimentBoxGraph;
+export default memo(ExperimentBoxGraph);

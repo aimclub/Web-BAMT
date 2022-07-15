@@ -2,7 +2,8 @@ import WorkIcon from "@mui/icons-material/Work";
 import cl from "classnames";
 import { useMatch, useParams } from "react-router-dom";
 import { AppRoutes } from "../../../router/routes";
-import { stringToCapitalize } from "../../../utils/string";
+import { formatStringToCapitalize } from "../../../utils/format";
+
 import scss from "./headerLine.module.scss";
 
 const HeaderLine = () => {
@@ -23,7 +24,7 @@ const HeaderLine = () => {
       </div>
       <h1 className={scss.title}>
         {isCorrectModel
-          ? `${stringToCapitalize(model)} Dataset - ${
+          ? `${formatStringToCapitalize(model)} Dataset - ${
               isExperiment ? "Experiment" : isSample ? "Sample" : "Example"
             }`
           : "Showcase"}

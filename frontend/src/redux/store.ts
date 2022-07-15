@@ -10,6 +10,7 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage/session";
 import { authAPI } from "../API/auth/authAPI";
+import { bn_managerAPI } from "../API/bn_manager/bn_managerAPI";
 import { experimentAPI } from "../API/experiment/experimentAPI";
 
 import authReducer from "./auth/auth";
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
   sample: sampleReducer,
   [authAPI.reducerPath]: authAPI.reducer,
   [experimentAPI.reducerPath]: experimentAPI.reducer,
+  [bn_managerAPI.reducerPath]: bn_managerAPI.reducer,
 });
 
 const persistConfig = {
@@ -42,7 +44,11 @@ export const setupstore = () => {
         serializableCheck: {
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
-      }).concat(authAPI.middleware, experimentAPI.middleware);
+      }).concat(
+        authAPI.middleware,
+        experimentAPI.middleware,
+        bn_managerAPI.middleware
+      );
     },
   });
 };

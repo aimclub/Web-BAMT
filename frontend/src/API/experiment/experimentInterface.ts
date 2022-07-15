@@ -15,11 +15,28 @@ export interface IBNParams {
   };
 }
 
-export interface IBNManagerModel extends IBNParams {
+export interface IBNManagerModel extends IBNParams, INetwork {
   name: string;
   owner: string;
-  nodes: string;
-  edges: string;
+}
+
+export interface INetwork {
+  nodes: { name: string; type: string }[];
+  edges: [string, string][];
+}
+
+export interface ITrainNetwork extends INetwork {
+  descriptor: {
+    Period: string;
+    Netpay: string;
+    Permeability: string;
+    Lithology: string;
+    Gross: string;
+    "Structural setting": string;
+    Porosity: string;
+    "Tectonic regime": string;
+    Depth: string;
+  };
 }
 
 export interface IBNData {
@@ -27,10 +44,7 @@ export interface IBNData {
 }
 
 export interface ITrainBN {
-  network: {
-    nodes: { name: string; type: string }[];
-    edges: [string, string][];
-  };
+  network: ITrainNetwork;
   sample: object;
   // example
   /* sample: {
