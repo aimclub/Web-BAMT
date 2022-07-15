@@ -38,9 +38,9 @@ def BN_learning(directory, parameters):
 
     bn.fit_parameters(data=h)
 
-    nodes = []
+    type_descriptor = {}
     for node in bn.nodes:
-        nodes.append({"name": node.name, "type": node.type})
+        type_descriptor[node.name] = node.type
 
     sample = bn.sample(5, as_df=False)
 
@@ -63,7 +63,7 @@ def BN_learning(directory, parameters):
             vals, counts = np.unique(val, return_counts=True)
             new[node] = {n: int(v) for n, v in zip(vals, counts)}
 
-    return {"network": {"nodes": nodes, "edges": bn.edges},
+    return {"network": {"nodes": bn.nodes_names, "edges": bn.edges, "descriptor": type_descriptor},
             "sample": new}
 
 
