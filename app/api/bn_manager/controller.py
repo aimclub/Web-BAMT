@@ -5,8 +5,8 @@ from flask_restx import Namespace, Resource
 # from werkzeug.exceptions import BadRequest
 
 # from .models import
-from .schema import BNSchema, BNGetSchema
-from .service import update_db, find_bns_by_token
+from .schema import BNSchema
+from .service import update_db, find_bns_by_token, remove_bn
 
 # from app.api.auth.service import find_user_by_token
 
@@ -31,6 +31,8 @@ class BNManagerResource(Resource):
         # if not find_user_by_token(token=obtained["token"]):
         #     raise BadRequest("No user (token) was found")
 
+        if len(find_bns_by_token(owner=obtained["owner"])) == 7:
+            return {"message": "Limit of BNs has been reached."}, 406
         # params unpacking
         for k, v in obtained['params'].items():
             if k != "remove_init_edges":
@@ -44,18 +46,16 @@ class BNManagerResource(Resource):
         return {"message": "Success"}
 
 
-@api.route("/get_BN")
+@api.route("/get_BN/<string:owner>")
 class BNManagerResource(Resource):
-    @accepts(schema=BNGetSchema, api=api)
+    @accepts(api=api)
     # @api.doc(responses={401: 'No User found'})
-    def post(self):
+    def get(self, owner):
         """Get BN Data"""
-        obtained = request.get_json()
 
         # if not find_user_by_token(token=obtained["token"]):
         #     raise BadRequest("No token was found")
-
-        nets = find_bns_by_token(owner=obtained["owner"])
+        nets = find_bns_by_token(owner=owner)
         return {"networks": {n: {
             "name": data.name,
             "edges": data.edges,
@@ -68,3 +68,16 @@ class BNManagerResource(Resource):
                        "bl_add": data.bl_add,
                        "remove_init_edges": data.remove_init_edges},
             "scoring_function": data.scoring_function} for n, data in enumerate(nets)}}
+
+
+@api.route("/remove/<string:owner>/<string:name>")
+class BNManagerResource(Resource):
+    @accepts(api=api)
+    # @api.doc(responses={401: 'No User found'})
+    def delete(self, owner, name):
+        """Delete bn"""
+
+        # if not find_user_by_token(token=obtained["token"]):
+        #     raise BadRequest("No token was found")
+        remove_bn(owner=owner, name=name)
+        return {"message": "Success"}

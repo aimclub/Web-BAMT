@@ -14,12 +14,12 @@ class BayessianNet(db.Model):
     edges = db.Column(db.String)
     nodes = db.Column(db.String)
 
-    has_logit = db.Column(db.Boolean)
-    use_mixture = db.Column(db.Boolean)
+    has_logit = db.Column(db.Boolean, default=False)
+    use_mixture = db.Column(db.Boolean, default=False)
     scoring_function = db.Column(db.String)
 
     init_nodes = db.Column(db.Text)
     init_edges = db.Column(db.Text)
     white_list = db.Column(db.Text)
     bl_add = db.Column(db.Text)
-    remove_init_edges = db.Column(db.Boolean)
+    remove_init_edges = db.Column(db.Boolean, default=False)

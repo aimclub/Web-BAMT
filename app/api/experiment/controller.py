@@ -26,17 +26,14 @@ class BNResource(Resource):
         except Exception:
             raise BadRequest("Malformed string")
         if not "use_mixture" in bn_params.keys():
-            print("1")
-            return False, 400
+            return {"message": "use_mixture not defined"}, 400
         elif not "has_logit" in bn_params.keys():
-            print("2")
-            return False, 400
+            return {"message": "has_logit not defined"}, 400
         elif not "scoring_function" in bn_params.keys():
-            print("3")
-            return False, 400
+            return {"message": "Scoring_func not defined"}, 400
 
         if not (case_id == 0 or case_id == 1):
-            return False, 404
+            return {"message": "Not a case_id"}, 404
 
         from .services import BN_learning
 

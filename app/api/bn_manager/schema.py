@@ -20,7 +20,3 @@ class BNSchema(Schema):
         remove_init_edges = fields.Boolean(default=False)
 
     params = fields.Nested(ParamsSchema)
-
-
-class BNGetSchema(Schema):
-    owner = fields.String(attribute='owner')

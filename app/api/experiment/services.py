@@ -25,6 +25,12 @@ def BN_learning(directory, parameters):
 
     bn.add_nodes(descriptor=info)
     if "params" in parameters.keys():
+        if "init_nodes" in parameters["params"].keys():
+            if any(i not in bn.nodes_names for i in parameters["params"]["init_nodes"]):
+                return {"message": "Malformed init_nodes"}, 400
+        if "init_edges" in parameters["params"].keys():
+            if any(j not in bn.nodes_names for i in parameters["params"]["init_edges"] for j in i):
+                return {"message": "Malformed init_edges"}, 400
         bn.add_edges(data=discretized_data, optimizer='HC', scoring_function=(parameters["scoring_function"],),
                      params=parameters["params"])
     else:
