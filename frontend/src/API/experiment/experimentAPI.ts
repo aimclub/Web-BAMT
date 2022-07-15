@@ -6,7 +6,7 @@ import {
   IBNParams,
   IExperimentRootNodes,
   ITrainBN,
-} from "./experimentInterface";
+} from "../../types/experiment";
 
 export const experimentAPI = createApi({
   reducerPath: "experimentAPI",

@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { formatObject } from "../../utils/format";
 
 import { BASE_URL, URLendpoints } from "../baseURL";
-import { IBNData, IBNManagerModel } from "../experiment/experimentInterface";
+import { IBNData, IBNManagerModel } from "../../types/experiment";
 
 export const bn_managerAPI = createApi({
   reducerPath: "bn_managerAPI",

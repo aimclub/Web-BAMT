@@ -2,10 +2,7 @@ import Fade from "@mui/material/Fade";
 import { useCallback, useEffect, useState } from "react";
 import { bn_managerAPI } from "../../../API/bn_manager/bn_managerAPI";
 import { experimentAPI } from "../../../API/experiment/experimentAPI";
-import {
-  IBNParams,
-  ITrainBN,
-} from "../../../API/experiment/experimentInterface";
+import { IBNParams, ITrainBN } from "../../../types/experiment";
 import ExperimentForm, {
   IExperimentParameters,
 } from "../../../components/forms/experiment/ExperimentForm";
