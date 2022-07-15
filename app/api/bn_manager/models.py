@@ -23,3 +23,5 @@ class BayessianNet(db.Model):
     white_list = db.Column(db.Text)
     bl_add = db.Column(db.Text)
     remove_init_edges = db.Column(db.Boolean, default=False)
+
+    descriptor = db.Column(db.Text)

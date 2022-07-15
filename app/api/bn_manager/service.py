@@ -8,9 +8,14 @@ def update_db(data: dict):
     db.session.commit()
 
 
-def find_bns_by_token(owner):
+def find_bns_by_user(owner):
     nets = BayessianNet.query.filter_by(owner=owner).all()
     return nets
+
+
+def find_bns_by_owner_and_name(owner, name):
+    return BayessianNet.query.filter_by(owner=owner, name=name).all()
+
 
 def remove_bn(owner, name):
     BayessianNet.query.filter_by(owner=owner, name=name).delete()

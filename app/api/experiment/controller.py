@@ -25,6 +25,13 @@ class BNResource(Resource):
             bn_params = ast.literal_eval(bn_params)
         except Exception:
             raise BadRequest("Malformed string")
+
+        if "params" in bn_params.keys():
+            if "init_nodes" in bn_params["params"].keys():
+                bn_params["params"]["init_nodes"] = tuple(bn_params["params"]["init_nodes"])
+            if "init_edges" in bn_params["params"].keys():
+                bn_params["params"]["init_edges"] = tuple(bn_params["params"]["init_edges"])
+
         if not "use_mixture" in bn_params.keys():
             return {"message": "use_mixture not defined"}, 400
         elif not "has_logit" in bn_params.keys():

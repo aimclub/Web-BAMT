@@ -1,12 +1,12 @@
 from flask import request
-# import ast
-from flask_accepts import accepts
+import ast
+from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
-# from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, NotFound
 
 # from .models import
 from .schema import BNSchema
-from .service import update_db, find_bns_by_token, remove_bn
+from .service import update_db, find_bns_by_user, remove_bn, find_bns_by_owner_and_name
 
 # from app.api.auth.service import find_user_by_token
 
@@ -18,9 +18,19 @@ class BNManagerResource(Resource):
     @accepts(schema=BNSchema, api=api)
     # @api.doc(responses={401: 'No User found'})
     def put(self):
-        """Assign new BN to user. In current version - to user's session"""
+        """Assign new BN to user."""
         obtained = request.get_json()
 
+        obtained["nodes"] = str(obtained["nodes"])
+        obtained["edges"] = str(obtained["edges"])
+        obtained["edges"] = str(obtained["edges"])
+        obtained["descriptor"] = str(obtained["descriptor"])
+
+        if "params" in obtained.keys():
+            if "init_nodes" in obtained["params"].keys():
+                obtained["params"]["init_nodes"] = str(obtained["params"]["init_nodes"])
+            if "init_edges" in obtained["params"].keys():
+                obtained["params"]["init_edges"] = str(obtained["params"]["init_edges"])
         # for value in ast.literal_eval(obtained["edges"]):
         #     if not any([type(i) == str for i in value]):
         #         raise BadRequest("TypeError in edges")
@@ -31,7 +41,7 @@ class BNManagerResource(Resource):
         # if not find_user_by_token(token=obtained["token"]):
         #     raise BadRequest("No user (token) was found")
 
-        if len(find_bns_by_token(owner=obtained["owner"])) == 7:
+        if len(find_bns_by_user(owner=obtained["owner"])) == 7:
             return {"message": "Limit of BNs has been reached."}, 406
         # params unpacking
         for k, v in obtained['params'].items():
@@ -48,26 +58,27 @@ class BNManagerResource(Resource):
 
 @api.route("/get_BN/<string:owner>")
 class BNManagerResource(Resource):
-    @accepts(api=api)
+    # @responds(schema=BNGetSchema0)
     # @api.doc(responses={401: 'No User found'})
     def get(self, owner):
         """Get BN Data"""
 
         # if not find_user_by_token(token=obtained["token"]):
         #     raise BadRequest("No token was found")
-        nets = find_bns_by_token(owner=owner)
+        nets = find_bns_by_user(owner=owner)
         return {"networks": {n: {
             "name": data.name,
-            "edges": data.edges,
-            "nodes": data.nodes,
+            "edges": ast.literal_eval(data.edges),
+            "nodes": ast.literal_eval(data.nodes),
             "use_mixture": data.use_mixture,
             "has_logit": data.has_logit,
-            "params": {"init_edges": data.init_edges,
-                       "init_nodes": data.init_nodes,
-                       "white_list": data.white_list,
-                       "bl_add": data.bl_add,
+            "params": {"init_edges": ast.literal_eval(data.init_edges) if data.init_edges else None,
+                       "init_nodes": ast.literal_eval(data.init_nodes) if data.init_nodes else None,
+                       # "white_list": data.white_list,
+                       # "bl_add": data.bl_add,
                        "remove_init_edges": data.remove_init_edges},
-            "scoring_function": data.scoring_function} for n, data in enumerate(nets)}}
+            "scoring_function": data.scoring_function,
+            "descriptor": ast.literal_eval(data.descriptor)} for n, data in enumerate(nets)}}
 
 
 @api.route("/remove/<string:owner>/<string:name>")
@@ -77,7 +88,8 @@ class BNManagerResource(Resource):
     def delete(self, owner, name):
         """Delete bn"""
 
-        # if not find_user_by_token(token=obtained["token"]):
-        #     raise BadRequest("No token was found")
+        if not find_bns_by_owner_and_name(owner=owner, name=name):
+            raise NotFound("No nets was found")
+
         remove_bn(owner=owner, name=name)
         return {"message": "Success"}

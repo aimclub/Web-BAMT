@@ -3,8 +3,8 @@ from marshmallow import Schema, fields
 
 class BNSchema(Schema):
     """Bayesian Network schema"""
-    nodes = fields.String(attribute='nodes', required=True)
-    edges = fields.String(attribute='edges', required=True)
+    nodes = fields.List(cls_or_instance=fields.String, required=True)
+    edges = fields.List(cls_or_instance=fields.List(fields.String), required=True)
     owner = fields.String(attribute='owner', required=True)
     name = fields.String(required=True)
 
@@ -13,10 +13,12 @@ class BNSchema(Schema):
     scoring_function = fields.String(attribute='scoring_function')
 
     class ParamsSchema(Schema):
-        init_nodes = fields.String()
-        init_edges = fields.String()
-        white_list = fields.String()
-        bl_add = fields.String()
+        init_nodes = fields.List(cls_or_instance=fields.String)
+        init_edges = fields.List(cls_or_instance=fields.List(fields.String))
+        # white_list = fields.String()
+        # bl_add = fields.String()
         remove_init_edges = fields.Boolean(default=False)
 
     params = fields.Nested(ParamsSchema)
+
+    descriptor = fields.Dict()
