@@ -1,11 +1,7 @@
-import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import Button from "@mui/material/Button";
-
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
-import { logout } from "../../redux/auth/auth";
 import AppLogo from "../AppLogo/AppLogo";
 import scss from "./header.module.scss";
 import HeaderLine from "./line/HeaderLine";
+import HeaderMenu from "./menu/HeaderMenu";
 
 const navLinks: { name: string; link: string }[] = [
   // TODO: add links
@@ -16,13 +12,6 @@ const navLinks: { name: string; link: string }[] = [
 ];
 
 const Header = () => {
-  const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.auth);
-
-  const handleLogout = () => {
-    dispatch(logout());
-  };
-
   return (
     <header>
       <div className={scss.head}>
@@ -38,16 +27,7 @@ const Header = () => {
             ))}
           </ul>
         </nav>
-        <div className={scss.auth}>
-          <p className={scss.email}>{user?.email}</p>
-          <Button
-            startIcon={<ExitToAppIcon />}
-            onClick={handleLogout}
-            color="inherit"
-          >
-            Logout
-          </Button>
-        </div>
+        <HeaderMenu />
       </div>
       <HeaderLine />
     </header>
