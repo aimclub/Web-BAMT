@@ -4,11 +4,9 @@ from flask_accepts import accepts, responds
 from flask_restx import Namespace, Resource
 from werkzeug.exceptions import BadRequest, NotFound
 
-# from .models import
-from .schema import BNSchema
-from .service import update_db, find_bns_by_user, remove_bn, find_bns_by_owner_and_name
-
-# from app.api.auth.service import find_user_by_token
+from .schema import BNSchema, BNGetNamesSchema
+from .service import update_db, find_bns_by_user, remove_bn, find_bns_by_owner_and_name, find_bn_names_by_user
+from app.api.auth.service import find_user_by_email
 
 api = Namespace("BN_manager", description="BN store operations")
 
@@ -23,7 +21,6 @@ class BNManagerResource(Resource):
 
         obtained["nodes"] = str(obtained["nodes"])
         obtained["edges"] = str(obtained["edges"])
-        obtained["edges"] = str(obtained["edges"])
         obtained["descriptor"] = str(obtained["descriptor"])
 
         if "params" in obtained.keys():
@@ -31,6 +28,14 @@ class BNManagerResource(Resource):
                 obtained["params"]["init_nodes"] = str(obtained["params"]["init_nodes"])
             if "init_edges" in obtained["params"].keys():
                 obtained["params"]["init_edges"] = str(obtained["params"]["init_edges"])
+            # params unpacking
+            for k, v in obtained['params'].items():
+                if k != "remove_init_edges":
+                    val = str(v)
+                else:
+                    val = v
+                obtained[k] = str(val)
+            del obtained["params"]
         # for value in ast.literal_eval(obtained["edges"]):
         #     if not any([type(i) == str for i in value]):
         #         raise BadRequest("TypeError in edges")
@@ -43,14 +48,6 @@ class BNManagerResource(Resource):
 
         if len(find_bns_by_user(owner=obtained["owner"])) == 7:
             return {"message": "Limit of BNs has been reached."}, 406
-        # params unpacking
-        for k, v in obtained['params'].items():
-            if k != "remove_init_edges":
-                val = str(v)
-            else:
-                val = v
-            obtained[k] = str(val)
-        del obtained["params"]
 
         update_db(data=obtained)
         return {"message": "Success"}
@@ -81,9 +78,23 @@ class BNManagerResource(Resource):
             "descriptor": ast.literal_eval(data.descriptor)} for n, data in enumerate(nets)}}
 
 
+@api.route("/get_BN_names/<string:owner>")
+class BNGetNamesManagerResource(Resource):
+    @responds(schema=BNGetNamesSchema, status_code=200, api=api)
+    @responds(status_code=400, api=api, description="No user was found")
+    def get(self, owner):
+        """Get BN names to validate uniqueness"""
+
+        if not find_user_by_email(owner):
+            raise BadRequest("No user was found")
+
+        names = find_bn_names_by_user(owner=owner)
+        return {"networks": [data[0] for data in names]}
+
+
 @api.route("/remove/<string:owner>/<string:name>")
 class BNManagerResource(Resource):
-    @accepts(api=api)
+    # @accepts(api=api)
     # @api.doc(responses={401: 'No User found'})
     def delete(self, owner, name):
         """Delete bn"""

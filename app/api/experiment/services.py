@@ -6,7 +6,7 @@ import bamt.Networks as Networks
 
 
 def BN_learning(directory, parameters):
-    h = pd.read_csv(directory)
+    h = pd.read_csv(directory, index_col=0)
     if "hack_processed_with_rf" in directory:
         cols = ['Tectonic regime', 'Period', 'Lithology', 'Structural setting', 'Gross', 'Netpay', 'Porosity',
                 'Permeability',

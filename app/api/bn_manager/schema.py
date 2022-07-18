@@ -21,4 +21,8 @@ class BNSchema(Schema):
 
     params = fields.Nested(ParamsSchema)
 
-    descriptor = fields.Dict()
+    descriptor = fields.Dict(required=True)
+
+
+class BNGetNamesSchema(Schema):
+    networks = fields.List(fields.String(many=True))
