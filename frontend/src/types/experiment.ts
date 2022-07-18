@@ -16,7 +16,7 @@ export interface IBNParams {
 }
 
 export interface INetwork {
-  nodes: { name: string; type: string }[];
+  nodes: string[];
   edges: [string, string][];
   descriptor: {
     Period: string;

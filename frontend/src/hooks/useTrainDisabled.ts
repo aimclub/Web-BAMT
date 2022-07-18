@@ -8,12 +8,11 @@ export const useTrainDisabled = (parametersCorrect: boolean) => {
 
   useEffect(() => {
     if (parametersCorrect) {
-      const trainDisable =
-        links.length <= 0 ||
-        // every node has links
-        nodes.some(
-          (n) => !links.some((l) => l.source === n.id || l.target === n.id)
-        );
+      const trainDisable = links.length <= 0 || nodes.length <= 0;
+      // every node has links
+      // nodes.some(
+      //   (n) => !links.some((l) => l.source === n.id || l.target === n.id)
+      // );
 
       setTrainDisabled(trainDisable);
     } else {

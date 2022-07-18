@@ -1,6 +1,11 @@
+import { INetwork } from "../types/experiment";
 import { IGraph, ILink } from "../types/graph";
 import { ModelType } from "../types/model";
 
+export const formatNetwork = (data: INetwork): IGraph => ({
+  nodes: data.nodes.map((name) => ({ id: name })),
+  links: data.edges.map(([source, target]) => ({ source, target })),
+});
 export const colorizeGraph = ({ nodes, links }: IGraph, model?: ModelType) => {
   const color =
     model === "social"
