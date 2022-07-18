@@ -11,22 +11,21 @@ const HeaderLine = () => {
   const isCorrectModel = model === "social" || model === "geological";
   const isExperiment = useMatch(`${AppRoutes.MODEL}/${AppRoutes.EXPERIMENT}`);
   const isSample = useMatch(`${AppRoutes.MODEL}/${AppRoutes.SAMPLE}`);
+  const isTeam = useMatch(AppRoutes.TEAM);
 
   return (
-    <div
-      className={cl(
-        scss.line,
-        isCorrectModel ? scss[`line_${model}`] : scss.line_home
-      )}
-    >
+    <div className={cl(scss.line, isCorrectModel && scss[`line_${model}`])}>
       <div className={scss.icon}>
         <WorkIcon sx={{ height: "14px" }} />
       </div>
+
       <h1 className={scss.title}>
         {isCorrectModel
           ? `${formatStringToCapitalize(model)} Dataset - ${
               isExperiment ? "Experiment" : isSample ? "Sample" : "Example"
             }`
+          : isTeam
+          ? "Team"
           : "Showcase"}
       </h1>
     </div>

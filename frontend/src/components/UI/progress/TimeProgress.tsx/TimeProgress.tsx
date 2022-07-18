@@ -14,6 +14,7 @@ const TimeProgreess: FC<{ time?: string; className?: string }> = ({
   className,
 }) => {
   const color = useTheme().palette.primary.main;
+
   return (
     <div className={cl(className, scss.root)} style={{ color: color }}>
       <div className={scss.spiner}>

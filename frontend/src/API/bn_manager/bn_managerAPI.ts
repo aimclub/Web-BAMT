@@ -1,5 +1,4 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { formatObject } from "../../utils/format";
 
 import { BASE_URL, URLendpoints } from "../baseURL";
 import { IBNData, IBNManagerModel } from "../../types/experiment";
@@ -14,7 +13,7 @@ export const bn_managerAPI = createApi({
       query: (data) => ({
         url: "assign_BN",
         method: "PUT",
-        body: formatObject(data),
+        body: data,
       }),
     }),
     getBNData: build.query<IBNData, { owner: string }>({

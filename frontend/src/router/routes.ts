@@ -4,6 +4,7 @@ export enum AppRoutes {
   SIGNIN = "/signin",
   SIGNUP = "/signup",
   RESTORE_PASSWORD = "/restore-password",
+  TEAM = "/team",
   HOME = "/",
   MODEL = "/:model",
   EXPERIMENT = "experiment",

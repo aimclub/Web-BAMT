@@ -1,0 +1,53 @@
+.list {
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item {
+  margin: 0 25px;
+}
+
+.link {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 19px;
+  letter-spacing: 0.15px;
+  text-decoration: none;
+
+  color: rgba(0, 0, 0, 0.87);
+
+  transition: all 0.5s ease-in-out;
+  position: relative;
+
+  &:hover,
+  &.active {
+    opacity: 0.7;
+  }
+
+  &::after {
+    content: "";
+    width: 0;
+    height: 1px;
+
+    background-color: rgba(0, 0, 0, 0.87);
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+
+    transform: translate(-50%, 0);
+    transition: all 0.5s ease-in-out;
+  }
+
+  &:hover::after,
+  &.active::after {
+    width: 100%;
+    opacity: 0.7;
+  }
+}

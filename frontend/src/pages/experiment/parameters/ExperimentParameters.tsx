@@ -55,6 +55,7 @@ const ExperimentParameters = () => {
               ...bn_params,
               nodes: network.nodes,
               edges: network.edges,
+              descriptor: network.descriptor,
               name: values.display_name,
               owner: user?.email || "undefined",
             });

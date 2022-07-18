@@ -1,7 +1,7 @@
 import { IBNParams } from "../types/experiment";
 
-export const formatStringToCapitalize = (str: string) =>
-  str[0].toUpperCase() + str.slice(1).toLowerCase();
+export const formatStringToCapitalize = (str: string | undefined) =>
+  str ? str[0].toUpperCase() + str.slice(1).toLowerCase() : "";
 
 //eslint-disable-next-line @typescript-eslint/no-explicit-any
 const formatValue = (value: any): string => {

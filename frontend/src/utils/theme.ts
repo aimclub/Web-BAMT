@@ -14,4 +14,10 @@ export const createModelTheme = (model: ModelType) =>
     },
   });
 
-export const theme = createTheme();
+export const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#b0bec5",
+    },
+  },
+});

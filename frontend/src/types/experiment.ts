@@ -15,7 +15,7 @@ export interface IBNParams {
   };
 }
 
-export interface IBNManagerModel extends IBNParams, INetwork {
+export interface IBNManagerModel extends IBNParams, ITrainNetwork {
   name: string;
   owner: string;
 }

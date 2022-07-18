@@ -11,6 +11,7 @@ const SigninPage = lazy(() => import("../pages/signin/SigninPage"));
 
 const AppOutlet = lazy(() => import("../components/outlets/app/AppOutlet"));
 const HomePage = lazy(() => import("../pages/home/HomePage"));
+const TeamPage = lazy(() => import("../pages/team/TeamPage"));
 
 const ModelOutlet = lazy(
   () => import("../components/outlets/model/ModelOutlet")
@@ -39,6 +40,7 @@ const privateRoutes: RouteObject[] = [
     element: <AppOutlet />,
     children: [
       { index: true, element: <HomePage /> },
+      { path: AppRoutes.TEAM, element: <TeamPage /> },
       {
         path: AppRoutes.MODEL,
         element: <ModelOutlet />,
