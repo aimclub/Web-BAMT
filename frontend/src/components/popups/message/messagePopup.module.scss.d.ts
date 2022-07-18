@@ -1,5 +1,6 @@
 declare namespace MessagePopupModuleScssNamespace {
   export interface IMessagePopupModuleScss {
+    error: string;
     message: string;
   }
 }

@@ -10,4 +10,8 @@
   letter-spacing: 0.25px;
 
   color: #000000;
+
+  &.error {
+    color: #d32f2f;
+  }
 }

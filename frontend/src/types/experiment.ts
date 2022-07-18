@@ -10,22 +10,14 @@ export interface IBNParams {
     init_nodes: string[];
     // bl_add: string; // don't touch yet
     init_edges: [string, string][];
-    // remove_init_edges: boolean; // TODO: add parameter
+    remove_init_edges?: boolean; // TODO: add parameter
     // white_list: string; // don't touch yet
   };
-}
-
-export interface IBNManagerModel extends IBNParams, ITrainNetwork {
-  name: string;
-  owner: string;
 }
 
 export interface INetwork {
   nodes: { name: string; type: string }[];
   edges: [string, string][];
-}
-
-export interface ITrainNetwork extends INetwork {
   descriptor: {
     Period: string;
     Netpay: string;
@@ -39,12 +31,17 @@ export interface ITrainNetwork extends INetwork {
   };
 }
 
+export interface IBNManagerModel extends IBNParams, INetwork {
+  name: string;
+  owner: string;
+}
+
 export interface IBNData {
-  networks: string;
+  networks: { [key: string]: IBNManagerModel };
 }
 
 export interface ITrainBN {
-  network: ITrainNetwork;
+  network: INetwork;
   sample: object;
   // example
   /* sample: {

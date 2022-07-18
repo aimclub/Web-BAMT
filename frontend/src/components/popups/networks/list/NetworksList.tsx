@@ -1,18 +1,34 @@
+import cl from "classnames";
+
+import { bn_managerAPI } from "../../../../API/bn_manager/bn_managerAPI";
+import { useAppSelector } from "../../../../hooks/redux";
 import NetworksListItem from "./item/NetworksListItem";
 import scss from "./networksList.module.scss";
 
 const NetworksList = () => {
-  // TODO: get networks
-  const networks = ["Networlk 1", "Network 2"];
+  const { user } = useAppSelector((state) => state.auth);
+  const { data } = bn_managerAPI.useGetBNDataQuery({
+    owner: user?.email || "",
+  });
 
   return (
     <div className={scss.root}>
-      <p className={scss.title}>Name</p>
-      <div className={scss.list}>
-        {networks.map((network) => (
-          <NetworksListItem key={network} network={network} />
-        ))}
-      </div>
+      {data ? (
+        <>
+          <p className={scss.title}>Name</p>
+          <div className={scss.list}>
+            {Object.entries(data.networks).length > 0 ? (
+              Object.entries(data.networks).map(([id, network]) => (
+                <NetworksListItem key={id} network={network} />
+              ))
+            ) : (
+              <p className={scss.text}>No networks</p>
+            )}
+          </div>
+        </>
+      ) : (
+        <p className={cl(scss.text, scss.error)}>ERROR on get user networks</p>
+      )}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import Fade from "@mui/material/Fade";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { bn_managerAPI } from "../../../API/bn_manager/bn_managerAPI";
 import { experimentAPI } from "../../../API/experiment/experimentAPI";
 import { IBNParams, ITrainBN } from "../../../types/experiment";
@@ -32,6 +32,7 @@ const ExperimentParameters = () => {
 
   const handleTrainModel = useCallback(
     (values: IExperimentParameters) => {
+      // TODO: check uniqueness of the model name & networks count
       // console.log("values", values);
       dispatch(setTraining(true));
 
@@ -51,14 +52,16 @@ const ExperimentParameters = () => {
           // console.log("res", res);
           if ((res as { data: ITrainBN }).data) {
             const network = (res as { data: ITrainBN }).data.network;
-            assignBN({
+            return assignBN({
               ...bn_params,
               nodes: network.nodes,
               edges: network.edges,
               descriptor: network.descriptor,
               name: values.display_name,
               owner: user?.email || "undefined",
-            });
+            }).then(() => setSuccessOpened(true));
+          } else {
+            setSuccessOpened(true);
           }
         })
         .finally(() => dispatch(setTraining(false)));
@@ -68,9 +71,9 @@ const ExperimentParameters = () => {
 
   const handleSuccessClose = useCallback(() => setSuccessOpened(false), []);
 
-  useEffect(() => {
-    if (isSuccess) setSuccessOpened(true);
-  }, [isSuccess]);
+  // useEffect(() => {
+  //   if (isSuccess || is) setSuccessOpened(true);
+  // }, [isSuccess, isSaveError]);
 
   return (
     <Fade in={true} timeout={TRANSITION_TIMEOUT}>
@@ -80,16 +83,19 @@ const ExperimentParameters = () => {
           onTrain={handleTrainModel}
         />
         <AlertError
-          isError={isRootNodesError || isTrainError}
-          message={
-            isRootNodesError
-              ? "Error on get root nodes"
-              : "Error on train model"
-          }
+          isError={isRootNodesError}
+          message="Error on get root nodes"
         />
         <MessagePopup
-          title="Success"
-          message={"Model train and save."}
+          title={isSuccess ? "Success" : "Error"}
+          isError={!isSuccess}
+          message={
+            isSuccess
+              ? "Model train and save."
+              : isTrainError
+              ? "Error on train model"
+              : "Error on save model"
+          }
           open={successOpened}
           onClose={handleSuccessClose}
         />

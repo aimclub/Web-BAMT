@@ -29,7 +29,10 @@ const AlertError: FC<{ message?: string; isError: boolean }> = ({
     >
       <Alert
         elevation={6}
-        onClose={handleClose}
+        onClose={(event) => {
+          event.stopPropagation();
+          handleClose();
+        }}
         severity="error"
         variant="filled"
       >

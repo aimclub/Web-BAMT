@@ -1,7 +1,9 @@
 declare namespace NetworksListModuleScssNamespace {
   export interface INetworksListModuleScss {
+    error: string;
     list: string;
     root: string;
+    text: string;
     title: string;
   }
 }

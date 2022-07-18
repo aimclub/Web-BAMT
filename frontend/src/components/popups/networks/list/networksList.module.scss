@@ -39,3 +39,21 @@
     background-color: #c4c4c4;
   }
 }
+
+.text {
+  margin: 0;
+  min-height: 180px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 19px;
+  letter-spacing: 0.25px;
+
+  color: #000000;
+
+  &.error {
+    color: #d32f2f;
+  }
+}
