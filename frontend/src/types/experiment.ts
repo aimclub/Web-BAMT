@@ -39,6 +39,9 @@ export interface IBNManagerModel extends IBNParams, INetwork {
 export interface IBNData {
   networks: { [key: string]: IBNManagerModel };
 }
+export interface IBNDataNames {
+  networks: string[];
+}
 
 export interface ITrainBN {
   network: INetwork;

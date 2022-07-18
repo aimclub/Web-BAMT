@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { BASE_URL, URLendpoints } from "../baseURL";
-import { IBNData, IBNManagerModel } from "../../types/experiment";
+import { IBNData, IBNDataNames, IBNManagerModel } from "../../types/experiment";
 
 export const bn_managerAPI = createApi({
   reducerPath: "bn_managerAPI",
@@ -20,6 +20,12 @@ export const bn_managerAPI = createApi({
     getBNData: build.query<IBNData, { owner: string }>({
       query: ({ owner }) => ({
         url: `get_BN/${owner}`,
+      }),
+      providesTags: ["Networks"],
+    }),
+    getBNDataNames: build.query<IBNDataNames, { owner: string }>({
+      query: ({ owner }) => ({
+        url: `get_BN_names/${owner}`,
       }),
       providesTags: ["Networks"],
     }),
