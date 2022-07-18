@@ -81,7 +81,6 @@ class BNManagerResource(Resource):
 @api.route("/get_BN_names/<string:owner>")
 class BNGetNamesManagerResource(Resource):
     @responds(schema=BNGetNamesSchema, status_code=200, api=api)
-    @responds(status_code=400, api=api, description="No user was found")
     def get(self, owner):
         """Get BN names to validate uniqueness"""
 
@@ -100,7 +99,7 @@ class BNManagerResource(Resource):
         """Delete bn"""
 
         if not find_bns_by_owner_and_name(owner=owner, name=name):
-            raise NotFound("No nets was found")
+            raise NotFound("No net was found")
 
         remove_bn(owner=owner, name=name)
         return {"message": "Success"}
