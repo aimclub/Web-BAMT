@@ -1,12 +1,10 @@
 import StarIcon from "@mui/icons-material/Star";
-import ModelButton from "../../components/UI/buttons/ModelButton/ModelButton";
 import { TRANSITION_TIMEOUT } from "../../utils/constants";
 import ModelInfo from "./info/ModelInfo";
 import scss from "./modelPage.module.scss";
 import ModelGraph from "./graph/ModelGraph";
-import { Link } from "react-router-dom";
-import { AppRoutes } from "../../router/routes";
 import Fade from "@mui/material/Fade";
+import SampleButton from "../../components/SampleButton/SampleButton";
 
 const ModelPage = () => {
   return (
@@ -25,9 +23,7 @@ const ModelPage = () => {
             </div>
             <ModelGraph />
           </div>
-          <Link to={AppRoutes.SAMPLE} className={scss.link}>
-            <ModelButton>sample</ModelButton>
-          </Link>
+          <SampleButton />
         </section>
       </Fade>
     </div>

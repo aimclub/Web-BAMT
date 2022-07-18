@@ -1,7 +1,7 @@
 import StarIcon from "@mui/icons-material/Star";
 import Fade from "@mui/material/Fade";
+import SampleButton from "../../../components/SampleButton/SampleButton";
 
-import ModelButton from "../../../components/UI/buttons/ModelButton/ModelButton";
 import { useAppSelector } from "../../../hooks/redux";
 import { TRANSITION_TIMEOUT } from "../../../utils/constants";
 import scss from "./experimentBox.module.scss";
@@ -34,7 +34,7 @@ const ExperimentBox = () => {
             </div>
           )}
         </div>
-        <ModelButton disabled>sample</ModelButton>
+        <SampleButton />
       </section>
     </Fade>
   );

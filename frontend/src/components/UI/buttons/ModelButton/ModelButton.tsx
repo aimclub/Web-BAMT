@@ -1,7 +1,18 @@
-import Button from "@mui/material/Button";
+import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
+import { Link } from "react-router-dom";
 
-const ModelButton = styled(Button)(({ theme }) => ({
+interface IProps extends ButtonProps {
+  to?: string;
+}
+
+const ModelButton = styled((props: IProps) => {
+  const linkProps = props.to
+    ? { LinkComponent: Link, to: props.to }
+    : undefined;
+
+  return <Button {...props} {...linkProps} />;
+})(({ theme }) => ({
   padding: 20,
   width: "100%",
 
