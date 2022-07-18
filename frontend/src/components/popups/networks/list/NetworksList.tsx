@@ -7,7 +7,7 @@ import scss from "./networksList.module.scss";
 
 const NetworksList = () => {
   const { user } = useAppSelector((state) => state.auth);
-  const { data } = bn_managerAPI.useGetBNDataQuery({
+  const { data } = bn_managerAPI.useGetBNDataNamesQuery({
     owner: user?.email || "",
   });
 
