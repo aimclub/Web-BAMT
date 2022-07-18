@@ -1,6 +1,24 @@
+import { team } from "../../types/team";
+import TeamMember from "./member/TeamMember";
+import scss from "./teamPage.module.scss";
+
 const TeamPage = () => {
-  // TODO: make team page
-  return <h1>Team Page</h1>;
+  return (
+    <section className={scss.root}>
+      <p className={scss.description}>
+        Данный сервис разработан в рамках научно-исследовательской работы
+        магистров и аспирантов университета ИТМО.
+      </p>
+      <h2 className={scss.subtitle}>Состав научного коллектива:</h2>
+      <ul className={scss.list}>
+        {team.map((member) => (
+          <li key={member.fullName} className={scss.item}>
+            <TeamMember member={member} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
 };
 
 export default TeamPage;
