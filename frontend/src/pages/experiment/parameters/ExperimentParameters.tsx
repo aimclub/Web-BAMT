@@ -1,87 +1,32 @@
 import Fade from "@mui/material/Fade";
-import { useCallback, useState } from "react";
-import { bn_managerAPI } from "../../../API/bn_manager/bn_managerAPI";
 import { experimentAPI } from "../../../API/experiment/experimentAPI";
-import { IBNParams, ITrainBN } from "../../../types/experiment";
-import ExperimentForm, {
-  IExperimentParameters,
-} from "../../../components/forms/experiment/ExperimentForm";
+import ExperimentForm from "../../../components/forms/experiment/ExperimentForm";
 import MessagePopup from "../../../components/popups/message/MessagePopup";
 import AlertError from "../../../components/UI/alerts/error/AlertError";
 
-import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
-import { setTraining } from "../../../redux/experiment/experiment";
+import { useAppSelector } from "../../../hooks/redux";
+import { useTrainModel } from "../../../hooks/useTrainModel";
 import { CASES_IDS, TRANSITION_TIMEOUT } from "../../../utils/constants";
-import { useCheckDisplayName } from "../../../hooks/useCheckDisplayName";
 
 const ExperimentParameters = () => {
-  const [successOpened, setSuccessOpened] = useState(false);
-  const { user } = useAppSelector((s) => s.auth);
   const { model } = useAppSelector((s) => s.model);
-  const { nodes, links } = useAppSelector((s) => s.experiment);
-  const dispatch = useAppDispatch();
   const case_id = CASES_IDS[model];
 
   const { data: rootNodesData, isError: isRootNodesError } =
     experimentAPI.useGetRootNodesQuery({
       case_id,
     });
-  const [trainModel, { isError: isTrainError }] =
-    experimentAPI.useTrainMutation();
 
-  const [assignBN, { isSuccess }] = bn_managerAPI.useAssignBNMutation();
-  const { isBNNamesError, errorPopup, onCloseMessagePopup, checkDisplayName } =
-    useCheckDisplayName();
-
-  const handleTrainModel = useCallback(
-    (values: IExperimentParameters) => {
-      if (!checkDisplayName(values.display_name)) {
-        dispatch(setTraining(true));
-
-        const bn_params: IBNParams = {
-          scoring_function: values.score_function,
-          use_mixture: Boolean(values.mixture),
-          has_logit: Boolean(values.logit),
-          params: {
-            init_nodes: nodes.map((n) => n.id),
-            init_edges: links.map(({ source, target }) => [source, target]),
-          },
-        };
-        // console.log("bn_params", bn_params);
-
-        trainModel({ case_id, bn_params })
-          .then((res) => {
-            // console.log("res", res);
-            if ((res as { data: ITrainBN }).data) {
-              const network = (res as { data: ITrainBN }).data.network;
-              return assignBN({
-                ...bn_params,
-                nodes: network.nodes,
-                edges: network.edges,
-                descriptor: network.descriptor,
-                name: values.display_name,
-                owner: user?.email || "undefined",
-              }).then(() => setSuccessOpened(true));
-            } else {
-              setSuccessOpened(true);
-            }
-          })
-          .finally(() => dispatch(setTraining(false)));
-      }
-    },
-    [
-      dispatch,
-      nodes,
-      links,
-      case_id,
-      user?.email,
-      trainModel,
-      assignBN,
-      checkDisplayName,
-    ]
-  );
-
-  const handleSuccessClose = useCallback(() => setSuccessOpened(false), []);
+  const {
+    handleTrainModel,
+    isBNNamesError,
+    errorPopup,
+    onCloseMessagePopup,
+    isSuccess,
+    isTrainError,
+    successOpened,
+    handleSuccessClose,
+  } = useTrainModel(case_id);
 
   return (
     <Fade in={true} timeout={TRANSITION_TIMEOUT}>
