@@ -48,7 +48,7 @@ def BN_learning(directory, parameters):
     for n in sample:
         for node, val in n.items():
             if isinstance(val, float):
-                if val < 0:
+                if val < 0 or np.isnan(val):
                     # new[node].append(np.nan)
                     continue
                 else:
@@ -57,7 +57,9 @@ def BN_learning(directory, parameters):
                 new[node].append(val)
 
     for node, val in new.items():
-        if isinstance(val[0], float):
+        if not val:
+            continue
+        elif isinstance(val[0], float):
             continue
         else:
             vals, counts = np.unique(val, return_counts=True)
