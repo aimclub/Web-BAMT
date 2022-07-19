@@ -7,7 +7,9 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, "..", "./build"),
     filename: "[name].[hash].js",
+    chunkFilename: "[name].chunk.js",
     publicPath: "/",
+    assetModuleFilename: "images/[hash][ext][query]",
   },
   resolve: {
     extensions: [".js", ".jsx", ".ts", ".tsx", ".css", ".scss"],
@@ -46,6 +48,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new HTMLWebpackPlugin({
       template: path.resolve(__dirname, "..", "./public/index.html"),
+      favicon: path.resolve(__dirname, "..", "./public/favicon.ico"),
     }),
   ],
 };
