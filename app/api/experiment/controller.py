@@ -64,12 +64,13 @@ class BNResource(Resource):
 
         network, sample = result["network"], result["sample"]
 
-        network["nodes"] = str(network["nodes"])
-        network["edges"] = str(network["edges"])
-        network["descriptor"] = str(network["descriptor"])
+        network_to_db = network | {"owner": owner, "name": name}
+        network_to_db["nodes"] = str(network["nodes"])
+        network_to_db["edges"] = str(network["edges"])
+        network_to_db["descriptor"] = str(network["descriptor"])
 
         sample_to_db = {"sample": sample, "owner": owner, "net_name": name}
-        network_to_db = network | {"owner": owner, "name": name}
+
         update_db(network=network_to_db, sample=sample_to_db)
         return {"network": network}
 
