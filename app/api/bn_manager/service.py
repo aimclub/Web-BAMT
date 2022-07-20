@@ -1,11 +1,5 @@
-from .models import BayessianNet
+from app.api.experiment.models import BayessianNet, Sample
 from app import db
-
-
-def update_db(data: dict):
-    bn = BayessianNet(**data)
-    db.session.add(bn)
-    db.session.commit()
 
 
 def find_bns_by_user(owner):
@@ -19,6 +13,15 @@ def find_bns_by_owner_and_name(owner, name):
 
 def find_bn_names_by_user(owner):
     return BayessianNet.query.filter_by(owner=owner).with_entities(BayessianNet.name)
+
+
+def find_sample(owner, name):
+    return Sample.query.filter_by(owner=owner, net_name=name).with_entities(Sample.sample).first()
+
+
+def remove_samples(owner, name):
+    Sample.query.filter_by(owner=owner, net_name=name).delete()
+    db.session.commit()
 
 
 def remove_bn(owner, name):

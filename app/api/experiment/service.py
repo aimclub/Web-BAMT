@@ -4,14 +4,12 @@ import pandas as pd
 from sklearn import preprocessing as pp
 import bamt.Networks as Networks
 
+from .models import BayessianNet, Sample
+from app import db
+
 
 def BN_learning(directory, parameters):
     h = pd.read_csv(directory, index_col=0)
-    if "hack_processed_with_rf" in directory:
-        cols = ['Tectonic regime', 'Period', 'Lithology', 'Structural setting', 'Gross', 'Netpay', 'Porosity',
-                'Permeability',
-                'Depth']
-        h = h[cols]
 
     encoder = pp.LabelEncoder()
     discretizer = pp.KBinsDiscretizer(n_bins=5, encode='ordinal', strategy='uniform')
@@ -42,7 +40,28 @@ def BN_learning(directory, parameters):
     for node in bn.nodes:
         type_descriptor[node.name] = node.type
 
-    sample = bn.sample(5, as_df=False)
+    # ======= Sample preparations ============
+
+    def get_data_for_barplot(data):
+        numeric_values = []
+        category_vals = []
+
+        bins = np.histogram_bin_edges(data)
+        end = len(bins)
+
+        for i1, i2 in zip(range(0, end), range(1, end)):
+            n = 0
+            for value in data:
+                if bins[i1] <= value <= bins[i2]:
+                    n += 1
+                else:
+                    continue
+
+            numeric_values.append(n / len(data))
+            category_vals.append(f"{round(bins[i1], 2)} - {round(bins[i2], 2)}")
+        return {"data": numeric_values, "xvals": category_vals}
+
+    sample = bn.sample(442, as_df=False)
 
     new = {i: [] for i in sample[0].keys()}
     for n in sample:
@@ -56,17 +75,37 @@ def BN_learning(directory, parameters):
             else:
                 new[node].append(val)
 
-    for node, val in new.items():
-        if not val:
+    new_to_plot = {}
+    for node, val_list in new.items():
+        if not val_list:
             continue
-        elif isinstance(val[0], float):
-            continue
+        elif isinstance(val_list[0], float):
+            new_to_plot[node] = get_data_for_barplot(val_list)
         else:
-            vals, counts = np.unique(val, return_counts=True)
-            new[node] = {n: int(v) for n, v in zip(vals, counts)}
+            freq = pd.value_counts(val_list, normalize=True)
+            new_to_plot[node] = {"data": freq.values.tolist(), "xvals": freq.index.tolist()}
 
-    return {"network": {"nodes": bn.nodes_names, "edges": bn.edges, "descriptor": type_descriptor},
-            "sample": new}
+    # params unpacking
+    for k, v in parameters['params'].items():
+        if k != "remove_init_edges":
+            val = str(v)
+        else:
+            val = v
+        parameters[k] = str(val)
+    del parameters["params"]
+
+    return {"network": parameters | {"edges": bn.edges, "nodes": bn.nodes_names, "descriptor": type_descriptor},
+            "sample": new_to_plot}, 200
+
+
+def update_db(network, sample):
+    bn = BayessianNet(**network)
+    sample = Sample(**sample)
+
+    db.session.add(bn)
+    db.session.add(sample)
+
+    db.session.commit()
 
 
 def get_header_from_csv(file):

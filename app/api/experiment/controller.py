@@ -1,15 +1,18 @@
 from flask_restx import Namespace, Resource
 # from flask_accepts import accepts, responds
 
-# from .schema import BNResSchema
+# from .schema import BNSchema
+from .service import BN_learning, update_db, get_header_from_csv
+from app.api.bn_manager.service import find_bns_by_user
+from app.api.auth.service import find_user_by_email
 import ast
 
-from werkzeug.exceptions import BadRequest
+from werkzeug.exceptions import BadRequest, NotFound
 
 api = Namespace("experiment", description="Operations with BNs")
 
 
-@api.route("/<int:case_id>/<bn_params>")
+@api.route("/<string:owner>/<string:name>/<int:case_id>/<bn_params>")
 class BNResource(Resource):
     """
     BN Resource
@@ -19,12 +22,16 @@ class BNResource(Resource):
     # @api.doc(responses={200: 'success'})
     # @api.doc(responses={400: 'failed'})
     # @responds(api=api, schema=BNResSchema)
-    def get(self, case_id, bn_params):
-        """Get trained BN"""
+    def get(self, owner, name, case_id, bn_params):
+        """Train BN and sample from it, then save it to db"""
         try:
             bn_params = ast.literal_eval(bn_params)
         except Exception:
             raise BadRequest("Malformed string")
+
+        #TODO: must be an email
+        if not find_user_by_email(email=owner):
+            raise NotFound("User not found.")
 
         if "params" in bn_params.keys():
             if "init_nodes" in bn_params["params"].keys():
@@ -42,14 +49,29 @@ class BNResource(Resource):
         if not (case_id == 0 or case_id == 1):
             return {"message": "Not a case_id"}, 404
 
-        from .services import BN_learning
+        if len(find_bns_by_user(owner=owner)) == 7:
+            return {"message": "Limit of BNs has been reached."}, 406
 
         if case_id == 0:
             directory = r"data/hack_processed_with_rf.csv"
         elif case_id == 1:
             directory = r"data/vk_data.csv"
-        return BN_learning(directory=directory,
-                           parameters=bn_params)
+
+        result, status_code = BN_learning(directory=directory, parameters=bn_params)
+
+        if status_code != 200:
+            return result
+
+        network, sample = result["network"], result["sample"]
+
+        network["nodes"] = str(network["nodes"])
+        network["edges"] = str(network["edges"])
+        network["descriptor"] = str(network["descriptor"])
+
+        sample_to_db = {"sample": sample, "owner": owner, "net_name": name}
+        network_to_db = network | {"owner": owner, "name": name}
+        update_db(network=network_to_db, sample=sample_to_db)
+        return {"network": network}
 
 
 @api.route("/get_root_nodes/<int:case_id>")
@@ -58,7 +80,6 @@ class RootNodesResource(Resource):
         """
         Return all possible root nodes
         """
-        from .services import get_header_from_csv
         if case_id == 0:
             directory = r"data/hack_processed_with_rf.csv"
         elif case_id == 1:

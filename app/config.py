@@ -17,7 +17,7 @@ class DevelopmentConfig(BaseConfig):
     # SECRET_KEY = os.getenv("DEV_SECRET_KEY", "Dev secret")
     SECRET_KEY = "3d6f45a5fc12445dbac2f59c3b6c7cb1"
     DEBUG = True
-    TESTING = True
+    # TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///{0}/app-dev.sqlite".format(basedir)
     # MONGO_URI = os.getenv("MONGO_CONN_STRING")
 
@@ -26,7 +26,7 @@ class TestingConfig(BaseConfig):
     CONFIG_NAME = "test"
     SECRET_KEY = os.getenv("TEST_SECRET_KEY", "Test")
     DEBUG = True
-    TESTING = True
+    # TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///{0}/app-test.sqlite".format(basedir)
     # MONGO_URI = 'mongodb://localhost:27017'
 

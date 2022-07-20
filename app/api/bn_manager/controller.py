@@ -1,56 +1,16 @@
-from flask import request
 import ast
-from flask_accepts import accepts, responds
+import json
+
+from flask_accepts import responds
 from flask_restx import Namespace, Resource
 from werkzeug.exceptions import BadRequest, NotFound
 
-from .schema import BNSchema, BNGetNamesSchema
-from .service import update_db, find_bns_by_user, remove_bn, find_bns_by_owner_and_name, find_bn_names_by_user
+from .schema import BNGetNamesSchema, SampleSchema
+from .service import find_bns_by_user, remove_bn, find_bns_by_owner_and_name, find_bn_names_by_user, find_sample, \
+    remove_samples
 from app.api.auth.service import find_user_by_email
 
 api = Namespace("BN_manager", description="BN store operations")
-
-
-@api.route("/assign_BN")
-class BNManagerResource(Resource):
-    @accepts(schema=BNSchema, api=api)
-    # @api.doc(responses={401: 'No User found'})
-    def put(self):
-        """Assign new BN to user."""
-        obtained = request.get_json()
-
-        obtained["nodes"] = str(obtained["nodes"])
-        obtained["edges"] = str(obtained["edges"])
-        obtained["descriptor"] = str(obtained["descriptor"])
-
-        if "params" in obtained.keys():
-            if "init_nodes" in obtained["params"].keys():
-                obtained["params"]["init_nodes"] = str(obtained["params"]["init_nodes"])
-            if "init_edges" in obtained["params"].keys():
-                obtained["params"]["init_edges"] = str(obtained["params"]["init_edges"])
-            # params unpacking
-            for k, v in obtained['params'].items():
-                if k != "remove_init_edges":
-                    val = str(v)
-                else:
-                    val = v
-                obtained[k] = str(val)
-            del obtained["params"]
-        # for value in ast.literal_eval(obtained["edges"]):
-        #     if not any([type(i) == str for i in value]):
-        #         raise BadRequest("TypeError in edges")
-        #
-        # if not any([type(i) == str for i in ast.literal_eval(obtained["nodes"])]):
-        #     raise BadRequest("TypeError in nodes")
-
-        # if not find_user_by_token(token=obtained["token"]):
-        #     raise BadRequest("No user (token) was found")
-
-        if len(find_bns_by_user(owner=obtained["owner"])) == 7:
-            return {"message": "Limit of BNs has been reached."}, 406
-
-        update_db(data=obtained)
-        return {"message": "Success"}
 
 
 @api.route("/get_BN/<string:owner>")
@@ -96,10 +56,35 @@ class BNManagerResource(Resource):
     # @accepts(api=api)
     # @api.doc(responses={401: 'No User found'})
     def delete(self, owner, name):
-        """Delete bn"""
+        """Delete bn and her samples"""
 
         if not find_bns_by_owner_and_name(owner=owner, name=name):
             raise NotFound("No net was found")
 
         remove_bn(owner=owner, name=name)
+        remove_samples(owner=owner, name=name)
         return {"message": "Success"}
+
+
+@api.route("/get_sample/<string:owner>/<string:name>/<string:node>")
+class BNManagerResource(Resource):
+    @responds(schema=SampleSchema, api=api)
+    # @api.doc(responses={401: 'No User found'})
+    def get(self, owner, name, node):
+        """Get real and sampled data"""
+        if not find_sample(owner=owner, name=name):
+            raise NotFound("Sample does not exist.")
+
+        sample = find_sample(owner=owner, name=name)[0]
+        node_sample = sample[node]
+
+        if "Gross" in sample.keys():
+            case_id = 0
+        else:
+            case_id = 1
+        location = f"data/{case_id}_sample.json"
+
+        with open(location) as f:
+            real_node = json.load(f)[node]
+
+        return {"sampled_data": node_sample, "real_data": real_node}
