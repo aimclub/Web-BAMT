@@ -1,9 +1,17 @@
+import { bn_managerAPI } from "../../../API/bn_manager/bn_managerAPI";
+import AlertError from "../../../components/UI/alerts/error/AlertError";
 import { useAppSelector } from "../../../hooks/redux";
 import SampleNetworkItem from "./item/SampleNetworkItem";
 import scss from "./sampleNetwork.module.scss";
 
 const SampleNetwork = () => {
+  const { user } = useAppSelector((state) => state.auth);
   const { networks } = useAppSelector((state) => state.sample);
+
+  const { isError } = bn_managerAPI.useGetBNDataQuery({
+    owner: user?.email || "",
+  });
+
   return (
     <section>
       <h2 className={scss.title}>Network</h2>
@@ -14,6 +22,7 @@ const SampleNetwork = () => {
           </li>
         ))}
       </ul>
+      <AlertError isError={isError} message={"Error on get networks"} />
     </section>
   );
 };

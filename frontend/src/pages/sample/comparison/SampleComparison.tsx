@@ -1,11 +1,9 @@
 import { useEffect } from "react";
-import ReactApexChart from "react-apexcharts";
 import { bn_managerAPI } from "../../../API/bn_manager/bn_managerAPI";
 
-// import { nodeRealData } from "../../../assets/data/sample";
 import AlertError from "../../../components/UI/alerts/error/AlertError";
 import { useAppSelector } from "../../../hooks/redux";
-import { configChart } from "../../../utils/configChart";
+import SampleComparisonChart from "./chart/SampleComparisonChart";
 import scss from "./sampleComparison.module.scss";
 
 const SampleСomparison = () => {
@@ -14,12 +12,9 @@ const SampleСomparison = () => {
 
   const [getSample, { isError, data }] =
     bn_managerAPI.useLazyGetSampleDataQuery({
-      // TODO: select parameters
-      // pollingInterval: Infinity,
-      // refetchOnReconnect: false,
-      // refetchOnFocus: false,
+      refetchOnReconnect: false,
+      refetchOnFocus: false,
     });
-  const { model } = useAppSelector((state) => state.model);
 
   useEffect(() => {
     if (selectedNode)
@@ -37,27 +32,15 @@ const SampleСomparison = () => {
         {data ? (
           <>
             <article className={scss.chart}>
-              <ReactApexChart
-                {...configChart({
-                  data: data.real_data,
-                  node_name: selectedNode?.node_name,
-                  title: "Real Data",
-                  model,
-                })}
-                type="bar"
-                height={400}
+              <SampleComparisonChart
+                data={data.real_data}
+                title={"Real Data"}
               />
             </article>
             <article className={scss.chart}>
-              <ReactApexChart
-                {...configChart({
-                  data: data.sampled_data,
-                  node_name: selectedNode?.node_name,
-                  title: "Sampled Data",
-                  model,
-                })}
-                type="bar"
-                height={400}
+              <SampleComparisonChart
+                data={data.sampled_data}
+                title={"Sampled Data"}
               />
             </article>
           </>
