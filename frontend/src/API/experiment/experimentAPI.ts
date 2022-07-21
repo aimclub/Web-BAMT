@@ -19,9 +19,12 @@ export const experimentAPI = createApi({
         url: `get_root_nodes/${case_id}`,
       }),
     }),
-    train: build.mutation<ITrainBN, { case_id: number; bn_params: IBNParams }>({
-      query: ({ case_id, bn_params }) => ({
-        url: `${case_id}/${formatBNParamsToString(bn_params)}`,
+    train: build.mutation<
+      ITrainBN,
+      { owner: string; name: string; case_id: number; bn_params: IBNParams }
+    >({
+      query: ({ owner, name, case_id, bn_params }) => ({
+        url: `${owner}/${name}/${case_id}/${formatBNParamsToString(bn_params)}`,
         method: "GET",
       }),
     }),
