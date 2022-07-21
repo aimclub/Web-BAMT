@@ -10,7 +10,7 @@ import {
   setSelectedNetwork,
 } from "../../../../redux/sample/sample";
 import { INetwork } from "../../../../types/experiment";
-import { colorizeGraph } from "../../../../utils/graph";
+import { colorizeNetwork } from "../../../../utils/graph";
 import SampleNetworkItemData from "./graph/SampleNetworkItemGraph";
 import scss from "./sampleNetworkItem.module.scss";
 
@@ -20,7 +20,7 @@ const SampleNetworkItem: FC<{ index: number; network: INetwork | "" }> = ({
 }) => {
   const { user } = useAppSelector((state) => state.auth);
   const { model } = useAppSelector((state) => state.model);
-  const { networks } = useAppSelector((state) => state.sample);
+  const { networks, selectedNode } = useAppSelector((state) => state.sample);
 
   const { data } = bn_managerAPI.useGetBNDataQuery({
     owner: user?.email || "",
@@ -71,16 +71,7 @@ const SampleNetworkItem: FC<{ index: number; network: INetwork | "" }> = ({
         {network ? (
           <SampleNetworkItemData
             index={index}
-            data={colorizeGraph(
-              {
-                nodes: network.nodes.map((n) => ({ id: n })),
-                links: network.edges.map(([source, target]) => ({
-                  source,
-                  target,
-                })),
-              },
-              model
-            )}
+            data={colorizeNetwork(network, model, selectedNode)}
             onNodeClick={handleNodeClick}
           />
         ) : (

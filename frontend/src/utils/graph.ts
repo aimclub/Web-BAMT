@@ -1,11 +1,41 @@
 import { INetwork } from "../types/experiment";
 import { IGraph, ILink } from "../types/graph";
 import { ModelType } from "../types/model";
+import { getModelColor } from "./theme";
 
 export const formatNetwork = (data: INetwork): IGraph => ({
   nodes: data.nodes.map((name) => ({ id: name })),
   links: data.edges.map(([source, target]) => ({ source, target })),
 });
+
+export const colorizeNetwork = (
+  network: INetwork,
+  model?: ModelType,
+  activeNode?: { network_name: string; node_name: string }
+): IGraph => {
+  return {
+    nodes: network.nodes.map((name) => {
+      const nodeProps: { [key in "color" | "fontColor"]: undefined | string } =
+        {
+          color: undefined,
+          fontColor: undefined,
+        };
+      if (model) {
+        if (
+          activeNode?.network_name === network.name &&
+          activeNode.node_name === name
+        ) {
+          const color = getModelColor(model);
+          nodeProps.color = color;
+          nodeProps.fontColor = color;
+        }
+      }
+      return { id: name, ...nodeProps };
+    }),
+    links: network.edges.map(([source, target]) => ({ source, target })),
+  };
+};
+
 export const colorizeGraph = ({ nodes, links }: IGraph, model?: ModelType) => {
   const color =
     model === "social"

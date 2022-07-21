@@ -1,18 +1,20 @@
 import { ApexOptions } from "apexcharts";
+import { IComparisonData } from "../types/experiment";
 
 import { ModelType } from "../types/model";
 import { getModelColor } from "./theme";
 
 export const configChart: (props: {
-  data: number[];
+  data: IComparisonData;
+  node_name?: string;
   title?: string;
   model?: ModelType;
 }) => {
   series: ApexAxisChartSeries;
   options: ApexOptions;
-} = ({ data, title, model }) => {
+} = ({ data, node_name, title, model }) => {
   return {
-    series: [{ data }],
+    series: [{ data: data.data, name: "" }],
     options: {
       chart: { toolbar: { show: false } },
       colors: [model ? getModelColor(model) : "#ccc"],
@@ -20,6 +22,7 @@ export const configChart: (props: {
       dataLabels: {
         enabled: true,
         offsetY: -25,
+        formatter: (v) => Math.round(100 * +v) / 100,
         style: {
           fontFamily: "'Roboto'",
           fontWeight: 400,
@@ -28,9 +31,9 @@ export const configChart: (props: {
         },
       },
       xaxis: {
-        categories: data,
+        categories: data.xvals,
         title: {
-          text: "Tectonic regime",
+          text: node_name,
           style: {
             fontFamily: "'Roboto'",
             fontWeight: 300,
@@ -38,7 +41,15 @@ export const configChart: (props: {
             color: "#000000",
           },
         },
-        labels: { show: false },
+        labels: {
+          show: true,
+          style: {
+            fontFamily: "'Roboto'",
+            fontWeight: 300,
+            fontSize: "10px",
+            color: "#000000",
+          },
+        },
       },
       yaxis: {
         title: {
@@ -52,7 +63,7 @@ export const configChart: (props: {
         },
         labels: { show: false },
       },
-      tooltip: { enabled: false },
+      tooltip: { enabled: true, marker: { show: false } },
       title: {
         text: title,
         align: "right",

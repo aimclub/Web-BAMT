@@ -41,3 +41,13 @@ export interface IBNData {
 export interface ITrainBN {
   network: INetwork;
 }
+
+export interface IComparisonData {
+  data: number[];
+  xvals: string[];
+}
+
+export interface ISample {
+  real_data: IComparisonData;
+  sampled_data: IComparisonData;
+}
