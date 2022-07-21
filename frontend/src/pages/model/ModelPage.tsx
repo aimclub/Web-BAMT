@@ -1,4 +1,4 @@
-import StarIcon from "@mui/icons-material/Star";
+// import StarIcon from "@mui/icons-material/Star";
 import { TRANSITION_TIMEOUT } from "../../utils/constants";
 import ModelInfo from "./info/ModelInfo";
 import scss from "./modelPage.module.scss";
@@ -15,11 +15,11 @@ const ModelPage = () => {
           <div className={scss.graph}>
             <div className={scss.head}>
               <h2 className={scss.title}>Example: Model structure</h2>
-              <div className={scss.score}>
+              {/* <div className={scss.score}>
                 <StarIcon fontSize="small" />
                 <span>Score</span>
                 <span className={scss.value}>150</span>
-              </div>
+              </div> */}
             </div>
             <ModelGraph />
           </div>

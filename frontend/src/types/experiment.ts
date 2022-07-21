@@ -14,6 +14,7 @@ export interface IBNParams {
 }
 
 export interface INetwork extends IBNParams {
+  name: string;
   descriptor: {
     Period: string;
     Netpay: string;
@@ -34,7 +35,7 @@ export interface IBNDataNames {
 }
 
 export interface IBNData {
-  networks: INetwork[];
+  networks: { [key: string]: INetwork };
 }
 
 export interface ITrainBN {

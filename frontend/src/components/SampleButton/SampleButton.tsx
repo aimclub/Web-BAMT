@@ -13,7 +13,7 @@ const SampleButton = () => {
   return (
     <ModelButton
       to={`/${model}/${AppRoutes.SAMPLE}`}
-      disabled={!(data && data?.networks.length > 1)}
+      disabled={!(data && data?.networks.length > 0)}
     >
       sample
     </ModelButton>

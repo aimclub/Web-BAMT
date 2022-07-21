@@ -21,7 +21,16 @@ export const bn_managerAPI = createApi({
       }),
       providesTags: ["Networks"],
     }),
-    removeBN: build.mutation<null, { owner: string; name: string }>({
+    getSampleData: build.query<
+      unknown,
+      { owner: string; name: string; node: string }
+    >({
+      query: ({ owner, name, node }) => ({
+        url: `get_sample/${owner}/${name}/${node}`,
+      }),
+      providesTags: ["Networks"],
+    }),
+    removeBN: build.mutation<unknown, { owner: string; name: string }>({
       query: ({ owner, name }) => ({
         url: `remove/${owner}/${name}`,
         method: "DELETE",
