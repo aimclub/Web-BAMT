@@ -1,3 +1,5 @@
+import json
+
 import numpy as np
 from bamt.Preprocessors import Preprocessor
 import pandas as pd
@@ -31,6 +33,15 @@ def BN_learning(directory, parameters):
                 return {"message": "Malformed init_edges"}, 400
         bn.add_edges(data=discretized_data, optimizer='HC', scoring_function=(parameters["scoring_function"],),
                      params=parameters["params"])
+
+        # params unpacking
+        for k, v in parameters['params'].items():
+            if k != "remove_init_edges":
+                val = str(v)
+            else:
+                val = v
+            parameters[k] = str(val)
+        del parameters["params"]
     else:
         bn.add_edges(data=discretized_data, optimizer='HC', scoring_function=(parameters["scoring_function"],))
 
@@ -42,23 +53,33 @@ def BN_learning(directory, parameters):
 
     # ======= Sample preparations ============
 
-    def get_data_for_barplot(data):
+    def get_data_for_barplot(data, bins):
         numeric_values = []
         category_vals = []
 
-        bins = np.histogram_bin_edges(data)
-        end = len(bins)
+        # bins = np.histogram_bin_edges(data)
+        # end = len(bins)
 
-        for i1, i2 in zip(range(0, end), range(1, end)):
+        # for i1, i2 in zip(range(0, end), range(1, end)):
+        #     n = 0
+        #     for value in data:
+        #         if bins[i1] <= value <= bins[i2]:
+        #             n += 1
+        #         else:
+        #             continue
+        #
+        #     numeric_values.append(n / len(data))
+        #     category_vals.append(f"{round(bins[i1], 2)} - {round(bins[i2], 2)}")
+        for bin_min, bin_max in bins:
             n = 0
             for value in data:
-                if bins[i1] <= value <= bins[i2]:
+                if bin_min <= value <= bin_max:
                     n += 1
                 else:
                     continue
 
             numeric_values.append(n / len(data))
-            category_vals.append(f"{round(bins[i1], 2)} - {round(bins[i2], 2)}")
+            category_vals.append(f"{round(bin_min, 2)} - {round(bin_max, 2)}")
         return {"data": numeric_values, "xvals": category_vals}
 
     sample = bn.sample(442, as_df=False)
@@ -75,24 +96,26 @@ def BN_learning(directory, parameters):
             else:
                 new[node].append(val)
 
+    if list(new.keys())[0] in ['Tectonic regime', 'Period', 'Lithology', 'Structural setting', 'Gross', 'Netpay',
+                               'Porosity', 'Permeability', 'Depth']:
+        loc = "data/0_sample.json"
+    else:
+        loc = "data/1_sample.json"
+
+    with open(loc) as f:
+        full_sample = json.load(f)
+
     new_to_plot = {}
     for node, val_list in new.items():
         if not val_list:
             continue
         elif isinstance(val_list[0], float):
-            new_to_plot[node] = get_data_for_barplot(val_list)
+            bins_raw = full_sample[node]["xvals"]
+            bins = [list(map(lambda x: float(x), i.split(" - "))) for i in bins_raw]
+            new_to_plot[node] = get_data_for_barplot(val_list, bins=bins)
         else:
             freq = pd.value_counts(val_list, normalize=True)
             new_to_plot[node] = {"data": freq.values.tolist(), "xvals": freq.index.tolist()}
-
-    # params unpacking
-    for k, v in parameters['params'].items():
-        if k != "remove_init_edges":
-            val = str(v)
-        else:
-            val = v
-        parameters[k] = str(val)
-    del parameters["params"]
 
     return {"network": parameters | {"edges": bn.edges, "nodes": bn.nodes_names, "descriptor": type_descriptor},
             "sample": new_to_plot}, 200

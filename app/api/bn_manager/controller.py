@@ -7,7 +7,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 from .schema import BNGetNamesSchema, SampleSchema
 from .service import find_bns_by_user, remove_bn, find_bns_by_owner_and_name, find_bn_names_by_user, find_sample, \
-    remove_samples
+    remove_samples, find_edges_by_owner_and_nets_names
 from app.api.auth.service import find_user_by_email
 
 api = Namespace("BN_manager", description="BN store operations")
@@ -88,3 +88,16 @@ class BNManagerResource(Resource):
             real_node = json.load(f)[node]
 
         return {"sampled_data": node_sample, "real_data": real_node}
+
+
+# @api.route("/get_equal_edges/<string:owner>/<names>")
+# class BNManagerResource(Resource):
+#     # @accepts(api=api)
+#     # @api.doc(responses={401: 'No User found'})
+#     def get(self, owner, names):
+#         """get equal edges"""
+#         names = ast.literal_eval(names)
+#         out = find_edges_by_owner_and_nets_names(owner=owner, names=names)
+#         edges1 = ast.literal_eval(out[0][0])
+#         edges2 = ast.literal_eval(out[1][0])
+#         return {"message": "Suc"}
