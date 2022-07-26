@@ -22,7 +22,7 @@ module.exports = {
           chunks: "all",
         },
         mui: {
-          test: /[\\/]node_modules[\\/](@mui)[\\/]/,
+          test: /[\\/]node_modules[\\/](@mui|mui)[\\/]/,
           name: "mui",
           chunks: "all",
         },
