@@ -30,6 +30,7 @@
     "react-redux": "^7.2.8",
     "react-router-dom": "^6.3.0",
     "redux-persist": "^6.0.0",
+    "roboto-sass": "^1.0.4",
     "sass": "^1.54.0",
     "yup": "^0.32.11"
   },

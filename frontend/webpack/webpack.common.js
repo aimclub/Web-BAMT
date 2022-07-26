@@ -1,8 +1,8 @@
 const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
-const BundleAnalyzerPlugin =
-  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+// const BundleAnalyzerPlugin =
+//   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = {
   entry: path.resolve(__dirname, "..", "./src/index.tsx"),
@@ -52,6 +52,6 @@ module.exports = {
       template: path.resolve(__dirname, "..", "./public/index.html"),
       favicon: path.resolve(__dirname, "..", "./public/favicon.ico"),
     }),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
   ],
 };
