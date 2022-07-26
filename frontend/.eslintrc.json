@@ -27,6 +27,7 @@
       "version": "detect"
     }
   },
+  "ignorePatterns": ["**/webpack/*.js"],
   "rules": {
     "react/react-in-jsx-scope": "off",
     "react-hooks/rules-of-hooks": "error",
