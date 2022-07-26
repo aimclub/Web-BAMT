@@ -1,4 +1,4 @@
-import { team } from "../../types/team";
+import team from "../../assets/data/team.json";
 import TeamMember from "./member/TeamMember";
 import scss from "./teamPage.module.scss";
 

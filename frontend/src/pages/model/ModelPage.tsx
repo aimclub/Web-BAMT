@@ -1,5 +1,5 @@
 // import StarIcon from "@mui/icons-material/Star";
-import { TRANSITION_TIMEOUT } from "../../utils/constants";
+import { TRANSITION_TIMEOUT } from "../../assets/utils/constants";
 import ModelInfo from "./info/ModelInfo";
 import scss from "./modelPage.module.scss";
 import ModelGraph from "./graph/ModelGraph";

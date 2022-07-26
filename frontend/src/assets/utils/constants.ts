@@ -1,4 +1,4 @@
-import { ModelType } from "../types/model";
+import { ModelType } from "../../types/model";
 
 export const TRANSITION_TIMEOUT = 500;
 

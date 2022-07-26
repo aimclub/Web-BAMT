@@ -2,7 +2,7 @@
 import Fade from "@mui/material/Fade";
 import SampleButton from "../../../components/SampleButton/SampleButton";
 import { useAppSelector } from "../../../hooks/redux";
-import { TRANSITION_TIMEOUT } from "../../../utils/constants";
+import { TRANSITION_TIMEOUT } from "../../../assets/utils/constants";
 import scss from "./experimentBox.module.scss";
 import ExperimentBoxGraph from "./graph/ExperimentBoxGraph";
 

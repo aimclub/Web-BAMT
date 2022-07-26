@@ -3,7 +3,7 @@ import { useMatch, useParams } from "react-router-dom";
 
 import { cl } from "../../../assets/utils/classnames";
 import { AppRoutes } from "../../../router/routes";
-import { formatStringToCapitalize } from "../../../utils/format";
+import { formatStringToCapitalize } from "../../../assets/utils/format";
 
 import scss from "./headerLine.module.scss";
 

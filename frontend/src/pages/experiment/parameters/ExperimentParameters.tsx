@@ -7,7 +7,7 @@ import AlertError from "../../../components/UI/alerts/error/AlertError";
 import { useAppSelector } from "../../../hooks/redux";
 import { useCheckDisplayName } from "../../../hooks/useCheckDisplayName";
 import { useTrainModel } from "../../../hooks/useTrainModel";
-import { CASES_IDS, TRANSITION_TIMEOUT } from "../../../utils/constants";
+import { CASES_IDS, TRANSITION_TIMEOUT } from "../../../assets/utils/constants";
 
 const ExperimentParameters = () => {
   const case_id = useAppSelector((state) => CASES_IDS[state.model.model]);

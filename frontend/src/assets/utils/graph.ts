@@ -1,6 +1,6 @@
-import { INetwork } from "../types/experiment";
-import { IGraph, ILink } from "../types/graph";
-import { ModelType } from "../types/model";
+import { INetwork } from "../../types/experiment";
+import { IGraph, ILink } from "../../types/graph";
+import { ModelType } from "../../types/model";
 import { getModelColor } from "./theme";
 
 export const formatNetwork = (data: INetwork): IGraph => ({

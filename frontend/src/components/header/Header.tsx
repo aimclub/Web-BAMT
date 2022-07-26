@@ -1,4 +1,4 @@
-import AppLogo from "../AppLogo/AppLogo";
+import Logo from "../logo/Logo";
 import scss from "./header.module.scss";
 import HeaderLine from "./line/HeaderLine";
 import HeaderMenu from "./menu/HeaderMenu";
@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <header>
       <div className={scss.head}>
-        <AppLogo />
+        <Logo />
         <HeaderNav />
         <HeaderMenu />
       </div>

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { ITeamMember } from "../../../utils/team";
+import { ITeamMember } from "../../../types/team";
 import scss from "./teamMember.module.scss";
 
 const TeamMember: FC<{ member: ITeamMember }> = ({ member }) => {

@@ -1,7 +1,7 @@
 import Paper from "@mui/material/Paper";
 import { Link, Outlet, useMatch } from "react-router-dom";
 
-import AppLogo from "../../components/AppLogo/AppLogo";
+import Logo from "../../components/logo/Logo";
 // import { useAppDispatch } from "../../hooks/redux";
 // import { login } from "../../redux/auth/auth";
 import { AppRoutes } from "../../router/routes";
@@ -18,7 +18,7 @@ const SigninPage = () => {
 
   return (
     <main className={scss.root}>
-      <AppLogo className={scss.logo} />
+      <Logo className={scss.logo} />
       <Paper className={scss.paper} elevation={3} component="section">
         <Outlet />
         <div className={scss.foot}>

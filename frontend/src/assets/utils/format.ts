@@ -1,4 +1,4 @@
-import { IBNParams } from "../types/experiment";
+import { IBNParams } from "../../types/experiment";
 
 export const formatStringToCapitalize = (str: string | undefined) =>
   str ? str[0].toUpperCase() + str.slice(1).toLowerCase() : "";

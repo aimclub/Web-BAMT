@@ -1,6 +1,6 @@
 import { createTheme } from "@mui/material/styles";
 
-import { ModelType } from "../types/model";
+import { ModelType } from "../../types/model";
 
 export const getModelColor = (model: ModelType) =>
   model === "social" ? "#16A7E0" : "#86BD24";

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { formatBNParamsToString } from "../../utils/format";
+import { formatBNParamsToString } from "../../assets/utils/format";
 
 import { BASE_URL, URLendpoints } from "../baseURL";
 import {

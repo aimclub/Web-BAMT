@@ -10,7 +10,7 @@ import {
   setSelectedNetwork,
 } from "../../../../redux/sample/sample";
 import { INetwork } from "../../../../types/experiment";
-import { colorizeNetwork } from "../../../../utils/graph";
+import { colorizeNetwork } from "../../../../assets/utils/graph";
 import SampleNetworkItemData from "./graph/SampleNetworkItemGraph";
 import scss from "./sampleNetworkItem.module.scss";
 

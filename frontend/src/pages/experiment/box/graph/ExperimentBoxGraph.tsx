@@ -12,8 +12,8 @@ import {
   recolourNode,
   setSourceNode,
 } from "../../../../redux/experiment/experiment";
-import { colorizeGraph } from "../../../../utils/graph";
-import { getModelColor } from "../../../../utils/theme";
+import { colorizeGraph } from "../../../../assets/utils/graph";
+import { getModelColor } from "../../../../assets/utils/theme";
 
 const myConfig: Partial<GraphConfiguration<GraphNode, GraphLink>> = {
   staticGraphWithDragAndDrop: true,

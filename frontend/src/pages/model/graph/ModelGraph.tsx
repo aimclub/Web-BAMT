@@ -6,11 +6,11 @@ import {
 } from "react-d3-graph";
 import scss from "./modelGraph.module.scss";
 
-import { colorizeGraph, formatNetwork } from "../../../utils/graph";
+import { colorizeGraph, formatNetwork } from "../../../assets/utils/graph";
 import { useAppSelector } from "../../../hooks/redux";
 import { memo } from "react";
 import { exampleAPI } from "../../../API/example/exampleAPI";
-import { CASES_IDS } from "../../../utils/constants";
+import { CASES_IDS } from "../../../assets/utils/constants";
 import AlertError from "../../../components/UI/alerts/error/AlertError";
 
 const myConfig: Partial<GraphConfiguration<GraphNode, GraphLink>> = {

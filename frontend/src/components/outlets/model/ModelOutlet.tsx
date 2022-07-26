@@ -4,7 +4,7 @@ import { Navigate, Outlet, useParams } from "react-router-dom";
 import { useAppDispatch } from "../../../hooks/redux";
 import { setModel } from "../../../redux/model/model";
 import { AppRoutes } from "../../../router/routes";
-import { createModelTheme } from "../../../utils/theme";
+import { createModelTheme } from "../../../assets/utils/theme";
 import TimeProgreess from "../../UI/progress/TimeProgress.tsx/TimeProgress";
 
 const ModelOutlet = () => {

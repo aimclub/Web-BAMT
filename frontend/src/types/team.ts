@@ -1,24 +1,5 @@
-import { ITeamMember } from "../utils/team";
-
-export const team: ITeamMember[] = [
-  {
-    fullName: "Ирина Деева",
-    role: "руководитель группы",
-    link: "https://github.com/Anaxagor",
-  },
-  {
-    fullName: "Роман Нетроголов",
-    role: "разработчик backend части веб-сервиса",
-    link: "https://github.com/Roman223",
-  },
-  {
-    fullName: "Анна Бубнова",
-    role: "разработчик алгоритмической составляющей веб-сервиса",
-    link: "https://github.com/Rimmary",
-  },
-  {
-    fullName: "Юрий Каминский",
-    role: "разработчик алгоритмической составляющей веб-сервиса",
-    link: "https://github.com/jrzkaminski",
-  },
-];
+export interface ITeamMember {
+  fullName: string;
+  role: string;
+  link: string;
+}

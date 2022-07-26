@@ -3,7 +3,7 @@ import { FC, memo } from "react";
 import ReactApexChart from "react-apexcharts";
 import { useAppSelector } from "../../../../hooks/redux";
 import { IComparisonData } from "../../../../types/experiment";
-import { getModelColor } from "../../../../utils/theme";
+import { getModelColor } from "../../../../assets/utils/theme";
 
 const SampleComparisonChart: FC<{
   data: IComparisonData;

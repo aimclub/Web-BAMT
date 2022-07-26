@@ -7,8 +7,8 @@ import {
   setLinks,
   setNodes,
 } from "../../../redux/experiment/experiment";
-import { SCORE_FUNCTION_VALUES } from "../../../utils/constants";
-import { createNodes } from "../../../utils/graph";
+import { SCORE_FUNCTION_VALUES } from "../../../assets/utils/constants";
+import { createNodes } from "../../../assets/utils/graph";
 import ModelButton from "../../UI/buttons/ModelButton/ModelButton";
 import AppMultiSelect from "../../UI/selects/AppMultiSelect/AppMultiSelect";
 import AppSelect from "../../UI/selects/AppSelect/AppSelect";
