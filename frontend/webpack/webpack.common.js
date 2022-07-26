@@ -1,8 +1,8 @@
 const path = require("path");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
-// const BundleAnalyzerPlugin =
-//   require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = {
   entry: path.resolve(__dirname, "..", "./src/index.tsx"),
@@ -28,21 +28,42 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.s[ac]ss$/,
+        test: /\.s[ac]ss$/i,
         use: [
           "style-loader",
           "@teamsupercell/typings-for-css-modules-loader",
-          "css-loader",
-          "sass-loader",
+          {
+            loader: "css-loader",
+            options: {
+              modules: true,
+            },
+          },
+          {
+            loader: "resolve-url-loader",
+            options: {
+              sourceMap: true,
+              debug: true,
+              silent: true,
+            },
+          },
+          {
+            loader: "sass-loader",
+            options: {
+              sourceMap: true,
+            },
+          },
         ],
       },
       {
-        test: /\.(?:ico|gif|png|jpg|jpeg)$/,
+        test: /\.(ico|jpg|jpeg|png|gif|svg)(\?.*)?$/,
         type: "asset/resource",
       },
       {
-        test: /\.(woff(2)?|eof|ttf|otf|svg)$/,
-        type: "asset/inline",
+        test: /\.(eot|otf|webp|ttf|woff|woff2)(\?.*)?$/,
+        type: "asset/resource",
+        generator: {
+          filename: "fonts/[hash][ext][query]",
+        },
       },
     ],
   },
@@ -52,6 +73,6 @@ module.exports = {
       template: path.resolve(__dirname, "..", "./public/index.html"),
       favicon: path.resolve(__dirname, "..", "./public/favicon.ico"),
     }),
-    // new BundleAnalyzerPlugin(),
+    new BundleAnalyzerPlugin(),
   ],
 };

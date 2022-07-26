@@ -36,14 +36,14 @@ module.exports = {
           name: "d3",
           chunks: "all",
         },
-        roboto: {
-          test: /[\\/]node_modules[\\/](@fontsource)[\\/](roboto)[\\/]/,
-          name: "fonts/roboto",
+        redux: {
+          test: /[\\/]node_modules[\\/](@reduxjs)[\\/]/,
+          name: "redux",
           chunks: "all",
         },
-        open_sans: {
-          test: /[\\/]node_modules[\\/](@fontsource)[\\/](open-sans)[\\/]/,
-          name: "fonts/open-sans",
+        formik: {
+          test: /[\\/]node_modules[\\/](formik)[\\/]/,
+          name: "redux",
           chunks: "all",
         },
       },
