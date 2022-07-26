@@ -1,5 +1,5 @@
-import cl from "classnames";
 import { Link } from "react-router-dom";
+import { cl } from "../../assets/utils/classnames";
 import { goToPage } from "../../router/routes";
 import scss from "./homePage.module.scss";
 

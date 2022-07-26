@@ -1,6 +1,7 @@
 import WorkIcon from "@mui/icons-material/Work";
-import cl from "classnames";
 import { useMatch, useParams } from "react-router-dom";
+
+import { cl } from "../../../assets/utils/classnames";
 import { AppRoutes } from "../../../router/routes";
 import { formatStringToCapitalize } from "../../../utils/format";
 

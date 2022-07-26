@@ -1,7 +1,7 @@
 import { useTheme, styled } from "@mui/material/styles";
 import { FC } from "react";
+import { cl } from "../../../../assets/utils/classnames";
 import scss from "./timeProgress.module.scss";
-import cl from "classnames";
 
 const SpinerSlice = styled("div")(({ theme }) => ({
   "&:after": {

@@ -1,6 +1,6 @@
-import cl from "classnames";
 import { FC } from "react";
 import { Link } from "react-router-dom";
+import { cl } from "../../assets/utils/classnames";
 import { AppRoutes } from "../../router/routes";
 import scss from "./appLogo.module.scss";
 

@@ -1,6 +1,6 @@
-import cl from "classnames";
 import { FC } from "react";
 import { NavLink } from "react-router-dom";
+import { cl } from "../../../assets/utils/classnames";
 import { AppRoutes } from "../../../router/routes";
 import scss from "./headerNav.module.scss";
 

@@ -1,5 +1,5 @@
-import cl from "classnames";
 import { FC } from "react";
+import { cl } from "../../../../assets/utils/classnames";
 import scss from "./loader.module.scss";
 
 const Loader: FC<{ className?: string; visible?: boolean }> = ({

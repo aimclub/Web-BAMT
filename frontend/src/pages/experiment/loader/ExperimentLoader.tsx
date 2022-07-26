@@ -1,5 +1,5 @@
-import cl from "classnames";
 import { useEffect, useState } from "react";
+import { cl } from "../../../assets/utils/classnames";
 import AppLinerProggress from "../../../components/UI/progress/AppLinerProggress/AppLinerProggress";
 import TimeProgreess from "../../../components/UI/progress/TimeProgress.tsx/TimeProgress";
 

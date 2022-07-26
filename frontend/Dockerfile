@@ -7,7 +7,8 @@ FROM datamall-frontend-base:1.0 as react_build
 COPY package.json /home/ddp/front/package.json
 WORKDIR /home/ddp/front
 
-RUN npm install --legacy-peer-deps
+# RUN npm install --legacy-peer-deps
+RUN yarn
 COPY . /home/ddp/front
 RUN yarn build
 

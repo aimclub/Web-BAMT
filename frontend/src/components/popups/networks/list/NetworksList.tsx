@@ -1,6 +1,5 @@
-import cl from "classnames";
-
 import { bn_managerAPI } from "../../../../API/bn_manager/bn_managerAPI";
+import { cl } from "../../../../assets/utils/classnames";
 import { useAppSelector } from "../../../../hooks/redux";
 import NetworksListItem from "./item/NetworksListItem";
 import scss from "./networksList.module.scss";

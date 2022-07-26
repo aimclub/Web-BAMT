@@ -1,5 +1,5 @@
-import cl from "classnames";
 import { FC } from "react";
+import { cl } from "../../../assets/utils/classnames";
 import PopupModal from "../common/modal/PopupModal";
 import scss from "./messagePopup.module.scss";
 
