@@ -3,8 +3,8 @@ import { useFormik } from "formik";
 import { useState } from "react";
 
 import { authAPI } from "../../../API/auth/authAPI";
-import SubmitSignin from "../../../components/UI/buttons/SubmitSignin/SubmitSignin";
 import TextFieldSignin from "../../../components/UI/textfields/TextFieldSignin/TextFieldSignin";
+import SignButton from "../../UI/buttons/sign/SignButton";
 import scss from "./authForms.module.scss";
 import { validationSchemaTwoPassword } from "./authFormsValidator";
 
@@ -87,9 +87,9 @@ const SignupForm = () => {
           : isSuccess && "Registration sucess!!!"}
       </p>
 
-      <SubmitSignin type="submit" disabled={isLoading || isLoadingLogin}>
+      <SignButton type="submit" disabled={isLoading || isLoadingLogin}>
         <span>{isLoading || isLoadingLogin ? "Loading..." : "Sign Up"}</span>
-      </SubmitSignin>
+      </SignButton>
     </form>
   );
 };

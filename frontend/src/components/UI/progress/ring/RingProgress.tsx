@@ -1,8 +1,8 @@
 import { FC } from "react";
 import { cl } from "../../../../assets/utils/classnames";
-import scss from "./loader.module.scss";
+import scss from "./ringProgress.module.scss";
 
-const Loader: FC<{ className?: string; visible?: boolean }> = ({
+const RingProgress: FC<{ className?: string; visible?: boolean }> = ({
   className,
   visible = true,
 }) => {
@@ -16,4 +16,4 @@ const Loader: FC<{ className?: string; visible?: boolean }> = ({
   );
 };
 
-export default Loader;
+export default RingProgress;

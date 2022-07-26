@@ -1,7 +1,7 @@
 import { bn_managerAPI } from "../../API/bn_manager/bn_managerAPI";
 import { useAppSelector } from "../../hooks/redux";
 import { AppRoutes } from "../../router/routes";
-import ModelButton from "../UI/buttons/ModelButton/ModelButton";
+import AppButton from "../UI/buttons/app/AppButton";
 
 const SampleButton = () => {
   const { model } = useAppSelector((state) => state.model);
@@ -11,12 +11,12 @@ const SampleButton = () => {
   });
 
   return (
-    <ModelButton
+    <AppButton
       to={`/${model}/${AppRoutes.SAMPLE}`}
       disabled={!(data && data?.networks.length > 0)}
     >
       sample
-    </ModelButton>
+    </AppButton>
   );
 };
 

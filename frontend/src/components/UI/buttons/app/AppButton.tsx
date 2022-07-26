@@ -6,7 +6,7 @@ interface IProps extends ButtonProps {
   to?: string;
 }
 
-const ModelButton = styled((props: IProps) => {
+const AppButton = styled((props: IProps) => {
   const linkProps = props.to
     ? { LinkComponent: Link, to: props.to }
     : undefined;
@@ -41,4 +41,4 @@ const ModelButton = styled((props: IProps) => {
   },
 }));
 
-export default ModelButton;
+export default AppButton;

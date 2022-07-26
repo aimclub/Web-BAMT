@@ -1,7 +1,7 @@
 import { useTheme, styled } from "@mui/material/styles";
 import { FC } from "react";
 import { cl } from "../../../../assets/utils/classnames";
-import scss from "./timeProgress.module.scss";
+import scss from "./spinnerProgress.module.scss";
 
 const SpinerSlice = styled("div")(({ theme }) => ({
   "&:after": {
@@ -9,7 +9,7 @@ const SpinerSlice = styled("div")(({ theme }) => ({
   },
 }));
 
-const TimeProgreess: FC<{ time?: string; className?: string }> = ({
+const SpinnerProgress: FC<{ time?: string; className?: string }> = ({
   time,
   className,
 }) => {
@@ -35,4 +35,4 @@ const TimeProgreess: FC<{ time?: string; className?: string }> = ({
     </div>
   );
 };
-export default TimeProgreess;
+export default SpinnerProgress;

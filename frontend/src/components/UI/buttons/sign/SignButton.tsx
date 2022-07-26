@@ -1,7 +1,7 @@
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 
-const SubmitSignin = styled(Button)({
+const SignButton = styled(Button)({
   minHeight: 48,
   width: "100%",
 
@@ -25,4 +25,4 @@ const SubmitSignin = styled(Button)({
   },
 });
 
-export default SubmitSignin;
+export default SignButton;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { cl } from "../../../assets/utils/classnames";
-import AppLinerProggress from "../../../components/UI/progress/AppLinerProggress/AppLinerProggress";
-import TimeProgreess from "../../../components/UI/progress/TimeProgress.tsx/TimeProgress";
+import LinearProgress from "../../../components/UI/progress/linear/LineProgress";
+import SpinnerProgress from "../../../components/UI/progress/spinner/SpinnerProgress";
 
 import { useAppSelector } from "../../../hooks/redux";
 import scss from "./experimentLoader.module.scss";
@@ -29,9 +29,9 @@ const ExperimentLoader = () => {
   return (
     <div className={cl(scss.root, isTraining && scss.root_visible)}>
       <div className={scss.info}>
-        <TimeProgreess time={`${seconds}`} />
+        <SpinnerProgress time={`${seconds}`} />
         <p className={scss.msg}>Model is Training. Please wait</p>
-        <AppLinerProggress />
+        <LinearProgress />
       </div>
     </div>
   );

@@ -1,5 +1,7 @@
 import { useFormik } from "formik";
 import { FC, useEffect, useState } from "react";
+import { SCORE_FUNCTION_VALUES } from "../../../assets/utils/constants";
+import { createNodes } from "../../../assets/utils/graph";
 import { useAppDispatch } from "../../../hooks/redux";
 import { useTrainDisabled } from "../../../hooks/useTrainDisabled";
 import {
@@ -7,9 +9,7 @@ import {
   setLinks,
   setNodes,
 } from "../../../redux/experiment/experiment";
-import { SCORE_FUNCTION_VALUES } from "../../../assets/utils/constants";
-import { createNodes } from "../../../assets/utils/graph";
-import ModelButton from "../../UI/buttons/ModelButton/ModelButton";
+import AppButton from "../../UI/buttons/app/AppButton";
 import AppMultiSelect from "../../UI/selects/AppMultiSelect/AppMultiSelect";
 import AppSelect from "../../UI/selects/AppSelect/AppSelect";
 import TextFieldUnderline from "../../UI/textfields/TextFieldUnderline/TextFieldUnderline";
@@ -108,19 +108,19 @@ const ExperimentForm: FC<{
         </div>
       </div>
 
-      <ModelButton
+      <AppButton
         type="submit"
         form="model_parameters"
         disabled={!formik.isValid}
       >
         Start edges
-      </ModelButton>
-      <ModelButton
+      </AppButton>
+      <AppButton
         disabled={trainDisabled}
         onClick={() => onTrain(formik.values)}
       >
         Train the model
-      </ModelButton>
+      </AppButton>
     </form>
   );
 };

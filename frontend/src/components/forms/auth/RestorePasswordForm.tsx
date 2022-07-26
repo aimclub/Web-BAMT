@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 
-import SubmitSignin from "../../../components/UI/buttons/SubmitSignin/SubmitSignin";
 import TextFieldSignin from "../../../components/UI/textfields/TextFieldSignin/TextFieldSignin";
+import SignButton from "../../UI/buttons/sign/SignButton";
 import scss from "./authForms.module.scss";
 
 const RestorePasswordForm = () => {
@@ -56,9 +56,9 @@ const RestorePasswordForm = () => {
 
       <p className={scss.error}>{"Sorry: not available"}</p>
 
-      <SubmitSignin type="submit" disabled>
+      <SignButton type="submit" disabled>
         <span>Restore</span>
-      </SubmitSignin>
+      </SignButton>
     </form>
   );
 };

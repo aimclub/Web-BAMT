@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import geolocicalData from "../../../assets/data/geolocical.json";
 import socailData from "../../../assets/data/social.json";
 
-import ModelButton from "../../../components/UI/buttons/ModelButton/ModelButton";
 import { useAppSelector } from "../../../hooks/redux";
 import { TRANSITION_TIMEOUT } from "../../../assets/utils/constants";
 import { AppRoutes } from "../../../router/routes";
 import ModelInfoItem from "./item/ModelInfoItem";
 import scss from "./modelInfo.module.scss";
 import Fade from "@mui/material/Fade";
+import AppButton from "../../../components/UI/buttons/app/AppButton";
 
 const ModelInfo = () => {
   const { model } = useAppSelector((s) => s.model);
@@ -39,7 +39,7 @@ const ModelInfo = () => {
           </p>
         </div>
         <Link to={AppRoutes.EXPERIMENT} className={scss.link}>
-          <ModelButton>new experiment</ModelButton>
+          <AppButton>new experiment</AppButton>
         </Link>
       </section>
     </Fade>
