@@ -33,7 +33,7 @@ const myConfig: Partial<GraphConfiguration<GraphNode, GraphLink>> = {
     highlightFontSize: 16,
     highlightFontWeight: "lighter",
     labelPosition: "top",
-    labelProperty: "name",
+    // labelProperty: "name",
     mouseCursor: "pointer",
     renderLabel: true,
     size: 2000,

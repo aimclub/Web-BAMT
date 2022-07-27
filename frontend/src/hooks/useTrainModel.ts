@@ -13,7 +13,7 @@ export const useTrainModel = ({
   checkDisplayName: (name: string) => boolean;
 }) => {
   const { user } = useAppSelector((state) => state.auth);
-  const { nodes, links } = useAppSelector((state) => state.experiment);
+  const { links } = useAppSelector((state) => state.experiment);
   const [result, setResult] = useState<string | undefined>(undefined);
   const dispatch = useAppDispatch();
   const [trainModel, { isError, isSuccess }] = experimentAPI.useTrainMutation();
@@ -35,7 +35,7 @@ export const useTrainModel = ({
             use_mixture: Boolean(values.mixture),
             has_logit: Boolean(values.logit),
             params: {
-              init_nodes: nodes.map((n) => n.id),
+              init_nodes: values.root_nodes,
               init_edges: links.map(({ source, target }) => [source, target]),
             },
           },
@@ -50,7 +50,6 @@ export const useTrainModel = ({
       checkDisplayName,
       dispatch,
       links,
-      nodes,
       refetch,
       trainModel,
       user?.email,

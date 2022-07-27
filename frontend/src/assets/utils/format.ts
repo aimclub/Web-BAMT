@@ -14,7 +14,11 @@ export const formatBNParamsToString = (bn_params: IBNParams) => {
     bn_params.has_logit
   )},"params":{"init_nodes":${JSON.stringify(
     bn_params.params.init_nodes
-  )},"init_edges":[(${bn_params.params.init_edges
-    .map(([s, t]) => `%22${s}%22,%22${t}%22`)
-    .join("),(")})]}}`;
+  )},"init_edges":[${
+    bn_params.params.init_edges.length > 0
+      ? `(${bn_params.params.init_edges
+          .map(([s, t]) => `%22${s}%22,%22${t}%22`)
+          .join("),(")})`
+      : ""
+  }]}}`;
 };

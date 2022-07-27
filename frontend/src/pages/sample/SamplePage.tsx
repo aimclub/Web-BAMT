@@ -9,7 +9,9 @@ const SamplePage = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(clearSample());
+    return () => {
+      dispatch(clearSample());
+    };
   }, [dispatch]);
 
   return (
@@ -24,7 +26,7 @@ const SamplePage = () => {
           Равные друг другу линии связи выделены цветом.
         </p>
         <p className={scss.text}>
-          Нажатие на узел связи отобразит параметры сети
+          Нажатие на узел связи распределение значений в узлах.
         </p>
       </section>
       <SampleNetwork />

@@ -1,9 +1,8 @@
 import { useFormik } from "formik";
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect } from "react";
 import { SCORE_FUNCTION_VALUES } from "../../../assets/utils/constants";
 import { createNodes } from "../../../assets/utils/graph";
 import { useAppDispatch } from "../../../hooks/redux";
-import { useTrainDisabled } from "../../../hooks/useTrainDisabled";
 import {
   cleanExperiment,
   setLinks,
@@ -31,26 +30,22 @@ const ExperimentForm: FC<{
   rootNodes: string[];
 }> = ({ onTrain, rootNodes }) => {
   const dispatch = useAppDispatch();
-  const [parametersCorrect, setParametersCorrect] = useState(false);
-  const { trainDisabled } = useTrainDisabled(parametersCorrect);
 
   const formik = useFormik({
     initialValues,
     initialErrors: { logit: "" },
     validationSchema,
-    onSubmit: (values) => {
-      dispatch(setNodes(createNodes(values.root_nodes)));
-      dispatch(setLinks([]));
-    },
+    onSubmit: onTrain,
   });
 
   useEffect(() => {
     dispatch(cleanExperiment());
   }, [formik.values.root_nodes, dispatch]);
 
-  useEffect(() => {
-    setParametersCorrect(formik.isValid && !!formik.values.display_name);
-  }, [formik.isValid, formik.values.display_name]);
+  const handleStartEdges = useCallback(() => {
+    dispatch(setNodes(createNodes(rootNodes)));
+    dispatch(setLinks([]));
+  }, [dispatch, rootNodes]);
 
   return (
     <form
@@ -108,17 +103,10 @@ const ExperimentForm: FC<{
         </div>
       </div>
 
-      <AppButton
-        type="submit"
-        form="model_parameters"
-        disabled={!formik.isValid}
-      >
+      <AppButton onClick={handleStartEdges} disabled={!(rootNodes.length > 0)}>
         Start edges
       </AppButton>
-      <AppButton
-        disabled={trainDisabled}
-        onClick={() => onTrain(formik.values)}
-      >
+      <AppButton type="submit" disabled={!formik.isValid}>
         Train the model
       </AppButton>
     </form>
