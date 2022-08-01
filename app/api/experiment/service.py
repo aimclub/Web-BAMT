@@ -14,7 +14,7 @@ def BN_learning(directory, parameters):
     h = pd.read_csv(directory, index_col=0)
 
     encoder = pp.LabelEncoder()
-    discretizer = pp.KBinsDiscretizer(n_bins=5, encode='ordinal', strategy='uniform')
+    discretizer = pp.KBinsDiscretizer(n_bins=5, encode='ordinal', strategy='quantile')
 
     p = Preprocessor([('encoder', encoder), ('discretizer', discretizer)])
 
