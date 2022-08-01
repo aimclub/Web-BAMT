@@ -1,6 +1,7 @@
 declare namespace ExperimentBoxModuleScssNamespace {
   export interface IExperimentBoxModuleScss {
     box: string;
+    btns: string;
     graph: string;
     head: string;
     info: string;

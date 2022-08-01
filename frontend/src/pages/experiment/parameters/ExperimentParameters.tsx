@@ -1,13 +1,14 @@
 import Fade from "@mui/material/Fade";
+
 import { bn_managerAPI } from "../../../API/bn_manager/bn_managerAPI";
 import { experimentAPI } from "../../../API/experiment/experimentAPI";
+import { CASES_IDS, TRANSITION_TIMEOUT } from "../../../assets/utils/constants";
 import ExperimentForm from "../../../components/forms/experiment/ExperimentForm";
 import MessagePopup from "../../../components/popups/message/MessagePopup";
 import AlertError from "../../../components/UI/alerts/error/AlertError";
 import { useAppSelector } from "../../../hooks/redux";
 import { useCheckDisplayName } from "../../../hooks/useCheckDisplayName";
 import { useTrainModel } from "../../../hooks/useTrainModel";
-import { CASES_IDS, TRANSITION_TIMEOUT } from "../../../assets/utils/constants";
 
 const ExperimentParameters = () => {
   const case_id = useAppSelector((state) => CASES_IDS[state.model.model]);

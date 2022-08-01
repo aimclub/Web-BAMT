@@ -10,7 +10,7 @@
 }
 
 .info {
-  padding: 0 0 0 20px;
+  padding: 0 0 10px 20px;
 
   .title {
     margin: 0 0 18px;
@@ -35,5 +35,11 @@
     letter-spacing: 0.15px;
 
     color: #263238;
+  }
+
+  .btns {
+    display: grid;
+    grid-template-columns: 5fr 7fr;
+    gap: 4px;
   }
 }
