@@ -3,7 +3,7 @@
   "description": "Данный граф построен с использованием различных методов обарботки ресурсов полученных из социальных сетей.",
   "logit": false,
   "mixture": false,
-  "score_function": "BICGMM",
+  "score_function": "K2",
   "root_nodes": [
     "Tectonic regime",
     "Period",
