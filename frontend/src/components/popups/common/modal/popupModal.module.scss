@@ -1,0 +1,44 @@
+.root {
+  min-width: 300px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+}
+
+.content {
+  padding: 12px;
+
+  border: 1px solid #dadada;
+
+  flex: 1;
+}
+
+.head {
+  margin: 0;
+  padding: 6px 16px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.15px;
+
+  border-radius: 4px;
+  color: #000000;
+  background: #f1f3f5;
+}
+
+.button {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.25px;
+  text-transform: uppercase;
+
+  color: #000000;
+}

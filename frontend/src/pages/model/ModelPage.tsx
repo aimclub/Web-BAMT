@@ -1,12 +1,10 @@
-import StarIcon from "@mui/icons-material/Star";
-import ModelButton from "../../components/UI/buttons/ModelButton/ModelButton";
-import { TRANSITION_TIMEOUT } from "../../utils/constants";
+// import StarIcon from "@mui/icons-material/Star";
+import { TRANSITION_TIMEOUT } from "../../assets/utils/constants";
 import ModelInfo from "./info/ModelInfo";
 import scss from "./modelPage.module.scss";
 import ModelGraph from "./graph/ModelGraph";
-import { Link } from "react-router-dom";
-import { AppRoutes } from "../../router/routes";
 import Fade from "@mui/material/Fade";
+import SampleButton from "../../components/SampleButton/SampleButton";
 
 const ModelPage = () => {
   return (
@@ -17,17 +15,15 @@ const ModelPage = () => {
           <div className={scss.graph}>
             <div className={scss.head}>
               <h2 className={scss.title}>Example: Model structure</h2>
-              <div className={scss.score}>
+              {/* <div className={scss.score}>
                 <StarIcon fontSize="small" />
                 <span>Score</span>
                 <span className={scss.value}>150</span>
-              </div>
+              </div> */}
             </div>
             <ModelGraph />
           </div>
-          <Link to={AppRoutes.SAMPLE} className={scss.link}>
-            <ModelButton>sample</ModelButton>
-          </Link>
+          <SampleButton />
         </section>
       </Fade>
     </div>

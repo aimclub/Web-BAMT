@@ -1,8 +1,9 @@
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectProps } from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
-import cl from "classnames";
+
 import { FC } from "react";
+import { cl } from "../../../../assets/utils/classnames";
 
 import scss from "./appSelect.module.scss";
 

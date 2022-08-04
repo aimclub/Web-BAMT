@@ -1,42 +1,57 @@
-import ReactApexChart from "react-apexcharts";
+import { useEffect } from "react";
+import { bn_managerAPI } from "../../../API/bn_manager/bn_managerAPI";
 
-import { nodeRealData } from "../../../assets/data/sample";
+import AlertError from "../../../components/UI/alerts/error/AlertError";
 import { useAppSelector } from "../../../hooks/redux";
-import { configChart } from "../../../utils/configChart";
+import SampleComparisonChart from "./chart/SampleComparisonChart";
 import scss from "./sampleComparison.module.scss";
 
 const SampleСomparison = () => {
+  const { user } = useAppSelector((state) => state.auth);
   const { selectedNode } = useAppSelector((state) => state.sample);
-  const { model } = useAppSelector((state) => state.model);
 
-  const realData = configChart({
-    data: nodeRealData,
-    title: "Real Data",
-    model,
-  });
-  const sampledData = configChart({
-    data: nodeRealData,
-    title: "Sampled Data",
-    model,
-  });
+  const [getSample, { isError, data }] =
+    bn_managerAPI.useLazyGetSampleDataQuery({
+      refetchOnReconnect: false,
+      refetchOnFocus: false,
+    });
+
+  useEffect(() => {
+    if (selectedNode)
+      getSample({
+        owner: user?.email || "",
+        name: selectedNode.network_name,
+        node: selectedNode.node_name,
+      });
+  }, [selectedNode, getSample, user?.email]);
 
   return (
     <section className={scss.root}>
       <h2 className={scss.title}>Сomparison window</h2>
       <div className={scss.content}>
-        {selectedNode ? (
+        {data ? (
           <>
             <article className={scss.chart}>
-              <ReactApexChart {...realData} type="bar" height={300} />
+              <SampleComparisonChart
+                data={data.real_data}
+                title={"Real Data"}
+              />
             </article>
             <article className={scss.chart}>
-              <ReactApexChart {...sampledData} type="bar" height={300} />
+              <SampleComparisonChart
+                data={data.sampled_data}
+                title={"Sampled Data"}
+              />
             </article>
           </>
         ) : (
           <p className={scss.infо}>Select node</p>
         )}
       </div>
+      <AlertError
+        isError={isError}
+        message={`Error on get sample for ${selectedNode?.node_name} node from ${selectedNode?.network_name} network`}
+      />
     </section>
   );
 };

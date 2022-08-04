@@ -3,7 +3,6 @@ declare namespace HeaderLineModuleScssNamespace {
     icon: string;
     line: string;
     line_geological: string;
-    line_home: string;
     line_social: string;
     title: string;
   }

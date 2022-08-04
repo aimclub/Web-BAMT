@@ -5,21 +5,20 @@ import RestorePasswordForm from "../components/forms/auth/RestorePasswordForm";
 import SigninForm from "../components/forms/auth/SigninForm";
 import SignupForm from "../components/forms/auth/SignupForm";
 import { useAppSelector } from "../hooks/redux";
-
-import ExperimentPage from "../pages/experiment/ExperimentPage";
-import ModelPage from "../pages/model/ModelPage";
-import SamplePage from "../pages/sample/SamplePage";
 import { AppRoutes } from "./routes";
 
-// TODO: add lazy loading for pages
 const SigninPage = lazy(() => import("../pages/signin/SigninPage"));
 
 const AppOutlet = lazy(() => import("../components/outlets/app/AppOutlet"));
 const HomePage = lazy(() => import("../pages/home/HomePage"));
+const TeamPage = lazy(() => import("../pages/team/TeamPage"));
 
 const ModelOutlet = lazy(
   () => import("../components/outlets/model/ModelOutlet")
 );
+const ExperimentPage = lazy(() => import("../pages/experiment/ExperimentPage"));
+const ModelPage = lazy(() => import("../pages/model/ModelPage"));
+const SamplePage = lazy(() => import("../pages/sample/SamplePage"));
 
 const publicRoutes: RouteObject[] = [
   {
@@ -41,6 +40,7 @@ const privateRoutes: RouteObject[] = [
     element: <AppOutlet />,
     children: [
       { index: true, element: <HomePage /> },
+      { path: AppRoutes.TEAM, element: <TeamPage /> },
       {
         path: AppRoutes.MODEL,
         element: <ModelOutlet />,

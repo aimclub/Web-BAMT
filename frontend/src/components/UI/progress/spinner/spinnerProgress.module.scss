@@ -1,0 +1,104 @@
+@keyframes lds-spinner {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.root {
+  position: relative;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer {
+  margin: 0;
+  font-family: "Open Sans";
+  font-style: "normal";
+  font-weight: 400;
+  font-size: 56px;
+  line-height: 100%;
+  letter-spacing: 0.15px;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.spiner {
+  display: inline-block;
+  position: relative;
+  width: 150px;
+  height: 150px;
+
+  div {
+    transform-origin: 75px 75px;
+    animation: lds-spinner 1.2s linear infinite;
+  }
+
+  div:after {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 2px;
+    left: 72px;
+    width: 8px;
+    height: 18px;
+    border-radius: 20%;
+  }
+
+  div:nth-child(1) {
+    transform: rotate(0deg);
+    animation-delay: -1.1s;
+  }
+  div:nth-child(2) {
+    transform: rotate(30deg);
+    animation-delay: -1s;
+  }
+  div:nth-child(3) {
+    transform: rotate(60deg);
+    animation-delay: -0.9s;
+  }
+  div:nth-child(4) {
+    transform: rotate(90deg);
+    animation-delay: -0.8s;
+  }
+  div:nth-child(5) {
+    transform: rotate(120deg);
+    animation-delay: -0.7s;
+  }
+  div:nth-child(6) {
+    transform: rotate(150deg);
+    animation-delay: -0.6s;
+  }
+  div:nth-child(7) {
+    transform: rotate(180deg);
+    animation-delay: -0.5s;
+  }
+  div:nth-child(8) {
+    transform: rotate(210deg);
+    animation-delay: -0.4s;
+  }
+  div:nth-child(9) {
+    transform: rotate(240deg);
+    animation-delay: -0.3s;
+  }
+  div:nth-child(10) {
+    transform: rotate(270deg);
+    animation-delay: -0.2s;
+  }
+  div:nth-child(11) {
+    transform: rotate(300deg);
+    animation-delay: -0.1s;
+  }
+  div:nth-child(12) {
+    transform: rotate(330deg);
+    animation-delay: 0s;
+  }
+}

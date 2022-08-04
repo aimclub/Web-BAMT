@@ -1,7 +1,7 @@
 import { useFormik } from "formik";
 import { authAPI } from "../../../API/auth/authAPI";
-import SubmitSignin from "../../../components/UI/buttons/SubmitSignin/SubmitSignin";
 import TextFieldSignin from "../../../components/UI/textfields/TextFieldSignin/TextFieldSignin";
+import SignButton from "../../UI/buttons/sign/SignButton";
 import scss from "./authForms.module.scss";
 import { validationSchema } from "./authFormsValidator";
 
@@ -39,9 +39,9 @@ const SigninForm = () => {
 
       <p className={scss.error}>{isError && "Authorization error!"}</p>
 
-      <SubmitSignin type="submit" disabled={isLoading}>
+      <SignButton type="submit" disabled={isLoading}>
         <span>{isLoading ? "Loading..." : "Sign In"}</span>
-      </SubmitSignin>
+      </SignButton>
     </form>
   );
 };

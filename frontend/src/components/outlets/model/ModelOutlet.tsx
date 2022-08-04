@@ -1,9 +1,11 @@
 import { ThemeProvider } from "@mui/material/styles";
+import { Suspense } from "react";
 import { Navigate, Outlet, useParams } from "react-router-dom";
+import { createModelTheme } from "../../../assets/utils/theme";
 import { useAppDispatch } from "../../../hooks/redux";
 import { setModel } from "../../../redux/model/model";
 import { AppRoutes } from "../../../router/routes";
-import { createModelTheme } from "../../../utils/theme";
+import SpinnerProgress from "../../UI/progress/spinner/SpinnerProgress";
 
 const ModelOutlet = () => {
   const { model } = useParams();
@@ -15,7 +17,9 @@ const ModelOutlet = () => {
     dispatch(setModel(model));
     return (
       <ThemeProvider theme={createModelTheme(model)}>
-        <Outlet />
+        <Suspense fallback={<SpinnerProgress />}>
+          <Outlet />
+        </Suspense>
       </ThemeProvider>
     );
   }

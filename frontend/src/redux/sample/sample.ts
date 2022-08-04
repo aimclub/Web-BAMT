@@ -1,16 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IGraph } from "../../types/graph";
-import { ModelType } from "../../types/model";
-import { getModelColor } from "../../utils/theme";
+import { INetwork } from "../../types/experiment";
 
 const initialState = {
-  networks: ["", "", ""] as [string, string, string],
-  graphs: [undefined, undefined, undefined] as [
-    IGraph | undefined,
-    IGraph | undefined,
-    IGraph | undefined
-  ],
-  selectedNode: null as { id: string; index: number } | null,
+  networks: Array(3).fill("") as (INetwork | "")[],
+  selectedNode: undefined as
+    | {
+        network_name: string;
+        node_name: string;
+      }
+    | undefined,
 };
 
 export const modelSlice = createSlice({
@@ -18,50 +16,21 @@ export const modelSlice = createSlice({
   initialState,
   reducers: {
     clearSample: () => initialState,
-    setNetwork: (
+    setSelectedNetwork: (
       state,
-      action: PayloadAction<{ network: string; index: number }>
+      action: PayloadAction<{ network: INetwork | ""; index: number }>
     ) => {
       state.networks[action.payload.index] = action.payload.network;
     },
-    setNetworkGraph: (
-      state,
-      action: PayloadAction<{ data: IGraph | undefined; index: number }>
-    ) => {
-      state.graphs[action.payload.index] = action.payload.data;
-    },
     selectNetworkNode: (
       state,
-      action: PayloadAction<{ id: string; index: number; model: ModelType }>
+      action: PayloadAction<{ network_name: string; node_name: string }>
     ) => {
-      const { id, index, model } = action.payload;
-
-      if (state.selectedNode && state.selectedNode?.index !== index) {
-        const ind = state.selectedNode.index;
-
-        //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        state.graphs[ind]!.nodes = state.graphs[ind]!.nodes.map((n) => ({
-          ...n,
-          color: undefined,
-          fontColor: undefined,
-        }));
-      }
-
       state.selectedNode = action.payload;
-      //eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      state.graphs[index]!.nodes = state.graphs[index]!.nodes.map((n) =>
-        n.id === id
-          ? {
-              ...n,
-              color: getModelColor(model),
-              fontColor: getModelColor(model),
-            }
-          : { ...n, color: undefined, fontColor: undefined }
-      );
     },
   },
 });
 
-export const { clearSample, setNetwork, setNetworkGraph, selectNetworkNode } =
+export const { clearSample, selectNetworkNode, setSelectedNetwork } =
   modelSlice.actions;
 export default modelSlice.reducer;

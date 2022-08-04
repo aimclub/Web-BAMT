@@ -1,15 +1,20 @@
 import { useEffect } from "react";
-import { useAppDispatch } from "../../hooks/redux";
+import AppButton from "../../components/UI/buttons/app/AppButton";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { clearSample } from "../../redux/sample/sample";
+import { goToPage } from "../../router/routes";
 import SampleСomparison from "./comparison/SampleComparison";
 import SampleNetwork from "./network/SampleNetwork";
 import scss from "./samplePage.module.scss";
 
 const SamplePage = () => {
   const dispatch = useAppDispatch();
+  const { model } = useAppSelector((state) => state.model);
 
   useEffect(() => {
-    dispatch(clearSample());
+    return () => {
+      dispatch(clearSample());
+    };
   }, [dispatch]);
 
   return (
@@ -24,8 +29,16 @@ const SamplePage = () => {
           Равные друг другу линии связи выделены цветом.
         </p>
         <p className={scss.text}>
-          Нажатие на узел связи отобразит параметры сети
+          Нажатие на узел связи распределение значений в узлах.
         </p>
+        <div className={scss.btns}>
+          <AppButton to={goToPage.example(model)} variant="outlined">
+            example
+          </AppButton>
+          <AppButton to={goToPage.experiment(model)} variant="outlined">
+            experiment
+          </AppButton>
+        </div>
       </section>
       <SampleNetwork />
       <SampleСomparison />

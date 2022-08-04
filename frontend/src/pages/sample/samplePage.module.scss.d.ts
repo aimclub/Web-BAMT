@@ -1,5 +1,6 @@
 declare namespace SamplePageModuleScssNamespace {
   export interface ISamplePageModuleScss {
+    btns: string;
     info: string;
     root: string;
     text: string;

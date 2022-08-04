@@ -8,7 +8,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import App from "./App";
 import "./index.scss";
 import { setupstore } from "./redux/store";
-import { theme } from "./utils/theme";
+import { theme } from "./assets/utils/theme";
 
 const store = setupstore();
 const persistor = persistStore(store);

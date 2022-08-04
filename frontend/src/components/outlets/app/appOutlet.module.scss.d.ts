@@ -1,5 +1,6 @@
 declare namespace AppOutletModuleScssNamespace {
   export interface IAppOutletModuleScss {
+    loader: string;
     main: string;
     root: string;
   }

@@ -6,9 +6,12 @@ import {
 } from "react-d3-graph";
 import scss from "./modelGraph.module.scss";
 
-import graphData from "../../../assets/data/graph.json";
-import { colorizeGraph } from "../../../utils/graph";
+import { colorizeGraph, formatNetwork } from "../../../assets/utils/graph";
 import { useAppSelector } from "../../../hooks/redux";
+import { memo } from "react";
+import { exampleAPI } from "../../../API/example/exampleAPI";
+import { CASES_IDS } from "../../../assets/utils/constants";
+import AlertError from "../../../components/UI/alerts/error/AlertError";
 
 const myConfig: Partial<GraphConfiguration<GraphNode, GraphLink>> = {
   directed: true,
@@ -24,7 +27,7 @@ const myConfig: Partial<GraphConfiguration<GraphNode, GraphLink>> = {
     fontColor: "#000000",
     fontSize: 16,
     fontWeight: "lighter",
-    labelPosition: "center",
+    labelPosition: "top",
     mouseCursor: "pointer",
     renderLabel: true,
     size: 2000,
@@ -46,16 +49,23 @@ const myConfig: Partial<GraphConfiguration<GraphNode, GraphLink>> = {
 const ModelGraph = () => {
   // console.log("render model graph");
   const { model } = useAppSelector((state) => state.model);
+  const case_id = CASES_IDS[model];
+  const { data, isError } = exampleAPI.useGetExampleQuery({ case_id });
 
   return (
-    <div className={scss.root}>
-      <Graph
-        id="graph-id"
-        data={colorizeGraph(graphData, model)}
-        config={myConfig}
-      />
-    </div>
+    <>
+      <div className={scss.root}>
+        {data && (
+          <Graph
+            id="graph-id"
+            data={colorizeGraph(formatNetwork(data), model)}
+            config={myConfig}
+          />
+        )}
+      </div>
+      <AlertError isError={isError} message={"Error on get example data"} />
+    </>
   );
 };
 
-export default ModelGraph;
+export default memo(ModelGraph);

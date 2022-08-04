@@ -1,8 +1,10 @@
 import WorkIcon from "@mui/icons-material/Work";
-import cl from "classnames";
 import { useMatch, useParams } from "react-router-dom";
+
+import { cl } from "../../../assets/utils/classnames";
 import { AppRoutes } from "../../../router/routes";
-import { stringToCapitalize } from "../../../utils/string";
+import { formatStringToCapitalize } from "../../../assets/utils/format";
+
 import scss from "./headerLine.module.scss";
 
 const HeaderLine = () => {
@@ -10,22 +12,21 @@ const HeaderLine = () => {
   const isCorrectModel = model === "social" || model === "geological";
   const isExperiment = useMatch(`${AppRoutes.MODEL}/${AppRoutes.EXPERIMENT}`);
   const isSample = useMatch(`${AppRoutes.MODEL}/${AppRoutes.SAMPLE}`);
+  const isTeam = useMatch(AppRoutes.TEAM);
 
   return (
-    <div
-      className={cl(
-        scss.line,
-        isCorrectModel ? scss[`line_${model}`] : scss.line_home
-      )}
-    >
+    <div className={cl(scss.line, isCorrectModel && scss[`line_${model}`])}>
       <div className={scss.icon}>
         <WorkIcon sx={{ height: "14px" }} />
       </div>
+
       <h1 className={scss.title}>
         {isCorrectModel
-          ? `${stringToCapitalize(model)} Dataset - ${
+          ? `${formatStringToCapitalize(model)} Dataset - ${
               isExperiment ? "Experiment" : isSample ? "Sample" : "Example"
             }`
+          : isTeam
+          ? "Team"
           : "Showcase"}
       </h1>
     </div>

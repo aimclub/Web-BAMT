@@ -54,20 +54,20 @@
   overflow-y: auto;
 
   scrollbar-width: thin;
-  scrollbar-color: #263238 #a6acb0;
+  scrollbar-color: #c4c4c4 #f7f8f8;
 
   &::-webkit-scrollbar {
-    width: 2px;
+    width: 4px;
   }
 
   &::-webkit-scrollbar-track {
     border-radius: 6px;
-    background-color: #a6acb0;
+    background-color: #f7f8f8;
   }
 
   &::-webkit-scrollbar-thumb {
     border-radius: 6px;
-    background-color: #263238;
+    background-color: #c4c4c4;
   }
 }
 
