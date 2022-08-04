@@ -29,15 +29,8 @@ class BNResource(Resource):
         except Exception:
             raise BadRequest("Malformed string")
 
-        #TODO: must be an email
         if not find_user_by_email(email=owner):
             raise NotFound("User not found.")
-
-        if "params" in bn_params.keys():
-            if "init_nodes" in bn_params["params"].keys():
-                bn_params["params"]["init_nodes"] = tuple(bn_params["params"]["init_nodes"])
-            if "init_edges" in bn_params["params"].keys():
-                bn_params["params"]["init_edges"] = tuple(bn_params["params"]["init_edges"])
 
         if not "use_mixture" in bn_params.keys():
             return {"message": "use_mixture not defined"}, 400

@@ -9,7 +9,7 @@ from app import db
 class BayessianNet(db.Model):
     __tablename__ = 'nets'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, unique=True)
+    name = db.Column(db.String)
     owner = db.Column(db.String)
 
     edges = db.Column(db.String, nullable=False)
