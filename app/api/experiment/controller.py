@@ -5,7 +5,11 @@ from flask_restx import Namespace, Resource
 from .service import BN_learning, update_db, get_header_from_csv
 from app.api.bn_manager.service import find_bns_by_user
 from app.api.auth.service import find_user_by_email
+
+from . import STORAGE
 import ast
+import os
+import shutil
 
 from werkzeug.exceptions import BadRequest, NotFound
 
@@ -50,6 +54,7 @@ class BNResource(Resource):
         elif case_id == 1:
             directory = r"data/vk_data.csv"
 
+        # ======= Main =========
         result, status_code = BN_learning(directory=directory, parameters=bn_params)
 
         if status_code != 200:
@@ -65,6 +70,10 @@ class BNResource(Resource):
         sample_to_db = {"sample": sample, "owner": owner, "net_name": name}
 
         update_db(network=network_to_db, sample=sample_to_db)
+
+        # =========== Clearing memory ==============
+        shutil.rmtree(os.path.join(STORAGE, owner))
+
         return {"network": network}
 
 

@@ -34,7 +34,7 @@ def BN_learning(directory, parameters):
         bn.add_edges(data=discretized_data, optimizer='HC', scoring_function=(parameters["scoring_function"],),
                      params=parameters["params"])
 
-        # params unpacking
+        # params unpacking for saving into db
         for k, v in parameters['params'].items():
             if k != "remove_init_edges":
                 val = str(v)
