@@ -55,7 +55,7 @@ class BNResource(Resource):
             directory = r"data/vk_data.csv"
 
         # ======= Main =========
-        result, status_code = BN_learning(directory=directory, parameters=bn_params)
+        result, status_code = BN_learning(directory=directory, parameters=bn_params, user=owner)
 
         if status_code != 200:
             return result

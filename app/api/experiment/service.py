@@ -10,7 +10,7 @@ from .models import BayessianNet, Sample
 from app import db
 
 
-def BN_learning(directory, parameters):
+def BN_learning(directory, parameters, user):
     h = pd.read_csv(directory, index_col=0)
 
     encoder = pp.LabelEncoder()
@@ -45,7 +45,7 @@ def BN_learning(directory, parameters):
     else:
         bn.add_edges(data=discretized_data, optimizer='HC', scoring_function=(parameters["scoring_function"],))
 
-    bn.fit_parameters(data=h)
+    bn.fit_parameters(data=h, user=user)
 
     type_descriptor = {}
     for node in bn.nodes:
