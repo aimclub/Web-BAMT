@@ -72,7 +72,8 @@ class BNResource(Resource):
         update_db(network=network_to_db, sample=sample_to_db)
 
         # =========== Clearing memory ==============
-        shutil.rmtree(os.path.join(STORAGE, owner))
+        if os.path.isdir(os.path.join(STORAGE, owner)):
+            shutil.rmtree(os.path.join(STORAGE, owner))
 
         return {"network": network}
 
