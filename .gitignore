@@ -6,4 +6,3 @@ __pycache__/
 *.log
 *.ini
 *.sqlite
-tests/
