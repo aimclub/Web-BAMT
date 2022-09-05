@@ -4,6 +4,8 @@ Frontend: TypeScript <br>
 Backend: Python, SQLite <br>
 
 # The main concept
+![image](https://user-images.githubusercontent.com/68499591/188464726-4a1150ee-6c7a-4a20-aee6-286a0c16d597.png)
+
 Developing [BAMT](https://github.com/ITMO-NSS-team/BAMT) we have realized that people with need for Bayessian modeling sometimes don't know Python, so we 
 decided to build web application in responce to this. We're following an idea to make application easy to use (with friendly-user interface), so we hope you will not face 
 any trouble with Web-BAMT. Also if you're interested in key concept of bayessian learning, you should visit our Wiki page on GitHub.
