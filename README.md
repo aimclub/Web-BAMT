@@ -1,6 +1,6 @@
 # Web-BAMT
-Online tool for Bayesian Networks
-Frontend: TypeScript
+Online tool for Bayesian Networks <br>
+Frontend: TypeScript <br>
 Backend: Python, SQLite <br>
 
 # The main concept
