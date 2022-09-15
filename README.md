@@ -4,7 +4,8 @@ Frontend: TypeScript <br>
 Backend: Python, SQLite <br>
 
 # The main concept
-![icon](https://user-images.githubusercontent.com/6116991/190202689-86890924-ea9e-4571-84cc-4fd8ca56cbc7.png|width=100)
+![output-onlinepngtools](https://user-images.githubusercontent.com/6116991/190323306-8a7b5308-b7d8-453e-8532-fd855db3cb9d.png)
+
 This tool is intended for the analysis of multidimensional distributions by building Bayesian networks, the structure of which is a directed acyclic graph, and the edges show the dependencies between features (nodes). The algorithmic core of the tool is a [BAMT](https://github.com/ITMO-NSS-team/BAMT) library. This core allows any user to build their own Bayesian networks on tabular data of any nature.
 
 Main features:
