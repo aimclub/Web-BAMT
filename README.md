@@ -37,12 +37,18 @@ Next, a network instance is created and training (structure and parameters) is p
 
 More examples can be found [here](https://github.com/ITMO-NSS-team/BAMT/tree/master/tutorials).
 
-# Web service
+# Web demo
 
-However, if you just want to evaluate the possibilities of working with different parameters of Bayesian network learning algorithms, then you can use the library [web interface](http://bamt.aim.club/), which allows you to work with downloaded tools and has analytics tools. At the moment, the site is only accessible from the ITMO University network. A video demonstrating the web service can be found [here](https://youtu.be/2w6dRHlzVzs)
+However, if you just want to evaluate the possibilities of working with different parameters of Bayesian network learning algorithms, then you can use the  [web demo](http://bamt.aim.club/), which allows you to work with existing examples and has analytics tools. This functionality was made due to the limited computing capabilities of the server. 
+
+If you want to use the web demo for your projects, then you can run the web service locally on your server and make some changes to the code. Detailed instructions are here. You can also find rules for formatting input files there.
+
+At the moment, the web demo is only accessible from the ITMO University network. A video demonstrating the web service can be found [here](https://youtu.be/2w6dRHlzVzs).
+
+
 
 # Documentation
-More information about BAMT and Web-BAMT can be found [here](https://github.com/ITMO-NSS-team/Web-BAMT/wiki)
+More information about BAMT and Web-BAMT can be found [here](https://github.com/ITMO-NSS-team/Web-BAMT/wiki).
 
 # Citation
 
