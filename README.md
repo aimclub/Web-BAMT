@@ -21,4 +21,5 @@ Main features:
 If you want to train your Bayesian network on your data, first install the package: `pip install bamt`
 
 Then the necessary classes are imported from the library:
-`import bamt.Networks as Nets`
+
+```import bamt.Networks as Nets```
