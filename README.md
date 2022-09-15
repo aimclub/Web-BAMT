@@ -1,19 +1,22 @@
 # Web-BAMT
-Online tool for Bayesian Networks <br>
+Online tool for Bayesian Networks based on BAMT package<br>
 Frontend: TypeScript <br>
 Backend: Python, SQLite <br>
 
 # The main concept
-![image](https://user-images.githubusercontent.com/68499591/188464726-4a1150ee-6c7a-4a20-aee6-286a0c16d597.png)
+![image] ![icon](https://user-images.githubusercontent.com/6116991/190202689-86890924-ea9e-4571-84cc-4fd8ca56cbc7.png)
+This tool is intended for the analysis of multidimensional distributions by building Bayesian networks, the structure of which is a directed acyclic graph, and the edges show the dependencies between features (nodes). The algorithmic core of the tool is a [BAMT](https://github.com/ITMO-NSS-team/BAMT) library. This core allows any user to build their own Bayesian networks on tabular data of any nature.
 
-Developing [BAMT](https://github.com/ITMO-NSS-team/BAMT) we have realized that people with need for Bayessian modeling sometimes don't know Python, so we 
-decided to build web application in responce to this. We're following an idea to make application easy to use (with friendly-user interface), so we hope you will not face 
-any trouble with Web-BAMT. Also if you're interested in key concept of bayessian learning, you should visit our Wiki page on GitHub.
+Main features:
+1. Building network structures based on data using various algorithms;
+2. Assignment of expert knowledge in the process of learning networks;
+3. Training of distribution parameters in network nodes;
+4. Support for various data types (discrete, continuous);
+5. Generation of synthetic data;
+6. Modularity, extensibility, integrability with ML tools;
+7. Combination of a lightweight API for the end user and advanced configuration for research applications.
 
-# Future feature
-1. Users' data (user will be able to upload his own datasets)
-2. Improve comparison window (light the same edges, numerical comparison etc.)
+# How to use
+If you want to train your Bayesian network on your data, first install the package: `pip install bamt`
 
-# About Lab
-Our laboratory is part of the National Center for Cognitive Technologies (ITMO University, Russia), which provides cutting-edge software and algorithmic solutions. 
-We focus on natural systems simulations, generative design of real and virtual objects, data-driven modeling, automated machine learning.
+
