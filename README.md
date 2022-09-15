@@ -17,9 +17,25 @@ Main features:
 6. Modularity, extensibility, integrability with ML tools;
 7. Combination of a lightweight API for the end user and advanced configuration for research applications.
 
+A more detailed description of the algorithms can be found [here](https://github.com/ITMO-NSS-team/Web-BAMT/wiki/About-BAMT-algorithms).
+
 # How to use
 If you want to train your Bayesian network on your data, first install the package: `pip install bamt`
 
 Then the necessary classes are imported from the library:
 
 ```import bamt.Networks as Nets```
+
+Next, a network instance is created and training (structure and parameters) is performed:
+
+
+```bn = Nets.HybridBN(has_logit=False, use_mixture=True)```
+
+```bn.add_edges(discretized_data,  scoring_function=('K2',K2Score))```
+
+```bn.fit_parameters(data)```
+
+More examples can be found [here](https://github.com/ITMO-NSS-team/BAMT/tree/master/tutorials).
+
+
+
