@@ -37,7 +37,29 @@ Next, a network instance is created and training (structure and parameters) is p
 
 More examples can be found [here](https://github.com/ITMO-NSS-team/BAMT/tree/master/tutorials).
 
-However, if you just want to evaluate the possibilities of working with different parameters of Bayesian network learning algorithms, then you can use the library [web interface](bamt.aim.club), which allows you to work with downloaded tools and has analytics tools. At the moment, the site is only accessible from the ITMO University network. A video demonstrating the web service can be found [here](https://youtu.be/2w6dRHlzVzs)
+# Web service
+
+However, if you just want to evaluate the possibilities of working with different parameters of Bayesian network learning algorithms, then you can use the library [web interface](http://bamt.aim.club/), which allows you to work with downloaded tools and has analytics tools. At the moment, the site is only accessible from the ITMO University network. A video demonstrating the web service can be found [here](https://youtu.be/2w6dRHlzVzs)
+
+# Documentation
+More information about BAMT and Web-BAMT can be found [here](https://github.com/ITMO-NSS-team/Web-BAMT/wiki)
+
+# Citation
+
+@article{kaminsky2022bigbravebn,
+  title={BigBraveBN: algorithm of structural learning for bayesian networks with a large number of nodes},
+  author={Kaminsky, Yury and Deeva, Irina},
+  journal={arXiv preprint arXiv:2208.10312},
+  year={2022}
+}
+
+@article{bubnova2022approach,
+  title={Approach of variable clustering and compression for learning large Bayesian networks},
+  author={Bubnova, Anna V},
+  journal={arXiv preprint arXiv:2208.13605},
+  year={2022}
+}
+
 
 
 
