@@ -56,7 +56,7 @@ The project was carried out as part of the research work of masters and postgrad
 # Contacts
 If you have questions or suggestions, you can contact us at the following address: ideeva@itmo.ru (Irina Deeva)
 
-#Our Team
+# Our Team
 Irina Deeva - Project Manager
 Roman Netrogolov - Backend developer
 Anna Bubnova - development of the algorithmic core of the project
