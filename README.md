@@ -53,7 +53,7 @@ More information about BAMT and Web-BAMT can be found [here](https://github.com/
 # Acknowledgment
 The project was carried out as part of the research work of masters and postgraduate students No. 621297 (ITMO University)
 
-#Contacts
+# Contacts
 If you have questions or suggestions, you can contact us at the following address: ideeva@itmo.ru
 
 # Citation
