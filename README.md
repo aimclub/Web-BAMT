@@ -58,9 +58,17 @@ If you have questions or suggestions, you can contact us at the following addres
 
 # Our Team
 Irina Deeva - Project Manager
+
+
 Roman Netrogolov - Backend developer
+
+
 Anna Bubnova - development of the algorithmic core of the project
+
+
 Yuri Kaminsky - developer of the algorithmic core of the project
+
+
 
 # Citation
 
