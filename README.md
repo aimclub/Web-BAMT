@@ -54,7 +54,13 @@ More information about BAMT and Web-BAMT can be found [here](https://github.com/
 The project was carried out as part of the research work of masters and postgraduate students No. 621297 (ITMO University)
 
 # Contacts
-If you have questions or suggestions, you can contact us at the following address: ideeva@itmo.ru
+If you have questions or suggestions, you can contact us at the following address: ideeva@itmo.ru (Irina Deeva)
+
+#Our Team
+Irina Deeva - Project Manager
+Roman Netrogolov - Backend developer
+Anna Bubnova - development of the algorithmic core of the project
+Yuri Kaminsky - developer of the algorithmic core of the project
 
 # Citation
 
