@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project structure &mdash; Web-BAMT 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="User manually" href="User_manual.html" />
+    <link rel="prev" title="Examples" href="Examples/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Web-BAMT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="About_BAMT_algorithms.html">About BAMT algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Local_setup.html">Local Setup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Project structure</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#globals">GLOBALS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#api">API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#authmod">AuthMod</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#controller">Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#models">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#service">Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#experiment">Experiment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">Controller</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Models</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Service</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#bn-manager">bn_manager</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">Controller</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="User_manual.html">User manually</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Web-BAMT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Project structure</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/Project_structure.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="project-structure">
+<h1>Project structure<a class="headerlink" href="#project-structure" title="Permalink to this heading"></a></h1>
+<section id="globals">
+<h2>GLOBALS<a class="headerlink" href="#globals" title="Permalink to this heading"></a></h2>
+<p><strong>DATABASE: SQLite</strong></p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">SAMPLE_SIZE=442</span></code> (max = 442 due to size of train dataset);</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">CASE_ID=0</span></code> stands for geological dataset, <code class="docutils literal notranslate"><span class="pre">CASE_ID=1</span></code> - for social dataset.</div>
+</div>
+<div class="line-block">
+<div class="line">PREPROCESSING (in this version it remains constant and not available for user to tune)</div>
+<div class="line">First, we encode discrete data, then discretize continuous data.</div>
+<div class="line"><em>The purpose of this action and more details can be found in section “About BAMT algorithms”.</em></div>
+<div class="line"><code class="xref py py-class docutils literal notranslate"><span class="pre">encoder</span> <span class="pre">=</span> <span class="pre">pp.LabelEncoder()</span></code></div>
+<div class="line"><code class="xref py py-class docutils literal notranslate"><span class="pre">discretizer</span> <span class="pre">=</span> <span class="pre">pp.KBinsDiscretizer(n_bins=5,</span> <span class="pre">encode='ordinal',</span> <span class="pre">strategy='quantile')</span></code></div>
+</div>
+<div class="line-block">
+<div class="line">EXAMPLE PARAMS</div>
+<div class="line">Geological dataset:</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">has_logit=0,</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">use_mixture=0,</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">score_function=&quot;K2&quot;</span></code></div>
+</div>
+<div class="line-block">
+<div class="line">Social dataset:</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">has_logit=1,</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">use_mixture=1,</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">score_function=&quot;MI&quot;</span></code> (different params to avoid isolated vertices)</div>
+</div>
+</section>
+<section id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this heading"></a></h2>
+<p>There are 4 main and 1 additional modules implemeneted. Additional modules are tests,
+we use them only in dev stage. Each module follows this pattern:</p>
+<ol class="arabic">
+<li><p>Controller. File with query</p></li>
+<li><p>Service. File with core functions</p></li>
+<li><p>Models. File with declarations of tables in database</p></li>
+<li><p>Schema. File with docs.</p>
+<p>We have ordered the modules accoring their usage in main scenario.</p>
+</li>
+</ol>
+</section>
+<section id="authmod">
+<h2>AuthMod<a class="headerlink" href="#authmod" title="Permalink to this heading"></a></h2>
+<p>This module provides a communication between user and auth system.</p>
+<section id="controller">
+<h3>Controller<a class="headerlink" href="#controller" title="Permalink to this heading"></a></h3>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">get_token(email,</span> <span class="pre">password)</span></code>: get token by email and password;</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">signup(email,</span> <span class="pre">password)</span></code>: registrate user in database.</div>
+</div>
+</section>
+<section id="models">
+<h3>Models<a class="headerlink" href="#models" title="Permalink to this heading"></a></h3>
+<p>Declare the tables related to auth system.</p>
+</section>
+<section id="service">
+<h3>Service<a class="headerlink" href="#service" title="Permalink to this heading"></a></h3>
+<p>Here we defined functions to work with auth system.</p>
+</section>
+<section id="example">
+<h3>Example<a class="headerlink" href="#example" title="Permalink to this heading"></a></h3>
+<p>Demonstarte an instanse of pretrained network.</p>
+</section>
+<section id="id1">
+<h3>Controller<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">get_example(case_id)</span></code>: return a network pretrained with</p>
+</section>
+<section id="experiment">
+<h3>Experiment<a class="headerlink" href="#experiment" title="Permalink to this heading"></a></h3>
+<p>One of the most important module in applictaion. It is responsible for training
+bayssian network, sample from it.</p>
+</section>
+<section id="id2">
+<h3>Controller<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">get(owner,</span> <span class="pre">name,</span> <span class="pre">case_id,</span> <span class="pre">bn_params)</span></code> : validate input, train network,
+sample from it and save data.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<div class="line-block">
+<div class="line">In this version we have to unify format of sample (actually, there are 2 types: <code class="docutils literal notranslate"><span class="pre">discrete</span></code> and <code class="docutils literal notranslate"><span class="pre">continuous</span></code>). We descritize continouos data, bins equal to output of <code class="xref py py-class docutils literal notranslate"><span class="pre">np.histogram_bin_edges()</span></code> on train dataset for better comparison.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">get_root_nodes(case_id)</span></code>: return initial nodes from dataset.</div>
+</div>
+</div>
+</section>
+<section id="id3">
+<h3>Models<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<p>Declare tables with networks and samples.</p>
+</section>
+<section id="id4">
+<h3>Service<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<p>Core functions to fit bayessian network and save them.</p>
+</section>
+<section id="bn-manager">
+<h3>bn_manager<a class="headerlink" href="#bn-manager" title="Permalink to this heading"></a></h3>
+<p>Module provides operations with bayessian networks in database such as:
+find BN(-s) if exists, delete, put and train.</p>
+</section>
+<section id="id5">
+<h3>Controller<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">get_BN(owner)</span></code>: return a list of bn(-s) (with data about them);</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">get_BN_names(owner)</span></code>: return a list of bn(-s) names user owns;</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">get_sample(owner,</span> <span class="pre">name,</span> <span class="pre">node)</span></code>: return an sample data array with <code class="docutils literal notranslate"><span class="pre">size=SAMPLE_SIZE</span></code>;</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">remove(owner,</span> <span class="pre">name)</span></code>: remove bn (and its sample) from database.</div>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="Examples/index.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="User_manual.html" class="btn btn-neutral float-right" title="User manually" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, NSS Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

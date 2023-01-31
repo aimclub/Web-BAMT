@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examples &mdash; Web-BAMT 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Project structure" href="../Project_structure.html" />
+    <link rel="prev" title="Local Setup" href="../Local_setup.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Web-BAMT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../About_BAMT_algorithms.html">About BAMT algorithms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../Local_setup.html">Local Setup</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#example-methodology-description">Example methodology description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#geological-data-example">Geological data example</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#data-description">Data Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sampling-and-corresponding-network-structure">Sampling and corresponding network structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#k2-metric-sampling-example">K2 metric sampling example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sampling-with-k2-gmm-example">Sampling with K2 + GMM example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sampling-with-k2-gmm-logit-nodes-example">Sampling with K2 + GMM + logit nodes example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#k2-with-initial-structure-sampling">K2 with initial structure sampling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#social-data-example">Social data example</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Data Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sampling">Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id2">K2 metric sampling example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">Sampling with K2 + GMM example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">Sampling with K2 + GMM + logit nodes example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id5">K2 with initial structure sampling</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#prediction-mse-table-for-both-examples">Prediction MSE table for both examples</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../Project_structure.html">Project structure</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../User_manual.html">User manually</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Web-BAMT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Examples</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/Examples/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this heading"></a></h1>
+<section id="example-methodology-description">
+<h2>Example methodology description<a class="headerlink" href="#example-methodology-description" title="Permalink to this heading"></a></h2>
+<p>Both examples consider the following combinations of hyperparameters used for Bayesian network learning:</p>
+<ul class="simple">
+<li><p>K2 metric;</p></li>
+<li><p>K2 metric with gaussian mixtures (GMM);</p></li>
+<li><p>K2 metric with GMM and logit nodes;</p></li>
+<li><p>K2 with initial structure.</p></li>
+</ul>
+<p>All the examples are executed using cross-validation,
+the data is preproccesed as follows:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">data</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">encoder</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">LabelEncoder</span><span class="p">()</span>
+<span class="n">discretizer</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">KBinsDiscretizer</span><span class="p">(</span><span class="n">n_bins</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">encode</span><span class="o">=</span><span class="s1">&#39;ordinal&#39;</span><span class="p">,</span> <span class="n">strategy</span><span class="o">=</span><span class="s1">&#39;quantile&#39;</span><span class="p">)</span>
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">pp</span><span class="o">.</span><span class="n">Preprocessor</span><span class="p">([(</span><span class="s1">&#39;encoder&#39;</span><span class="p">,</span> <span class="n">encoder</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;discretizer&#39;</span><span class="p">,</span> <span class="n">discretizer</span><span class="p">)])</span>
+
+<span class="n">discretized_data</span><span class="p">,</span> <span class="n">est</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="geological-data-example">
+<h2>Geological data example<a class="headerlink" href="#geological-data-example" title="Permalink to this heading"></a></h2>
+<section id="data-description">
+<h3>Data Description<a class="headerlink" href="#data-description" title="Permalink to this heading"></a></h3>
+<p>The data set contains 9 variables with 442 samples. The target variable
+for prediction in the following example is ‘Depth’. The variable is also
+used to visually evaluate sampling quality via distribution plot.</p>
+</section>
+<section id="sampling-and-corresponding-network-structure">
+<h3>Sampling and corresponding network structure<a class="headerlink" href="#sampling-and-corresponding-network-structure" title="Permalink to this heading"></a></h3>
+</section>
+<section id="k2-metric-sampling-example">
+<h3>K2 metric sampling example<a class="headerlink" href="#k2-metric-sampling-example" title="Permalink to this heading"></a></h3>
+<p>To sample using K2 metric the following code can be used:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train</span><span class="p">,</span> <span class="n">validation</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">bn</span> <span class="o">=</span> <span class="n">Nets</span><span class="o">.</span><span class="n">HybridBN</span><span class="p">(</span><span class="n">has_logit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_mixture</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">bn</span><span class="o">.</span><span class="n">add_nodes</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+<span class="n">bn</span><span class="o">.</span><span class="n">add_edges</span><span class="p">(</span><span class="n">discretized_data</span><span class="p">,</span>  <span class="n">scoring_function</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;K2&#39;</span><span class="p">,</span><span class="n">K2Score</span><span class="p">))</span>
+<span class="n">bn</span><span class="o">.</span><span class="n">fit_parameters</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="c1"># prediction</span>
+<span class="n">val_pred</span> <span class="o">=</span> <span class="n">bn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">validation</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">8</span><span class="p">],</span> <span class="mi">5</span><span class="p">)</span>
+<span class="c1"># sampling</span>
+<span class="n">sample</span> <span class="o">=</span> <span class="n">bn</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">parall_count</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/K2_Geo.jpg"><img alt="../_images/K2_Geo.jpg" src="../_images/K2_Geo.jpg" style="width: 353.0px; height: 282.0px;" /></a>
+<img alt="../_images/K2_Geo_density.png" src="../_images/K2_Geo_density.png" />
+</section>
+<section id="sampling-with-k2-gmm-example">
+<h3>Sampling with K2 + GMM example<a class="headerlink" href="#sampling-with-k2-gmm-example" title="Permalink to this heading"></a></h3>
+<p>To sample using K2 with GMM the following code can be used:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train</span><span class="p">,</span> <span class="n">validation</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">bn</span> <span class="o">=</span> <span class="n">Nets</span><span class="o">.</span><span class="n">HybridBN</span><span class="p">(</span><span class="n">has_logit</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">use_mixture</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">bn</span><span class="o">.</span><span class="n">add_nodes</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+<span class="n">bn</span><span class="o">.</span><span class="n">add_edges</span><span class="p">(</span><span class="n">discretized_data</span><span class="p">,</span>  <span class="n">scoring_function</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;K2&#39;</span><span class="p">,</span><span class="n">K2Score</span><span class="p">))</span>
+<span class="n">bn</span><span class="o">.</span><span class="n">fit_parameters</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="c1"># prediction</span>
+<span class="n">val_pred</span> <span class="o">=</span> <span class="n">bn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">validation</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">8</span><span class="p">],</span> <span class="mi">5</span><span class="p">)</span>
+<span class="c1"># sampling</span>
+<span class="n">sample</span> <span class="o">=</span> <span class="n">bn</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">parall_count</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/K2_gmm.jpg"><img alt="../_images/K2_gmm.jpg" src="../_images/K2_gmm.jpg" style="width: 353.0px; height: 282.0px;" /></a>
+<img alt="../_images/K2_gmm_density.png" src="../_images/K2_gmm_density.png" />
+</section>
+<section id="sampling-with-k2-gmm-logit-nodes-example">
+<h3>Sampling with K2 + GMM + logit nodes example<a class="headerlink" href="#sampling-with-k2-gmm-logit-nodes-example" title="Permalink to this heading"></a></h3>
+<p>To sample using K2 with GMM and logit nodes the following code can be used:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">train</span><span class="p">,</span> <span class="n">validation</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">bn</span> <span class="o">=</span> <span class="n">Nets</span><span class="o">.</span><span class="n">HybridBN</span><span class="p">(</span><span class="n">has_logit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_mixture</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">bn</span><span class="o">.</span><span class="n">add_nodes</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+<span class="n">bn</span><span class="o">.</span><span class="n">add_edges</span><span class="p">(</span><span class="n">discretized_data</span><span class="p">,</span>  <span class="n">scoring_function</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;K2&#39;</span><span class="p">,</span><span class="n">K2Score</span><span class="p">))</span>
+<span class="n">bn</span><span class="o">.</span><span class="n">fit_parameters</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="c1"># prediction</span>
+<span class="n">val_pred</span> <span class="o">=</span> <span class="n">bn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">validation</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">8</span><span class="p">],</span> <span class="mi">5</span><span class="p">)</span>
+<span class="c1"># sampling</span>
+<span class="n">sample</span> <span class="o">=</span> <span class="n">bn</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">parall_count</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/K2_gmm_logit.jpg"><img alt="../_images/K2_gmm_logit.jpg" src="../_images/K2_gmm_logit.jpg" style="width: 353.0px; height: 282.0px;" /></a>
+<img alt="../_images/K2_gmm_logit_density.png" src="../_images/K2_gmm_logit_density.png" />
+</section>
+<section id="k2-with-initial-structure-sampling">
+<h3>K2 with initial structure sampling<a class="headerlink" href="#k2-with-initial-structure-sampling" title="Permalink to this heading"></a></h3>
+<p>To sample using K2 and initial structure the following code can be used:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;init_nodes&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Tectonic regime&#39;</span><span class="p">,</span> <span class="s1">&#39;Period&#39;</span><span class="p">,</span> <span class="s1">&#39;Lithology&#39;</span><span class="p">,</span> <span class="s1">&#39;Structural setting&#39;</span><span class="p">,</span> <span class="s1">&#39;Gross&#39;</span><span class="p">,</span><span class="s1">&#39;Netpay&#39;</span><span class="p">,</span> <span class="s1">&#39;Porosity&#39;</span><span class="p">,</span><span class="s1">&#39;Permeability&#39;</span><span class="p">,</span> <span class="s1">&#39;Depth&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;init_edges&#39;</span><span class="p">:[(</span><span class="s1">&#39;Period&#39;</span><span class="p">,</span> <span class="s1">&#39;Permeability&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Structural setting&#39;</span><span class="p">,</span> <span class="s1">&#39;Netpay&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;Gross&#39;</span><span class="p">,</span> <span class="s1">&#39;Permeability&#39;</span><span class="p">)],}</span>
+
+<span class="n">train</span><span class="p">,</span> <span class="n">validation</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="n">bn</span> <span class="o">=</span> <span class="n">Nets</span><span class="o">.</span><span class="n">HybridBN</span><span class="p">(</span><span class="n">has_logit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_mixture</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">bn</span><span class="o">.</span><span class="n">add_nodes</span><span class="p">(</span><span class="n">info</span><span class="p">)</span>
+<span class="n">bn</span><span class="o">.</span><span class="n">add_edges</span><span class="p">(</span><span class="n">discretized_data</span><span class="p">,</span>  <span class="n">scoring_function</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;K2&#39;</span><span class="p">,</span><span class="n">K2Score</span><span class="p">),</span> <span class="n">params</span><span class="o">=</span><span class="n">params</span><span class="p">)</span>
+<span class="n">bn</span><span class="o">.</span><span class="n">fit_parameters</span><span class="p">(</span><span class="n">train</span><span class="p">)</span>
+<span class="c1"># prediction</span>
+<span class="n">val_pred</span> <span class="o">=</span> <span class="n">bn</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">validation</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">8</span><span class="p">],</span> <span class="mi">5</span><span class="p">)</span>
+<span class="c1"># sampling</span>
+<span class="n">sample</span> <span class="o">=</span> <span class="n">bn</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="n">parall_count</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/K2_initial_structure.jpg"><img alt="../_images/K2_initial_structure.jpg" src="../_images/K2_initial_structure.jpg" style="width: 353.0px; height: 282.0px;" /></a>
+<img alt="../_images/K2_initial_structure_density.png" src="../_images/K2_initial_structure_density.png" />
+</section>
+</section>
+<section id="social-data-example">
+<h2>Social data example<a class="headerlink" href="#social-data-example" title="Permalink to this heading"></a></h2>
+<section id="id1">
+<h3>Data Description<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<p>The second example is similar to the previous one, but carried out
+on different data set. Social data set consists of 30000 anonymous bank
+records with 9 variables each, bayesian networks were learnt on a sample
+with 2000 records. The target variable is ‘mean_tr’ which is mean
+transaction of client.</p>
+</section>
+<section id="sampling">
+<h3>Sampling<a class="headerlink" href="#sampling" title="Permalink to this heading"></a></h3>
+<p>The code used to sample from social data set is identical
+to the geological dataset.</p>
+</section>
+<section id="id2">
+<h3>K2 metric sampling example<a class="headerlink" href="#id2" title="Permalink to this heading"></a></h3>
+<a class="reference internal image-reference" href="../_images/K2_Social.jpg"><img alt="../_images/K2_Social.jpg" src="../_images/K2_Social.jpg" style="width: 353.0px; height: 282.0px;" /></a>
+<img alt="../_images/K2_Social_density.png" src="../_images/K2_Social_density.png" />
+</section>
+<section id="id3">
+<h3>Sampling with K2 + GMM example<a class="headerlink" href="#id3" title="Permalink to this heading"></a></h3>
+<a class="reference internal image-reference" href="../_images/K2_gmm_Social.jpg"><img alt="../_images/K2_gmm_Social.jpg" src="../_images/K2_gmm_Social.jpg" style="width: 353.0px; height: 282.0px;" /></a>
+<img alt="../_images/K2_gmm_density_Social.png" src="../_images/K2_gmm_density_Social.png" />
+</section>
+<section id="id4">
+<h3>Sampling with K2 + GMM + logit nodes example<a class="headerlink" href="#id4" title="Permalink to this heading"></a></h3>
+<a class="reference internal image-reference" href="../_images/K2_gmm_logit_Social.jpg"><img alt="../_images/K2_gmm_logit_Social.jpg" src="../_images/K2_gmm_logit_Social.jpg" style="width: 353.0px; height: 282.0px;" /></a>
+<img alt="../_images/K2_gmm_logit_density_Social.png" src="../_images/K2_gmm_logit_density_Social.png" />
+</section>
+<section id="id5">
+<h3>K2 with initial structure sampling<a class="headerlink" href="#id5" title="Permalink to this heading"></a></h3>
+<a class="reference internal image-reference" href="../_images/K2_initial_structure_Social.jpg"><img alt="../_images/K2_initial_structure_Social.jpg" src="../_images/K2_initial_structure_Social.jpg" style="width: 353.0px; height: 282.0px;" /></a>
+<img alt="Examples/K2_initial_structure_density_Social.png" src="Examples/K2_initial_structure_density_Social.png" />
+</section>
+</section>
+<section id="prediction-mse-table-for-both-examples">
+<h2>Prediction MSE table for both examples<a class="headerlink" href="#prediction-mse-table-for-both-examples" title="Permalink to this heading"></a></h2>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 42%" />
+<col style="width: 30%" />
+<col style="width: 28%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Hyperparameters combinations</p></th>
+<th class="head"><p>Geological data MSE</p></th>
+<th class="head"><p>Social data MSE</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>K2</p></td>
+<td><p>1014.59</p></td>
+<td><p>6066.5</p></td>
+</tr>
+<tr class="row-odd"><td><p>K2 + GMM</p></td>
+<td><p>974.35</p></td>
+<td><p>5149.5</p></td>
+</tr>
+<tr class="row-even"><td><p>K2 + GMM + logit</p></td>
+<td><p>1018.84</p></td>
+<td><p>6657.93</p></td>
+</tr>
+<tr class="row-odd"><td><p>K2 + initial structure</p></td>
+<td><p>1056.06</p></td>
+<td><p>12506.47</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../Local_setup.html" class="btn btn-neutral float-left" title="Local Setup" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../Project_structure.html" class="btn btn-neutral float-right" title="Project structure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022-2023, NSS Lab.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
