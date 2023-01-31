@@ -48,7 +48,7 @@ At the moment, the web demo is only accessible from the ITMO University network.
 
 
 # Documentation
-More information about BAMT and Web-BAMT can be found [here](https://github.com/ITMO-NSS-team/Web-BAMT/wiki).
+More information about BAMT and Web-BAMT can be found [here](https://web-bamt.readthedocs.io/en/latest/).
 
 # Acknowledgment
 The project was carried out as part of the research work of masters and postgraduate students No. 621297 (ITMO University)
