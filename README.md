@@ -17,6 +17,11 @@ Main features:
 6. Modularity, extensibility, integrability with ML tools;
 7. Combination of a lightweight API for the end user and advanced configuration for research applications.
 
+Features in development:
+1. Loading your own training dataset;
+2. Define regression and classification models in parametric learning;
+3. Development of advanced distribution analytics and visual comparison of different networks.
+
 A more detailed description of the algorithms can be found [here](https://github.com/ITMO-NSS-team/Web-BAMT/wiki/About-BAMT-algorithms).
 
 # How to use
@@ -51,7 +56,7 @@ At the moment, the web demo is only accessible from the ITMO University network.
 More information about BAMT and Web-BAMT can be found [here](https://web-bamt.readthedocs.io/en/latest/).
 
 # Acknowledgment
-The project was carried out as part of the research work of masters and postgraduate students No. 621297 (ITMO University)
+The project was carried out as part of the research work of masters and postgraduate students No. 622262 (ITMO University)
 
 # Contacts
 If you have questions or suggestions, you can contact us at the following address: ideeva@itmo.ru (Irina Deeva)
@@ -59,12 +64,11 @@ If you have questions or suggestions, you can contact us at the following addres
 # Our Team
 Irina Deeva - Project Manager
 
-
 Roman Netrogolov - Backend developer
 
+Karine Shakhkyan - development of logic for working with composite BN in a web service
 
 Anna Bubnova - development of the algorithmic core of the project
-
 
 Yuri Kaminsky - developer of the algorithmic core of the project
 
@@ -72,20 +76,36 @@ Yuri Kaminsky - developer of the algorithmic core of the project
 
 # Citation
 
+@article{deeva2023advanced,
+  title={Advanced Approach for Distributions Parameters Learning in Bayesian Networks with Gaussian Mixture Models and Discriminative Models},
+  author={Deeva, Irina and Bubnova, Anna and Kalyuzhnaya, Anna V},
+  journal={Mathematics},
+  volume={11},
+  number={2},
+  pages={343},
+  year={2023},
+  publisher={MDPI}
+}
+
 @article{kaminsky2022bigbravebn,
   title={BigBraveBN: algorithm of structural learning for bayesian networks with a large number of nodes},
   author={Kaminsky, Yury and Deeva, Irina},
-  journal={arXiv preprint arXiv:2208.10312},
-  year={2022}
+  journal={Procedia Computer Science},
+  volume={212},
+  pages={191--200},
+  year={2022},
+  publisher={Elsevier}
 }
 
 @article{bubnova2022approach,
   title={Approach of variable clustering and compression for learning large Bayesian networks},
-  author={Bubnova, Anna V},
-  journal={arXiv preprint arXiv:2208.13605},
-  year={2022}
+  author={Bubnova, Anna and Deeva, Irina},
+  journal={Procedia Computer Science},
+  volume={212},
+  pages={275--283},
+  year={2022},
+  publisher={Elsevier}
 }
-
 
 
 
