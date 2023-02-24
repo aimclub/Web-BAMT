@@ -1,4 +1,4 @@
-User manually
+User guide
 ==============
 
 User guide
