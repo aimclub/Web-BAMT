@@ -9,6 +9,11 @@ class BaseConfig:
     USE_MOCK_EQUIVALENCY = False
     DEBUG = False
 
+
+    # UPLOAD_FOLDER = os.getenv("DATASETS_FOLDER")
+    DATASETS_FOLDER = r"C:\Users\Roman\Desktop\WebBAMT\Datasets"
+    SAMPLES_FOLDER = r"C:\Users\Roman\Desktop\WebBAMT\Samples"
+
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 
