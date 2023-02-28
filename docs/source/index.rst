@@ -30,7 +30,7 @@ Each module has the following files (.py), their content has described in API do
    Local_setup
    Examples/index
    Project_structure
-   User_manual
+   User_guide
 
 
 Indices and tables
