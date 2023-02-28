@@ -16,7 +16,26 @@ api = Namespace("BN_manager", description="BN store operations")
 @api.route("/get_BN/<string:owner>")
 class BNManagerResource(Resource):
     # @responds(schema=BNGetSchema0)
-    # @api.doc(responses={401: 'No User found'})
+    @api.doc(responses={200: """
+            {"networks": 
+                {"nummer": {
+                    "name": name of net,
+                    "dataset_name": name of dataset bn trained on,
+                    "edges": edges,
+                    "nodes": nodes,
+                    "use_mixture": bool,
+                    "has_logit": bool,
+                    "classifier": str,
+                    "params": {"init_edges": None or List[List[str]],
+                               "init_nodes": None or List[str],
+                               "white_list": EXPERIMENTAL: not used yet,
+                               "bl_add": EXPERIMENTAL: not used yet,
+                               "remove_init_edges": bool or none},
+                    "scoring_function": str,
+                    "descriptor": str}}
+            }"""
+                        }
+            )
     def get(self, owner):
         """Get BN Data"""
 
@@ -37,7 +56,7 @@ class BNManagerResource(Resource):
                        # "bl_add": data.bl_add,
                        "remove_init_edges": data.remove_init_edges},
             "scoring_function": data.scoring_function,
-            "descriptor": ast.literal_eval(data.descriptor)} for n, data in enumerate(nets)}}
+            "descriptor": ast.literal_eval(data.descriptor)} for n, data in enumerate(nets)}}, 200
 
 
 @api.route("/get_BN_names/<string:owner>")
@@ -71,9 +90,11 @@ class BNRemoverResource(Resource):
 @api.route("/get_graph_data/<string:owner>/<string:net_name>/<string:dataset_name>/<string:node>")
 class SamplerResource(Resource):
     @api.doc(responses={401: 'No User found'})
-    @api.doc(responses={200: """{'data': List, 
-                                 'xvals': List,
-                                 'type': Str}"""})
+    @api.doc(responses={200: """
+    {'data': List, 
+     'xvals': List,
+     'type': Str}
+                              """})
     def get(self, owner, net_name, dataset_name, node):
         """Get real and sampled data"""
         if not find_sample(owner, net_name):

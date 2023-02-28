@@ -11,6 +11,8 @@ import shutil
 
 from werkzeug.exceptions import BadRequest, NotFound
 
+from .str2callable import models
+
 api = Namespace("experiment", description="Operations with BNs")
 
 
@@ -22,6 +24,21 @@ class BNResource(Resource):
 
     # @api.doc(responses={200: 'success'})
     # @api.doc(responses={400: 'failed'})
+    @api.doc(params={"owner": "name of user",
+                     "name": "name of net",
+                     "dataset": "name of dataset",
+                     "bn_params":
+                         """
+                         {"scoring_function": "K2", 
+                         "use_mixture": bool, 
+                         "has_logit": bool,
+                         "classifier": str or None,
+                         "params": {"remove_init_edges": bool or None,
+                                 "init_edges": List[List[str]] or None,
+                                 "init_nodes": List[str] or None
+                                 }
+                         }
+                         """})
     def get(self, owner, name, dataset, bn_params):
         """
         Train BN and sample from it, then save it to db.
@@ -49,7 +66,6 @@ class BNResource(Resource):
         elif not "scoring_function" in bn_params.keys():
             return {"message": "Scoring_func not defined"}, 400
 
-
         # ======= Main =========
 
         result, status_code = bn_learning(dataset=dataset, parameters=bn_params, user=owner)
@@ -74,3 +90,10 @@ class BNResource(Resource):
             shutil.rmtree(os.path.join(STORAGE, owner))
 
         return {"network": package[0]}
+
+
+@api.route("/get_models")
+class ModelsResource(Resource):
+    @api.doc(responces={"models": "List of available models"})
+    def get(self):
+        return {"models": list(models.keys())}
