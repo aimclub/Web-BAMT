@@ -10,7 +10,7 @@ class BaseConfig:
     DEBUG = False
     
     DATASETS_FOLDER = os.getenv("DATASETS_FOLDER")
-    SAMPLES_FOLDER = os.getenv("DATASETS_FOLDER")
+    SAMPLES_FOLDER = os.getenv("SAMPLES_FOLDER")
 
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
