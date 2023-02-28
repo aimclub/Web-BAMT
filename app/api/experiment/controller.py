@@ -1,4 +1,5 @@
 from flask_restx import Namespace, Resource
+from flask import request
 
 from .service import bn_learning, Sampler, Manager
 from app.api.bn_manager.service import find_bns_by_user
@@ -11,7 +12,7 @@ import shutil
 
 from werkzeug.exceptions import BadRequest, NotFound
 
-from .str2callable import models
+from .str2callable import regressors, classifiers
 
 api = Namespace("experiment", description="Operations with BNs")
 
@@ -29,7 +30,7 @@ class BNResource(Resource):
                      "dataset": "name of dataset",
                      "bn_params":
                          """
-                         {"scoring_function": "K2", 
+                         {"scoring_function": str, 
                          "use_mixture": bool, 
                          "has_logit": bool,
                          "classifier": str or None,
@@ -95,5 +96,8 @@ class BNResource(Resource):
 @api.route("/get_models")
 class ModelsResource(Resource):
     @api.doc(responces={"models": "List of available models"})
+    @api.doc(params={"model_type": "regressor or classifier"})
     def get(self):
-        return {"models": list(models.keys())}
+        model_type = request.args.get("model_type")
+        models = classifiers if model_type == "classifier" else regressors
+        return {"models": list(models)}
