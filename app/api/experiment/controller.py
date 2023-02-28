@@ -39,6 +39,9 @@ class BNResource(Resource):
         if len(find_bns_by_user(owner=owner)) > 7:
             return {"message": "Limit of BNs has been reached."}, 406
 
+        if name in [bn.name for bn in find_bns_by_user(owner)]:
+            return {"message": "Net name must be unique"}, 500
+
         if not "use_mixture" in bn_params.keys():
             return {"message": "use_mixture not defined"}, 400
         elif not "has_logit" in bn_params.keys():
@@ -59,7 +62,8 @@ class BNResource(Resource):
         sampler = Sampler(bn)
         sample = sampler.sample()
 
-        manager = Manager(bn, sample, owner=owner, net_name=name, dataset_name=dataset)
+        manager = Manager(bn, sample, owner=owner,
+                          net_name=name, dataset_name=dataset)
         manager.save_sample()
 
         package = manager.packing(bn_params)

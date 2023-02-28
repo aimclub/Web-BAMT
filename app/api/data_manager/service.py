@@ -33,9 +33,8 @@ def find_dataset_by_user_and_dataset_name(user: str, name: str) -> Dataset:
     return Dataset.query.filter_by(owner=user, name=name).all()
 
 
-def get_dataset_list_by_user(user):
-    return [dataset.name for dataset in Dataset.query.filter_by(owner=user).all()]
-
+def get_dataset_meta_by_user(user):
+    return {dataset.name:dataset.description for dataset in Dataset.query.filter_by(owner=user).all()}
 
 def get_number_of_datasets(user: str, ) -> int:
     return len(Dataset.query.filter_by(owner=user).all())
@@ -59,9 +58,8 @@ def check_db_fullness(folders_mapped: dict):
         query = \
         f"""
         SELECT {"location" if table == "datasets" else "sample_loc"} FROM {table}
-        where {"name" if table == "datasets" else "dataset_name"} not in ('vk', 'hack');
+        {"WHERE id not in (1, 2)" if table == "datasets" else ""};
         """
-
         db_content = db.session.execute(query).fetchall()
         db_content = [i[0] for i in db_content]
         folder_content = []
@@ -71,7 +69,9 @@ def check_db_fullness(folders_mapped: dict):
                 user = dirname.split("\\")[-1]
                 folder_content.extend([os.path.join(user, file) for file in filenames])
 
-        if not Counter(folder_content) == Counter(db_content):
+        # print(db_content)
+        # print(folder_content, "\n\n")
+        if not (Counter(folder_content) == Counter(db_content)):
             failed = True
             diff_items = set(db_content) - set(folder_content)
             result[table] = diff_items

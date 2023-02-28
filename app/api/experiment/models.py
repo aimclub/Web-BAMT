@@ -26,6 +26,9 @@ class BayessianNet(db.Model):
     # bl_add = db.Column(db.Text)
     remove_init_edges = db.Column(db.Boolean, default=False)
 
+    regressor = db.Column(db.String, default="LinearRegression")
+    classifier = db.Column(db.String, default="LogisticRegression")
+
     descriptor = db.Column(db.Text)
 
 

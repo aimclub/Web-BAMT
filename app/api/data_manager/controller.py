@@ -9,9 +9,10 @@ from io import StringIO
 
 from .schema import UploadSchema
 from .service import update_db, find_dataset_by_user_and_dataset_name, get_number_of_datasets, \
-    automapping, get_dataset_list_by_user, get_dataset_location, get_header_from_csv, check_db_fullness
+    automapping, get_dataset_meta_by_user, get_dataset_location, get_header_from_csv, check_db_fullness
 
 from app.api.auth.service import find_user_by_username
+from json import load
 
 api = Namespace("data_manager", description="operations with data")
 
@@ -20,6 +21,7 @@ api = Namespace("data_manager", description="operations with data")
 class DataUploaderResource(Resource):
     @api.doc(params={"name": "Dataset name",
                      "owner": "Name of user",
+                     "description": "Description of dataset",
                      "content": "Raw file"})
     def post(self):
         """
@@ -36,6 +38,7 @@ class DataUploaderResource(Resource):
         uploaded_file = request.form['content']
         name = request.form["name"]
         owner = request.form["owner"]
+        description = request.form["description"]
 
         if not find_user_by_username(owner):
             return {"message": "User not found!"}, 404
@@ -72,7 +75,8 @@ class DataUploaderResource(Resource):
 
         df.to_csv(dst)
 
-        update_db({"name": name, "owner": owner, "location": relpath}, mp)
+        update_db({"name": name, "owner": owner, "location": relpath,
+                   "description": description}, mp)
 
         return {"message": "Success"}, 200
 
@@ -80,16 +84,25 @@ class DataUploaderResource(Resource):
 @api.route("/get_datasets")
 class DatasetObserverResource(Resource):
     @api.doc(params={'user': 'username'})
-    @api.doc(responses={500: "User not passed",
-                        200: "{'datasets': List}"})
+    @api.doc(responses={
+        500: "User not passed",
+        200: """
+        {
+            {'datasets': {'dataset_name': str, 'description': Text}}
+        }
+        """
+    }
+    )
+
     def get(self):
         """
         Get a list with user's datasets
         """
         user = request.args.get("user")
+        ours = load(open(os.path.join(project_root(), "data/our_datasets.json")))
         if not user:
             return {"message": "User not passed"}, 500
-        return {"datasets": get_dataset_list_by_user(user=user)}, 200
+        return ours | get_dataset_meta_by_user(user=user)
 
 
 @api.route("/get_root_nodes")

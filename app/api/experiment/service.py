@@ -2,8 +2,8 @@ import json
 import os
 import pandas as pd
 
-import bamt.Networks as Networks
-from bamt.Preprocessors import Preprocessor
+import bamt.networks as Networks
+from bamt.preprocessors import Preprocessor
 from bamt.utils.GraphUtils import nodes_types
 
 from sklearn import preprocessing as pp
@@ -115,14 +115,22 @@ class BnBuilder(object):
         info = p.info
         return discretized_data, info
 
-    @staticmethod
-    def choose_network(info: dict):
+
+    def choose_network(self, info: dict):
         if all("cont" == i for i in info.values()):
-            return Networks.ContinuousBN()
+            return Networks.ContinuousBN(use_mixture=self.parameters["use_mixture"])
         elif all(i in ["str", "disc_num"] for i in info.values()):
             return Networks.DiscreteBN()
         else:
-            return Networks.HybridBN()
+            return Networks.HybridBN(use_mixture=self.parameters["use_mixture"],
+                                     has_logit=self.parameters["has_logit"])
+
+    @staticmethod
+    def make_obj(model_str):
+        if not model_str:
+            return None
+        from .str2callable import models
+        return models[model_str]()
 
     def build(self, df, user: str):
         bn = self.choose_network(nodes_types(df))
@@ -132,7 +140,9 @@ class BnBuilder(object):
 
         bn.add_edges(data=discretized_data, optimizer='HC',
                      scoring_function=(self.parameters["scoring_function"],),
-                     params=self.parameters.get("params", None))
+                     classifier=self.make_obj(self.parameters.get("classifier", None)),
+                     params=self.parameters.get("params", None),
+                     progress_bar=False)
 
         if self.parameters.get("params", False):
             self.unpack_params(self.parameters)
@@ -145,10 +155,15 @@ class Sampler(object):
         self.bn = bn
 
     def sample(self):
-        sample = self.bn.sample(442)
+        sample = self.bn.sample(442, progress_bar=False)
 
-        numerical_cols = sample.select_dtypes(include='number').columns
-        sample_filtered = sample[(sample[numerical_cols] > 0).all(axis=1)]
+        # numerical_cols = sample.select_dtypes(include='number').columns
+        pos_cols = []
+        for node, sign in self.bn.descriptor["signs"].items():
+            if sign == "pos":
+                pos_cols.append(node)
+
+        sample_filtered = sample[(sample[pos_cols] > 0).all(axis=1)]
         return sample_filtered
 
 
@@ -174,7 +189,8 @@ class Manager(object):
         r = db.session.execute(
             f"""
             SELECT * FROM samples
-            WHERE owner='{self.owner}' and net_name='{self.net_name}' and dataset_name='{self.dataset_name}';
+            WHERE owner='{self.owner}' and net_name='{self.net_name}' and dataset_name='{self.dataset_name}' and
+            dataset_name not in (1, 2);
             """
         ).first()
         if r:
@@ -220,10 +236,10 @@ def bn_learning(dataset, parameters, user):
         return {"message": "Dataset file not found"}, 404
 
     builder = BnBuilder(parameters=parameters)
-    error = builder.params_validation(df.columns)
-    if error:
+    check = builder.params_validation(df.columns)
+    if check:
         bn = builder.build(df, user)
     else:
-        return error, 500
+        return check, 500
 
     return bn, 200

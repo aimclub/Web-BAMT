@@ -14,6 +14,7 @@ class Dataset(db.Model):
     location = db.Column(db.Text)
     map = db.Column(JSON)
 
+    description = db.Column(db.Text)
     # hyperparams = db.Column(JSON)
     def __repr__(self):
         return f"Dataset(name='{self.name}', user='{self.owner}', loc='{self.location}')"

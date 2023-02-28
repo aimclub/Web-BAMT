@@ -25,23 +25,5 @@ class DatasetsSeeder(Seeder):
         print("Adding dataset: %s" % dataset_hack)
         print("Adding dataset: %s" % dataset_vk)
 
-        sample_hack = Sample(owner='dev',
-                             net_name='hack',
-                             dataset_name="hack",
-                             sample_loc=r"data\0_sample.json",
-                             )
-
-        sample_vk = Sample(owner="dev",
-                           net_name="vk",
-                           dataset_name="vk",
-                           sample_loc=r"data\1_sample.json",
-                           )
-
-        print("Adding sample: %s" % sample_hack)
-        print("Adding sample: %s" % sample_vk)
-
-        self.db.session.add(sample_hack)
-        self.db.session.add(sample_vk)
-
         self.db.session.add(dataset_hack)
         self.db.session.add(dataset_vk)

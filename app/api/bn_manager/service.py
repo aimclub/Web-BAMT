@@ -5,7 +5,6 @@ from app.api.experiment.models import BayessianNet, Sample
 from app import db
 
 import os
-import json
 
 from ast import literal_eval
 from flask import current_app
@@ -25,21 +24,15 @@ class SampleWorker(object):
             SELECT * FROM samples;
             """
         ).all()
-        print(r_)
-        if not self.is_our:
-            r = db.session.execute(
-                f"""
-                SELECT * FROM samples
-                WHERE owner='{self.owner}' and net_name='{self.net_name}' and dataset_name='{self.dataset_name}';
-                """
-            ).first()
-        else:
-            r = db.session.execute(
-                f"""
-                SELECT * FROM samples
-                WHERE owner='dev' and dataset_name='{self.dataset_name}';
-                """
-            ).first()
+        # print(self.owner, self.net_name, self.dataset_name)
+        # print(r_)
+        r = db.session.execute(
+            f"""
+            SELECT * FROM samples
+            WHERE owner='{self.owner}' and net_name='{self.net_name}' and dataset_name='{self.dataset_name}';
+            """
+        ).first()
+
         if not r:
             raise FileNotFoundError
         return r
@@ -72,19 +65,13 @@ class SampleWorker(object):
             else:
                 sys_loc = project_root()
         else:
-            if not self.is_our:
-                sys_loc = current_app.config["SAMPLES_FOLDER"]
-            else:
-                sys_loc = project_root()
+            sys_loc = current_app.config["SAMPLES_FOLDER"]
         path = os.path.join(sys_loc, rel_loc)
 
         if mode == "dataset":
             df = pd.read_csv(path, index_col=0)
         else:
-            if self.is_our:
-                df = pd.DataFrame(json.load(open(path)))
-            else:
-                df = pd.read_csv(path, index_col=0)
+            df = pd.read_csv(path, index_col=0)
 
         if df.empty:
             raise FileNotFoundError
@@ -94,19 +81,6 @@ class SampleWorker(object):
         numeric_values = []
         category_vals = []
 
-        # bins = np.histogram_bin_edges(data)
-        # end = len(bins)
-
-        # for i1, i2 in zip(range(0, end), range(1, end)):
-        #     n = 0
-        #     for value in data:
-        #         if bins[i1] <= value <= bins[i2]:
-        #             n += 1
-        #         else:
-        #             continue
-        #
-        #     numeric_values.append(n / len(data))
-        #     category_vals.append(f"{round(bins[i1], 2)} - {round(bins[i2], 2)}")
         for bin_min, bin_max in bins:
             n = 0
             for value in data:
@@ -136,11 +110,19 @@ class SampleWorker(object):
         sample_meta = self.extract_sample_meta()
         truth_meta = self.extract_truth_meta()
 
-        series_from_sample = self.extract_file(sample_meta.sample_loc, mode="sample")[self.node]
+        series_from_sample = self.extract_file(sample_meta.sample_loc, mode="sample")
+
+        if not self.node in series_from_sample:
+            return None
+        else:
+            series_from_sample = series_from_sample[self.node]
+
         if literal_eval(truth_meta.map)[self.node] == "float":
             series_from_dataset = self.extract_file(truth_meta.location, mode="dataset")[self.node]
-            q1, q2 = self.get_data_for_qq_plot(series_from_dataset, series_from_dataset)
-            return {"data": list(q1), "xvals": list(q1), "type": "cont"}
+            # print("DS: ", series_from_dataset)
+            # print("Sample: ", series_from_sample)
+            q1, q2 = self.get_data_for_qq_plot(series_from_dataset, series_from_sample)
+            return {"data": list(q1), "xvals": list(q2), "type": "cont"}
         else:
             freq = pd.value_counts(series_from_sample, normalize=True)
             return {"data": freq.values.tolist(), "xvals": freq.index.tolist(), "type": "disc"}
@@ -170,7 +152,12 @@ def find_edges_by_owner_and_nets_names(names: list, owner: str):
 
 
 def remove_samples(owner, name):
-    Sample.query.filter_by(owner=owner, net_name=name).delete()
+    query_res = Sample.query.filter_by(owner=owner, net_name=name)
+    rel_path = query_res.first().sample_loc
+    abs_path = os.path.join(current_app.config["SAMPLES_FOLDER"], rel_path)
+
+    os.remove(abs_path)
+    query_res.delete()
     db.session.commit()
 
 
