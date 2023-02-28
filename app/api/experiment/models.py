@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from sqlalchemy import JSON
+# from sqlalchemy import JSON
 # from datetime import datetime
 
 from app import db
@@ -11,6 +11,7 @@ class BayessianNet(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     owner = db.Column(db.String)
+    dataset_name = db.Column(db.String)
 
     edges = db.Column(db.String, nullable=False)
     nodes = db.Column(db.String, nullable=False)
@@ -25,6 +26,9 @@ class BayessianNet(db.Model):
     # bl_add = db.Column(db.Text)
     remove_init_edges = db.Column(db.Boolean, default=False)
 
+    regressor = db.Column(db.String, default="LinearRegression")
+    classifier = db.Column(db.String, default="LogisticRegression")
+
     descriptor = db.Column(db.Text)
 
 
@@ -33,7 +37,10 @@ class Sample(db.Model):
     __tablename__ = 'samples'
     id = db.Column(db.Integer, primary_key=True)
     owner = db.Column(db.String)
-    net_name = db.Column(db.Integer)
-    # dataset_id = db.Column(db.Integer)
+    net_name = db.Column(db.String)
+    dataset_name = db.Column(db.String)
 
-    sample = db.Column(JSON)
+    sample_loc = db.Column(db.String)
+
+    def __repr__(self):
+        return f"Sample(owner={self.owner}, net_name={self.net_name}, dataset_name={self.dataset_name})"

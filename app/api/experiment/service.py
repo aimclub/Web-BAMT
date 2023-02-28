@@ -1,135 +1,245 @@
 import json
-
-import numpy as np
-from bamt.Preprocessors import Preprocessor
+import os
 import pandas as pd
+
+import bamt.networks as Networks
+from bamt.preprocessors import Preprocessor
+from bamt.utils.GraphUtils import nodes_types
+
 from sklearn import preprocessing as pp
-import bamt.Networks as Networks
 
 from .models import BayessianNet, Sample
+
 from app import db
+from flask import current_app
 
 
-def BN_learning(directory, parameters, user):
-    h = pd.read_csv(directory, index_col=0)
+class DataExtractor(object):
+    def __init__(self, dataset: str):
+        """
+        :param dataset: str, name of dataset
+        """
+        # self.hyperparams = hyperparams
+        self.dataset = dataset
+        self.is_our = True if dataset in ["vk", "hack"] else False
 
-    encoder = pp.LabelEncoder()
-    discretizer = pp.KBinsDiscretizer(n_bins=5, encode='ordinal', strategy='quantile')
+    def extract_meta(self, user: str):
+        """
+        Extracting a dataset meta form database
+        :param user:
+        :return:
+        """
+        if not self.is_our:
+            query = \
+            f"""
+            SELECT location, map from datasets 
+            WHERE owner='{user}' and name='{self.dataset}';
+            """
+        else:
+            query = \
+            f"""
+            SELECT location, map from datasets 
+            WHERE owner='dev' and name='{self.dataset}';
+            """
 
-    p = Preprocessor([('encoder', encoder), ('discretizer', discretizer)])
+        dataset = db.session.execute(query).first()
+        if not dataset:
+            return False
+        return dataset
 
-    discretized_data, est = p.apply(h)
-    info = p.info
+    def extract_file(self, meta):
+        """
+        meta: Dict["location": str, "map": Dict]
+        Extracting a dataset form database and convert datatypes according a map
+        """
 
-    bn = Networks.HybridBN(has_logit=parameters["has_logit"], use_mixture=parameters["use_mixture"])
+        hyperparams = {"index_col": 0}
 
-    bn.add_nodes(descriptor=info)
-    if "params" in parameters.keys():
-        if "init_nodes" in parameters["params"].keys():
-            if any(i not in bn.nodes_names for i in parameters["params"]["init_nodes"]):
-                return {"message": "Malformed init_nodes"}, 400
-        if "init_edges" in parameters["params"].keys():
-            if any(j not in bn.nodes_names for i in parameters["params"]["init_edges"] for j in i):
-                return {"message": "Malformed init_edges"}, 400
-        bn.add_edges(data=discretized_data, optimizer='HC', scoring_function=(parameters["scoring_function"],),
-                     params=parameters["params"])
+        if self.is_our:
+            loc = os.path.join(meta["location"])
+        else:
+            loc = os.path.join(current_app.config["DATASETS_FOLDER"], meta["location"])
 
-        # params unpacking for saving into db
-        for k, v in parameters['params'].items():
+        dataset = pd.read_csv(loc, **hyperparams)
+
+        if dataset.empty:
+            raise FileNotFoundError
+
+        if not meta["map"] == "null":
+            return dataset.astype(json.loads(meta["map"]))
+        else:
+            return dataset
+
+    def __repr__(self):
+        return f"Extractor on '{self.dataset}'"
+
+
+class BnBuilder(object):
+    def __init__(self, parameters):
+        self.parameters = parameters
+
+    def params_validation(self, nodes_names):
+        if "params" in self.parameters.keys():
+            if "init_nodes" in self.parameters["params"].keys():
+                if any(i not in nodes_names for i in self.parameters["params"]["init_nodes"]):
+                    return {"message": "Malformed init_nodes"}, 400
+            if "init_edges" in self.parameters["params"].keys():
+                if any(j not in nodes_names for i in self.parameters["params"]["init_edges"] for j in i):
+                    return {"message": "Malformed init_edges"}, 400
+            return True
+        else:
+            return {"message": "Parameters were not found"}, 400
+
+    def unpack_params(self, params):
+        """
+        params unpacking for saving into db
+        {<...> , {"params" : <...>}} -> {<...>}
+        """
+        for k, v in params['params'].items():
             if k != "remove_init_edges":
                 val = str(v)
             else:
                 val = v
-            parameters[k] = str(val)
-        del parameters["params"]
-    else:
-        bn.add_edges(data=discretized_data, optimizer='HC', scoring_function=(parameters["scoring_function"],))
+            params[k] = val
 
-    bn.fit_parameters(data=h, user=user)
+        _ = params.pop("params")
+        self.parameters = params
 
-    type_descriptor = {}
-    for node in bn.nodes:
-        type_descriptor[node.name] = node.type
+    def preprocessing(self, data):
+        encoder = pp.LabelEncoder()
+        discretizer = pp.KBinsDiscretizer(n_bins=5, encode='ordinal', strategy='quantile')
 
-    # ======= Sample preparations ============
+        p = Preprocessor([('encoder', encoder), ('discretizer', discretizer)])
 
-    def get_data_for_barplot(data, bins):
-        numeric_values = []
-        category_vals = []
+        discretized_data, est = p.apply(data)
+        info = p.info
+        return discretized_data, info
 
-        # bins = np.histogram_bin_edges(data)
-        # end = len(bins)
 
-        # for i1, i2 in zip(range(0, end), range(1, end)):
-        #     n = 0
-        #     for value in data:
-        #         if bins[i1] <= value <= bins[i2]:
-        #             n += 1
-        #         else:
-        #             continue
-        #
-        #     numeric_values.append(n / len(data))
-        #     category_vals.append(f"{round(bins[i1], 2)} - {round(bins[i2], 2)}")
-        for bin_min, bin_max in bins:
-            n = 0
-            for value in data:
-                if bin_min <= value <= bin_max:
-                    n += 1
-                else:
-                    continue
-
-            numeric_values.append(n / len(data))
-            category_vals.append(f"{round(bin_min, 2)} - {round(bin_max, 2)}")
-        return {"data": numeric_values, "xvals": category_vals}
-
-    sample = bn.sample(442, as_df=False)
-
-    new = {i: [] for i in sample[0].keys()}
-    for n in sample:
-        for node, val in n.items():
-            if isinstance(val, float):
-                if val < 0 or np.isnan(val):
-                    # new[node].append(np.nan)
-                    continue
-                else:
-                    new[node].append(val)
-            else:
-                new[node].append(val)
-
-    if list(new.keys())[0] in ['Tectonic regime', 'Period', 'Lithology', 'Structural setting', 'Gross', 'Netpay',
-                               'Porosity', 'Permeability', 'Depth']:
-        loc = "data/0_sample.json"
-    else:
-        loc = "data/1_sample.json"
-
-    with open(loc) as f:
-        full_sample = json.load(f)
-
-    new_to_plot = {}
-    for node, val_list in new.items():
-        if not val_list:
-            continue
-        elif isinstance(val_list[0], float):
-            bins_raw = full_sample[node]["xvals"]
-            bins = [list(map(lambda x: float(x), i.split(" - "))) for i in bins_raw]
-            new_to_plot[node] = get_data_for_barplot(val_list, bins=bins)
+    def choose_network(self, info: dict):
+        if all("cont" == i for i in info.values()):
+            return Networks.ContinuousBN(use_mixture=self.parameters["use_mixture"])
+        elif all(i in ["str", "disc_num"] for i in info.values()):
+            return Networks.DiscreteBN()
         else:
-            freq = pd.value_counts(val_list, normalize=True)
-            new_to_plot[node] = {"data": freq.values.tolist(), "xvals": freq.index.tolist()}
+            return Networks.HybridBN(use_mixture=self.parameters["use_mixture"],
+                                     has_logit=self.parameters["has_logit"])
 
-    return {"network": parameters | {"edges": bn.edges, "nodes": bn.nodes_names, "descriptor": type_descriptor},
-            "sample": new_to_plot}, 200
+    @staticmethod
+    def make_obj(model_str):
+        if not model_str:
+            return None
+        from .str2callable import models
+        return models[model_str]()
+
+    def build(self, df, user: str):
+        bn = self.choose_network(nodes_types(df))
+
+        discretized_data, info = self.preprocessing(df)
+        bn.add_nodes(info)
+
+        bn.add_edges(data=discretized_data, optimizer='HC',
+                     scoring_function=(self.parameters["scoring_function"],),
+                     classifier=self.make_obj(self.parameters.get("classifier", None)),
+                     params=self.parameters.get("params", None),
+                     progress_bar=False)
+
+        if self.parameters.get("params", False):
+            self.unpack_params(self.parameters)
+        bn.fit_parameters(df, user=user)
+        return bn
 
 
-def update_db(network, sample):
-    bn = BayessianNet(**network)
-    sample = Sample(**sample)
+class Sampler(object):
+    def __init__(self, bn):
+        self.bn = bn
 
-    db.session.add(bn)
-    db.session.add(sample)
+    def sample(self):
+        sample = self.bn.sample(442, progress_bar=False)
 
-    db.session.commit()
+        # numerical_cols = sample.select_dtypes(include='number').columns
+        pos_cols = []
+        for node, sign in self.bn.descriptor["signs"].items():
+            if sign == "pos":
+                pos_cols.append(node)
+
+        sample_filtered = sample[(sample[pos_cols] > 0).all(axis=1)]
+        return sample_filtered
 
 
-def get_header_from_csv(file):
-    return pd.read_csv(file, index_col=0, nrows=0).columns.tolist()
+class Manager(object):
+    """
+    This class supposed to convert input to the database format and send it there.
+    """
+
+    def __init__(self,
+                 bn, sample,
+                 owner, net_name, dataset_name):
+        self.bn = bn
+        self.sample = sample
+        self.owner = owner
+        self.net_name = net_name
+        self.dataset_name = dataset_name
+    def save_sample(self):
+        self.sample.to_csv(os.path.join(current_app.config["SAMPLES_FOLDER"],
+                                        self.owner,
+                                        self.net_name + ".csv"))
+
+    def is_sample(self):
+        r = db.session.execute(
+            f"""
+            SELECT * FROM samples
+            WHERE owner='{self.owner}' and net_name='{self.net_name}' and dataset_name='{self.dataset_name}' and
+            dataset_name not in (1, 2);
+            """
+        ).first()
+        if r:
+            return True
+        else:
+            return False
+
+    def packing(self, parameters):
+        type_descriptor = {}
+        for node in self.bn.nodes:
+            type_descriptor[node.name] = node.type
+
+        network = parameters | {"edges": str(self.bn.edges), "nodes": str(self.bn.nodes_names),
+                                "descriptor": str(type_descriptor)}
+        network_to_db = network | {"owner": self.owner, "name": self.net_name, "dataset_name": self.dataset_name}
+
+        sample_loc = os.path.join(self.owner,
+                                  self.net_name + ".csv")
+        sample_to_db = {"sample_loc": sample_loc, "owner": self.owner, "net_name": self.net_name,
+                        "dataset_name":self.dataset_name}
+        return network_to_db, sample_to_db
+
+    def update_db(self, network, sample):
+        bn = BayessianNet(**network)
+
+        if not self.is_sample():
+            sample = Sample(**sample)
+            db.session.add(sample)
+
+        db.session.add(bn)
+        db.session.commit()
+
+
+def bn_learning(dataset, parameters, user):
+    extractor = DataExtractor(dataset=dataset)
+
+    dataset_meta = extractor.extract_meta(user=user)
+    if not dataset_meta:
+        return {"message": "Dataset meta not found."}, 404
+
+    df = extractor.extract_file(dataset_meta)
+    if df.empty:
+        return {"message": "Dataset file not found"}, 404
+
+    builder = BnBuilder(parameters=parameters)
+    check = builder.params_validation(df.columns)
+    if check:
+        bn = builder.build(df, user)
+    else:
+        return check, 500
+
+    return bn, 200

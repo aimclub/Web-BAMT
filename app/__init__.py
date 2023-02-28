@@ -7,7 +7,6 @@ from flask_cors import CORS
 
 db = SQLAlchemy()
 
-
 def create_app(env=None):
     from app.config import config_by_name
     template_dir = os.path.abspath('frontend/build')
@@ -28,7 +27,20 @@ def create_app(env=None):
         response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
         return response
 
+    datasets_dst = os.path.abspath(app.config['DATASETS_FOLDER'])
+    if not os.path.isdir(datasets_dst):
+        os.mkdir(datasets_dst)
+
+    samples_dst = os.path.abspath(app.config['SAMPLES_FOLDER'])
+    if not os.path.isdir(samples_dst):
+        os.mkdir(samples_dst)
+
     from app.api.routes_summarize import register_routes
     register_routes(api=api, app=app)
+
+    from flask_seeder import FlaskSeeder
+
+    seeder = FlaskSeeder()
+    seeder.init_app(app, db)
 
     return app

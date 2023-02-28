@@ -3,6 +3,8 @@
 *\.idea
 *\.ipynb_checkpoints
 __pycache__/
+Datasets
+Samples
 *.log
 *.ini
 *.sqlite

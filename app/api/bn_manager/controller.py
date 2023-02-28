@@ -1,14 +1,14 @@
 import ast
-import json
+from flask import request
 
 from flask_accepts import responds
 from flask_restx import Namespace, Resource
 from werkzeug.exceptions import BadRequest, NotFound
 
-from .schema import BNGetNamesSchema, SampleSchema
+from .schema import BNGetNamesSchema
 from .service import find_bns_by_user, remove_bn, find_bns_by_owner_and_name, find_bn_names_by_user, find_sample, \
-    remove_samples, find_edges_by_owner_and_nets_names
-from app.api.auth.service import find_user_by_email
+    remove_samples, find_edges_by_owner_and_nets_names, SampleWorker
+from app.api.auth.service import find_user_by_username
 
 api = Namespace("BN_manager", description="BN store operations")
 
@@ -25,10 +25,12 @@ class BNManagerResource(Resource):
         nets = find_bns_by_user(owner=owner)
         return {"networks": {n: {
             "name": data.name,
+            "dataset_name": data.dataset_name,
             "edges": ast.literal_eval(data.edges),
             "nodes": ast.literal_eval(data.nodes),
             "use_mixture": data.use_mixture,
             "has_logit": data.has_logit,
+            "classifier": data.classifier,
             "params": {"init_edges": ast.literal_eval(data.init_edges) if data.init_edges else None,
                        "init_nodes": ast.literal_eval(data.init_nodes) if data.init_nodes else None,
                        # "white_list": data.white_list,
@@ -44,7 +46,7 @@ class BNGetNamesManagerResource(Resource):
     def get(self, owner):
         """Get BN names to validate uniqueness"""
 
-        if not find_user_by_email(owner):
+        if not find_user_by_username(owner):
             raise BadRequest("No user was found")
 
         names = find_bn_names_by_user(owner=owner)
@@ -52,7 +54,7 @@ class BNGetNamesManagerResource(Resource):
 
 
 @api.route("/remove/<string:owner>/<string:name>")
-class BNManagerResource(Resource):
+class BNRemoverResource(Resource):
     # @accepts(api=api)
     # @api.doc(responses={401: 'No User found'})
     def delete(self, owner, name):
@@ -66,38 +68,42 @@ class BNManagerResource(Resource):
         return {"message": "Success"}
 
 
-@api.route("/get_sample/<string:owner>/<string:name>/<string:node>")
-class BNManagerResource(Resource):
-    @responds(schema=SampleSchema, api=api)
-    # @api.doc(responses={401: 'No User found'})
-    def get(self, owner, name, node):
+@api.route("/get_graph_data/<string:owner>/<string:net_name>/<string:dataset_name>/<string:node>")
+class SamplerResource(Resource):
+    @api.doc(responses={401: 'No User found'})
+    @api.doc(responses={200: """{'data': List, 
+                                 'xvals': List,
+                                 'type': Str}"""})
+    def get(self, owner, net_name, dataset_name, node):
         """Get real and sampled data"""
-        if not find_sample(owner=owner, name=name):
-            raise NotFound("Sample does not exist.")
+        if not find_sample(owner, net_name):
+            return {"message": "Sample not found in database."}, 404
+        worker = SampleWorker(owner, net_name, dataset_name, node)
+        return worker.get_display()
 
-        sample = find_sample(owner=owner, name=name)[0]
-        node_sample = sample[node]
+@api.route("/get_equal_edges")
+class BNAnalyserResource(Resource):
+    @api.doc(params={"names": "List[str], names of nets",
+                     "owner": "net holder name"})
+    def get(self):
+        """get equal edges"""
+        names = request.args.get("names")
+        owner = request.args.get("owner")
 
-        if "Gross" in sample.keys():
-            case_id = 0
-        else:
-            case_id = 1
-        location = f"data/{case_id}_sample.json"
+        names = ast.literal_eval(names)
+        out = find_edges_by_owner_and_nets_names(owner=owner, names=names)
 
-        with open(location) as f:
-            real_node = json.load(f)[node]
+        if len(out) != 2:
+            return {"message": "Nets weren't found."}, 404
 
-        return {"sampled_data": node_sample, "real_data": real_node}
+        edges = []
+        for i_net in range(len(out)):
+            edges.append(ast.literal_eval(out[i_net][0]))
 
+        if sorted(edges[0]) == sorted(edges[1]):
+            return {'message': "Nets are equal"}
 
-# @api.route("/get_equal_edges/<string:owner>/<names>")
-# class BNManagerResource(Resource):
-#     # @accepts(api=api)
-#     # @api.doc(responses={401: 'No User found'})
-#     def get(self, owner, names):
-#         """get equal edges"""
-#         names = ast.literal_eval(names)
-#         out = find_edges_by_owner_and_nets_names(owner=owner, names=names)
-#         edges1 = ast.literal_eval(out[0][0])
-#         edges2 = ast.literal_eval(out[1][0])
-#         return {"message": "Suc"}
+        edges0 = set(map(tuple, edges[0]))
+        edges1 = set(map(tuple, edges[1]))
+
+        return {"Difference": list(edges0.intersection(edges1)) }
