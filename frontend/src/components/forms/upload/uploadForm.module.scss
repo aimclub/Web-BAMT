@@ -1,0 +1,108 @@
+.root {
+  background: #ffffff;
+  border-radius: 4px;
+}
+
+.title {
+  margin: 0;
+  padding: 6px 30px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.15px;
+
+  color: #000000;
+  background: #f1f3f5;
+}
+
+.form {
+  padding: 8px 12px;
+  border-bottom: 1px solid #dadada;
+}
+
+.data {
+  padding: 20px 0;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.column {
+  padding: 0 30px;
+
+  position: relative;
+
+  &:not(:last-child)::after {
+    content: "";
+    width: 1px;
+    height: calc(100% - 50px);
+
+    background: rgba(0, 0, 0, 0.5);
+
+    display: block;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+}
+
+.textfield {
+  margin: 0 0 30px;
+
+  flex-direction: column;
+  gap: 12px;
+  align-items: stretch;
+}
+
+.label {
+  margin: 0;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  letter-spacing: 0.25px;
+
+  color: #000000;
+}
+
+.subtitle {
+  margin: 20px 0 8px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.15px;
+
+  color: #000000;
+}
+
+.format {
+  margin: 0;
+  padding: 0;
+  max-width: 480px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.15px;
+
+  color: rgba(0, 0, 0, 0.5);
+
+  list-style: none;
+
+  .item {
+    &::before {
+      content: "—";
+      margin-right: 4px;
+    }
+  }
+}

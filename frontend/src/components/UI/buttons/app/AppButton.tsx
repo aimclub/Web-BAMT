@@ -12,7 +12,7 @@ const AppButton = styled((props: IProps) => {
     : undefined;
 
   return <Button {...props} {...linkProps} />;
-})(({ theme }) => ({
+})(({ theme, color }) => ({
   padding: 20,
   width: "100%",
 
@@ -28,7 +28,7 @@ const AppButton = styled((props: IProps) => {
 
   borderRadius: "4px",
   background: "#FFFFFF",
-  color: theme.palette.primary.main,
+  color: color === "secondary" ? "#16A7E0" : theme.palette.primary.main,
 
   transition: "all 0.5s ease-in-out",
 

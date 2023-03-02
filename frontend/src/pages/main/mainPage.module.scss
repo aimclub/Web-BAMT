@@ -1,0 +1,29 @@
+.root {
+  margin: 80px auto;
+  max-width: 1120px;
+}
+
+.title {
+  margin: 0;
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 36px;
+  line-height: 49px;
+  letter-spacing: 0.15px;
+
+  color: #000000;
+}
+
+.description {
+  margin: 8px 0 60px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 33px;
+  letter-spacing: 0.15px;
+
+  color: rgba(0, 0, 0, 0.5);
+}

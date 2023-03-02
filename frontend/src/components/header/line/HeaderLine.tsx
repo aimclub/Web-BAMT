@@ -7,6 +7,8 @@ import { formatStringToCapitalize } from "../../../assets/utils/format";
 
 import scss from "./headerLine.module.scss";
 
+// TODO: update
+
 const HeaderLine = () => {
   const { model } = useParams();
   const isCorrectModel = model === "social" || model === "geological";
