@@ -38,10 +38,10 @@ class SignInResource(Resource):
     def put(self):
         """Link token to user"""
         obtained = request.get_json()
-        email = obtained["email"]
+        username = obtained["username"]
         token = obtained["token"]
 
-        user = find_user_by_username(email)
+        user = find_user_by_username(username)
 
         if not user:
             raise BadRequest("No users is found")
