@@ -7,7 +7,7 @@ const SampleButton = () => {
   const { model } = useAppSelector((state) => state.model);
   const { user } = useAppSelector((state) => state.auth);
   const { data } = bn_managerAPI.useGetBNDataNamesQuery({
-    owner: user?.email || "",
+    owner: user?.username || "",
   });
 
   return (

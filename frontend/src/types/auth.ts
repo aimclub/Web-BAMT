@@ -1,9 +1,9 @@
 export interface IUser {
-  email: string;
+  username: string;
 }
 
 export interface IUserAuth {
-  email: string;
+  username: string;
   password: string;
 }
 

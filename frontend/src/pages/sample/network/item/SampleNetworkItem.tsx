@@ -23,7 +23,7 @@ const SampleNetworkItem: FC<{ index: number; network: INetwork | "" }> = ({
   const { networks, selectedNode } = useAppSelector((state) => state.sample);
 
   const { data } = bn_managerAPI.useGetBNDataQuery({
-    owner: user?.email || "",
+    owner: user?.username || "",
   });
   const all_networks: INetwork[] = data ? Object.values(data.networks) : [];
   const dispatch = useAppDispatch();

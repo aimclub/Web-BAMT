@@ -1,38 +1,38 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
-import { BASE_URL, URLendpoints } from "../baseURL";
+import { BASE_URL } from "../baseURL";
 import { IToken, IUserAuth } from "../../types/auth";
 
 export const authAPI = createApi({
   reducerPath: "userAPI",
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${BASE_URL}/api/auth/` }),
   endpoints: (build) => ({
     signin: build.mutation<IToken, IUserAuth>({
       query: (data) => ({
-        url: URLendpoints.AUTH_LOGIN,
+        url: "get_token",
         method: "POST",
         body: {
-          email: data.email,
+          username: data.username,
           password: data.password,
         },
       }),
     }),
-    checkToken: build.mutation<null, { token: string; email: string }>({
+    checkToken: build.mutation<null, { token: string; username: string }>({
       query: (data) => ({
-        url: URLendpoints.AUTH_LOGIN,
+        url: "signin",
         method: "PUT",
         body: {
-          email: data.email,
+          username: data.username,
           token: data.token,
         },
       }),
     }),
     register: build.mutation<{ message: string }, IUserAuth>({
       query: (data) => ({
-        url: URLendpoints.AUTH_REGISTER,
+        url: "signup",
         method: "POST",
         body: {
-          email: data.email,
+          username: data.username,
           password: data.password,
         },
       }),

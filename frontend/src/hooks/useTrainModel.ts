@@ -18,7 +18,7 @@ export const useTrainModel = ({
   const dispatch = useAppDispatch();
   const [trainModel, { isError, isSuccess }] = experimentAPI.useTrainMutation();
   const { refetch } = bn_managerAPI.useGetBNDataNamesQuery({
-    owner: user?.email || "",
+    owner: user?.username || "",
   });
 
   const handleTrainModel = useCallback(
@@ -27,7 +27,7 @@ export const useTrainModel = ({
         dispatch(setTraining(true));
 
         trainModel({
-          owner: user?.email || "",
+          owner: user?.username || "",
           name: values.display_name,
           case_id,
           bn_params: {
@@ -52,7 +52,7 @@ export const useTrainModel = ({
       links,
       refetch,
       trainModel,
-      user?.email,
+      user?.username,
     ]
   );
 

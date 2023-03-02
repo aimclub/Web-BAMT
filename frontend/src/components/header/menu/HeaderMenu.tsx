@@ -16,7 +16,7 @@ const HeaderMenu = () => {
 
   return (
     <div className={scss.auth}>
-      <p className={scss.email}>{user?.email}</p>
+      <p className={scss.email}>{user?.username}</p>
       <NetworksPopup />
       <IconButton onClick={handleLogout}>
         <ExitToAppIcon />

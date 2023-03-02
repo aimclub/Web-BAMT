@@ -12,10 +12,13 @@ export const userSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<{ token: string; email: string }>) => {
+    login: (
+      state,
+      action: PayloadAction<{ token: string; username: string }>
+    ) => {
       state.isAuth = true;
       state.token = action.payload.token;
-      state.user = { email: action.payload.email };
+      state.user = { username: action.payload.username };
     },
     logout: (state) => {
       state.isAuth = false;
@@ -28,7 +31,7 @@ export const userSlice = createSlice({
       .addMatcher(authAPI.endpoints.signin.matchFulfilled, (state, action) => {
         state.isAuth = true;
         state.token = action.payload.token;
-        state.user = { email: action.meta.arg.originalArgs.email };
+        state.user = { username: action.meta.arg.originalArgs.username };
       })
       .addMatcher(authAPI.endpoints.checkToken.matchRejected, (state) => {
         state.isAuth = false;

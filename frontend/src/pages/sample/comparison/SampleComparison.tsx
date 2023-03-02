@@ -19,11 +19,11 @@ const SampleСomparison = () => {
   useEffect(() => {
     if (selectedNode)
       getSample({
-        owner: user?.email || "",
+        owner: user?.username || "",
         name: selectedNode.network_name,
         node: selectedNode.node_name,
       });
-  }, [selectedNode, getSample, user?.email]);
+  }, [selectedNode, getSample, user?.username]);
 
   return (
     <section className={scss.root}>

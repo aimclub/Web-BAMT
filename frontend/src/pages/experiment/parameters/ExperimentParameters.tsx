@@ -17,7 +17,7 @@ const ExperimentParameters = () => {
   const { data: rootNodesData, isError: getRootNodesError } =
     experimentAPI.useGetRootNodesQuery({ case_id });
   const { isError: getBNNamesError } = bn_managerAPI.useGetBNDataNamesQuery({
-    owner: user?.email || "",
+    owner: user?.username || "",
   });
 
   const { checkDisplayName, displayNameError, clearDisplayNameError } =

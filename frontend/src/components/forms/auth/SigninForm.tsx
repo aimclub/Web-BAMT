@@ -12,7 +12,7 @@ const SigninForm = () => {
     initialValues: { login: "", password: "" },
     validationSchema,
     onSubmit: (values) => {
-      signin({ email: values.login, password: values.password });
+      signin({ username: values.login, password: values.password });
     },
   });
 

@@ -29,10 +29,10 @@ const SignupForm = () => {
       setPasswordMatch(passMatch);
 
       if (passMatch) {
-        signup({ email: values.login, password: values.password }).then(
+        signup({ username: values.login, password: values.password }).then(
           (res) => {
             if ((res as { data: { message: string } })?.data) {
-              login({ email: values.login, password: values.password });
+              login({ username: values.login, password: values.password });
             }
           }
         );

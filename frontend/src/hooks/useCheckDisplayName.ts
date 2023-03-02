@@ -5,7 +5,7 @@ import { useAppSelector } from "./redux";
 export const useCheckDisplayName = () => {
   const { user } = useAppSelector((s) => s.auth);
   const { data: names } = bn_managerAPI.useGetBNDataNamesQuery({
-    owner: user?.email || "",
+    owner: user?.username || "",
   });
 
   const [displayNameError, setDisplayNameError] = useState<string | undefined>(

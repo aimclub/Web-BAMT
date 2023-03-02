@@ -9,7 +9,7 @@ const SampleNetwork = () => {
   const { networks } = useAppSelector((state) => state.sample);
 
   const { isError } = bn_managerAPI.useGetBNDataQuery({
-    owner: user?.email || "",
+    owner: user?.username || "",
   });
 
   return (

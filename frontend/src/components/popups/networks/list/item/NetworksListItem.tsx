@@ -14,7 +14,7 @@ const NetworksListItem: FC<{ network: string }> = ({ network }) => {
 
   const handleRemoveNetwork = useCallback(() => {
     if (user && network) {
-      removeNetwork({ owner: user.email, name: network });
+      removeNetwork({ owner: user.username, name: network });
     }
   }, [user, network, removeNetwork]);
 
