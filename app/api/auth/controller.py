@@ -21,7 +21,7 @@ class AuthTokenResource(Resource):
         username = obtained['username']
         password = obtained['password']
 
-        if not isinstance(email, str):
+        if not isinstance(username, str):
             raise BadRequest(f"{email.__class__}")
 
         user = find_user_by_username(username)
