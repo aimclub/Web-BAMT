@@ -18,13 +18,13 @@ class AuthTokenResource(Resource):
     def post(self):
         """Get token by user login data"""
         obtained = request.get_json()
-        email = obtained['email']
+        username = obtained['username']
         password = obtained['password']
 
         if not isinstance(email, str):
             raise BadRequest(f"{email.__class__}")
 
-        user = find_user_by_username(email)
+        user = find_user_by_username(username)
         if not user or not check_password_hash(user.password, password):
             raise Unauthorized("check login data")
         token = generate_token(user.id)
