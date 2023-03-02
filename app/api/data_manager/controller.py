@@ -35,7 +35,11 @@ class DataUploaderResource(Resource):
         if errors:
             return {"message": errors}, 500
 
-        uploaded_file = request.form['content']
+        if not request.files:
+            return {"message": "no files"}, 404
+
+        uploaded_file = request.files["content"].read().decode("utf-8")
+
         name = request.form["name"]
         owner = request.form["owner"]
         description = request.form["description"]
