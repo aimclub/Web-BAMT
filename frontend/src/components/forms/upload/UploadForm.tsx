@@ -1,6 +1,7 @@
 import scss from "./uploadForm.module.scss";
 
 import AppButton from "../../UI/buttons/app/AppButton";
+import FileUpload from "../../UI/FileUpload/FileUpload";
 import TextFieldUnderline from "../../UI/textfields/TextFieldUnderline/TextFieldUnderline";
 
 const FILE_FORMAT: string[] = [
@@ -12,9 +13,13 @@ const FILE_FORMAT: string[] = [
 ];
 
 const UploadForm = () => {
+  // const handleExperimentClick = () => {
+  //   console.log("file", files);
+  // };
+
   return (
     <div className={scss.root}>
-      <form onSubmit={(event) => event.preventDefault()} className={scss.form}>
+      <form onSubmit={(e) => e.preventDefault()} className={scss.form}>
         <h3 className={scss.title}>Parametrs</h3>
         <div className={scss.data}>
           <div className={scss.column}>
@@ -51,9 +56,10 @@ const UploadForm = () => {
               ))}
             </ul>
 
-            <label>
-              <input type="file" />
-            </label>
+            <FileUpload
+              accept={{ "text/csv": [".csv"] }}
+              className={scss.upload}
+            />
           </div>
         </div>
       </form>

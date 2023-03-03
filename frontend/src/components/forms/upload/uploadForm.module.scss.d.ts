@@ -10,6 +10,7 @@ declare namespace UploadFormModuleScssNamespace {
     subtitle: string;
     textfield: string;
     title: string;
+    upload: string;
   }
 }
 

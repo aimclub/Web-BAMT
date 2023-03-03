@@ -1,0 +1,58 @@
+.root {
+  min-height: 44px;
+}
+
+.input {
+  padding: 12px;
+  box-sizing: border-box;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.25px;
+
+  color: #414549;
+  border: 1px dashed #f1f3f5;
+  border-radius: 4px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    color: #000000;
+    box-shadow: 0 0 8px -4px #414549;
+  }
+}
+
+.files {
+  margin: 0;
+  padding: 0 0 0 14px;
+}
+
+.item {
+  min-height: 44px;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+
+  color: #000000;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+
+  .size {
+    margin: 0 8px 0 4px;
+    color: rgba(0, 0, 0, 0.5);
+  }
+}
