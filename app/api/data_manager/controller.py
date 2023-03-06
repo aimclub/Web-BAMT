@@ -35,17 +35,17 @@ class DataUploaderResource(Resource):
         if errors:
             return {"message": errors}, 500
 
-        if not request.files:
-            return {"message": "no files"}, 404
-
-        uploaded_file = request.files["content"].read().decode("utf-8")
-
         name = request.form["name"]
         owner = request.form["owner"]
         description = request.form["description"]
 
+        if not request.files:
+            return {"message": "no files"}, 404
+
         if not find_user_by_username(owner):
             return {"message": "User not found!"}, 404
+
+        uploaded_file = request.files["content"].read().decode("utf-8")
 
         if get_number_of_datasets(owner) >= 3:
             return {"message": "The number of datasets can't be greater than 3"}, 405
