@@ -35,7 +35,7 @@ class BNManagerResource(Resource):
                     "descriptor": str}}
             }"""
                         }
-            )
+             )
     def get(self, owner):
         """Get BN Data"""
 
@@ -93,6 +93,7 @@ class SamplerResource(Resource):
     @api.doc(responses={200: """
     {'data': List, 
      'xvals': List,
+     'metrics': {metric: val},
      'type': Str}
                               """})
     def get(self, owner, net_name, dataset_name, node):
@@ -100,7 +101,11 @@ class SamplerResource(Resource):
         if not find_sample(owner, net_name):
             return {"message": "Sample not found in database."}, 404
         worker = SampleWorker(owner, net_name, dataset_name, node)
-        return worker.get_display()
+
+        display = worker.get_display()
+        status_code = 400 if "error" in display.keys() else 200
+        return display, status_code
+
 
 @api.route("/get_equal_edges")
 class BNAnalyserResource(Resource):
@@ -127,4 +132,4 @@ class BNAnalyserResource(Resource):
         edges0 = set(map(tuple, edges[0]))
         edges1 = set(map(tuple, edges[1]))
 
-        return {"Difference": list(edges0.intersection(edges1)) }
+        return {"Difference": list(edges0.intersection(edges1))}

@@ -6,9 +6,12 @@ from app import db
 
 import os
 
+from sklearn.mixture import GaussianMixture
+
 from ast import literal_eval
 from flask import current_app
 from utils import project_root
+
 
 class SampleWorker(object):
     def __init__(self, owner, net_name, dataset_name, node):
@@ -19,13 +22,6 @@ class SampleWorker(object):
         self.is_our = True if dataset_name in ["vk", "hack"] else False
 
     def extract_sample_meta(self):
-        r_ = db.session.execute(
-            f"""
-            SELECT * FROM samples;
-            """
-        ).all()
-        # print(self.owner, self.net_name, self.dataset_name)
-        # print(r_)
         r = db.session.execute(
             f"""
             SELECT * FROM samples
@@ -56,8 +52,6 @@ class SampleWorker(object):
             raise FileNotFoundError
         return meta
 
-
-
     def extract_file(self, rel_loc: str, mode: str) -> pd.DataFrame:
         if mode == "dataset":
             if not self.is_our:
@@ -76,6 +70,7 @@ class SampleWorker(object):
         if df.empty:
             raise FileNotFoundError
         return df
+
     @staticmethod
     def get_data_for_barplot(data, bins):
         numeric_values = []
@@ -106,6 +101,24 @@ class SampleWorker(object):
 
         return quantiles_data1, quantiles_data2
 
+    @staticmethod
+    def kl_divergence(p, q):
+        return np.sum(np.where(p != 0, p * np.log(p / q), 0))
+
+    def make_probas_cont(self, df_series, sample):
+        total = df_series.shape[0]
+        train, test = df_series[0:int(.8 * total)].values, df_series[int(.2 * total):].values
+
+        gaussian_mixture = GaussianMixture(n_components=3, random_state=42)
+        gaussian_mixture.fit(train.reshape(-1, 1))
+
+        df_proba = gaussian_mixture.predict_proba(test.reshape(-1, 1))
+
+        gaussian_mixture.fit(sample.values.reshape(-1, 1))
+        sample_proba = gaussian_mixture.predict_proba(test.reshape(-1, 1))
+
+        return df_proba, sample_proba
+
     def get_display(self):
         sample_meta = self.extract_sample_meta()
         truth_meta = self.extract_truth_meta()
@@ -113,19 +126,38 @@ class SampleWorker(object):
         series_from_sample = self.extract_file(sample_meta.sample_loc, mode="sample")
 
         if not self.node in series_from_sample:
-            return None
+            return {"error": f"Request error: {self.node}."}
         else:
             series_from_sample = series_from_sample[self.node]
 
+        series_from_dataset = self.extract_file(truth_meta.location, mode="dataset")[self.node]
         if literal_eval(truth_meta.map)[self.node] == "float":
-            series_from_dataset = self.extract_file(truth_meta.location, mode="dataset")[self.node]
-            # print("DS: ", series_from_dataset)
-            # print("Sample: ", series_from_sample)
             q1, q2 = self.get_data_for_qq_plot(series_from_dataset, series_from_sample)
-            return {"data": list(q1), "xvals": list(q2), "type": "cont"}
+            kl_div = self.kl_divergence(*self.make_probas_cont(series_from_dataset, series_from_sample))
+            return {"data": list(q1), "xvals": list(q2),
+                    "metrics": {"kl_divergence": kl_div},
+                    "type": "cont"}
         else:
-            freq = pd.value_counts(series_from_sample, normalize=True)
-            return {"data": freq.values.tolist(), "xvals": freq.index.tolist(), "type": "disc"}
+            freq_sample = pd.value_counts(series_from_sample, normalize=True)
+            freq_df = pd.value_counts(series_from_dataset, normalize=True)
+
+            not_predicted = set(freq_df.index.tolist()) - set(freq_sample.index.tolist())
+
+            for column in not_predicted:
+                freq_sample[column] = 0.0
+
+            n_s = series_from_sample.shape[0]
+            n_d = series_from_dataset.shape[0]
+
+            survival = (n_s - n_d) / n_d
+
+            kl_div = self.kl_divergence(freq_sample.values, freq_df.values)
+
+            return {"data": freq_sample.values.tolist(), "xvals": freq_sample.index.tolist(),
+                    "metrics": {"kl_divergence": kl_div,
+                                "survival": survival},
+                    "type": "disc"}
+
 
 def find_bns_by_user(owner):
     nets = BayessianNet.query.filter_by(owner=owner).all()

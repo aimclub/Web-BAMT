@@ -147,17 +147,16 @@ class BnBuilder(object):
         if self.parameters.get("params", False):
             self.unpack_params(self.parameters)
         bn.fit_parameters(df, user=user)
-        return bn
+        return bn, df.shape[0]
 
 
 class Sampler(object):
     def __init__(self, bn):
         self.bn = bn
 
-    def sample(self):
-        sample = self.bn.sample(442, progress_bar=False)
+    def sample(self, df_shape):
+        sample = self.bn.sample(df_shape*5, progress_bar=False)
 
-        # numerical_cols = sample.select_dtypes(include='number').columns
         pos_cols = []
         for node, sign in self.bn.descriptor["signs"].items():
             if sign == "pos":
@@ -238,8 +237,8 @@ def bn_learning(dataset, parameters, user):
     builder = BnBuilder(parameters=parameters)
     check = builder.params_validation(df.columns)
     if check:
-        bn = builder.build(df, user)
+        bn, df_shape = builder.build(df, user)
     else:
         return check, 500
 
-    return bn, 200
+    return bn, df_shape, 200

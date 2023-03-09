@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-# from datetime import datetime
 
 from flask_login import UserMixin
 
@@ -22,3 +21,6 @@ class User(UserMixin, db.Model):
     # active = db.Column(db.Boolean, default=False)
     tokens = db.Column(db.Text)
     # created_at = db.Column(db.DateTime, default=datetime.utcnow())
+
+    def __repr__(self):
+        return f"User(name={self.username})"

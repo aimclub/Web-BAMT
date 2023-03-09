@@ -9,7 +9,8 @@ from io import StringIO
 
 from .schema import UploadSchema
 from .service import update_db, find_dataset_by_user_and_dataset_name, get_number_of_datasets, \
-    automapping, get_dataset_meta_by_user, get_dataset_location, get_header_from_csv, check_db_fullness
+    automapping, get_dataset_meta_by_user, get_dataset_location, get_header_from_csv, check_db_fullness, \
+    remove_dataset_from_database
 
 from app.api.auth.service import find_user_by_username
 from json import load
@@ -30,10 +31,10 @@ class DataUploaderResource(Resource):
         Dataset itself is put inside folder of user, into db stores only links
         """
 
-        errors = UploadSchema().validate(request.form)
+        errors = UploadSchema().validate(request.form, partial=("content",))
 
         if errors:
-            return {"message": errors}, 500
+            return {"message": errors}, 422
 
         name = request.form["name"]
         owner = request.form["owner"]
@@ -61,13 +62,13 @@ class DataUploaderResource(Resource):
                 StringIO(uploaded_file),
                 index_col=0)
         except Exception:
-            return {"message": "Cannot read the file"}, 500
+            return {"message": "Cannot read the file"}, 422
 
         if df.shape[0] >= 5000 or df.shape[1] >= 20:
-            return {"message": "User's data is too big!"}, 501
+            return {"message": "User's data is too big!"}, 400
 
         if "Unnamed: 0" in df.columns:
-            return {"message": "Wrong data format"}, 500
+            return {"message": "Wrong data format"}, 400
         
         if df.empty:
             return {"message": "Convertion Error"}, 404
@@ -105,8 +106,36 @@ class DatasetObserverResource(Resource):
         user = request.args.get("user")
         ours = load(open(os.path.join(project_root(), "data/our_datasets.json")))
         if not user:
-            return {"message": "User not passed"}, 500
+            return {"message": "User not passed"}, 422
         return ours | get_dataset_meta_by_user(user=user)
+
+
+@api.route("/remove_dataset")
+class DatasetRemoverResource(Resource):
+    @api.doc(params={"name": "dataset name",
+                     "owner": "user name"},
+             responses={200: "Success",
+                        403: "Attempt to delete our data",
+                        404: "Dataset was not found in database."})
+    def delete(self):
+        """
+        Remove dataset.
+        """
+
+        name = request.args.get("name")
+        user = request.args.get("owner")
+
+        if name in ["hack", "vk"]:
+            return {"message": "Not allowed."}, 403
+
+        if not find_user_by_username(user):
+            return {"message": "User not found!"}, 404
+
+        result = remove_dataset_from_database(owner=user, name=name)
+        if result:
+            return {"message": "success."}, 200
+        else:
+            return {"message": "Empty location was provided."}, 400
 
 
 @api.route("/get_root_nodes")
@@ -160,7 +189,7 @@ class CheckFullnessResource(Resource):
 
         if not result:
             return {"message": {"datasets": f"Corrupted records: {diff['datasets']}",
-                                "samples":  f"Corrupted records: {diff['samples']}"}}, 500
+                                "samples":  f"Corrupted records: {diff['samples']}"}}, 200
         else:
             return {"message": "Database is full."}, 200
 

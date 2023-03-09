@@ -58,7 +58,7 @@ class BNResource(Resource):
             return {"message": "Limit of BNs has been reached."}, 406
 
         if name in [bn.name for bn in find_bns_by_user(owner)]:
-            return {"message": "Net name must be unique"}, 500
+            return {"message": "Net name must be unique"}, 422
 
         if not "use_mixture" in bn_params.keys():
             return {"message": "use_mixture not defined"}, 400
@@ -69,7 +69,7 @@ class BNResource(Resource):
 
         # ======= Main =========
 
-        result, status_code = bn_learning(dataset=dataset, parameters=bn_params, user=owner)
+        result, df_shape, status_code = bn_learning(dataset=dataset, parameters=bn_params, user=owner)
 
         if status_code != 200:
             return result
@@ -77,7 +77,7 @@ class BNResource(Resource):
         bn = result
 
         sampler = Sampler(bn)
-        sample = sampler.sample()
+        sample = sampler.sample(df_shape)
 
         manager = Manager(bn, sample, owner=owner,
                           net_name=name, dataset_name=dataset)
@@ -90,7 +90,7 @@ class BNResource(Resource):
         if os.path.isdir(os.path.join(STORAGE, owner)):
             shutil.rmtree(os.path.join(STORAGE, owner))
 
-        return {"network": package[0]}
+        return {"network": package[0]}, status_code
 
 
 @api.route("/get_models")
@@ -100,4 +100,4 @@ class ModelsResource(Resource):
     def get(self):
         model_type = request.args.get("model_type")
         models = classifiers if model_type == "classifier" else regressors
-        return {"models": list(models)}
+        return {"models": list(models)}, 200

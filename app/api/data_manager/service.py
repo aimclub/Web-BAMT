@@ -2,6 +2,7 @@ import os.path
 
 import pandas as pd
 from app import db
+from flask import current_app
 
 from .models import Dataset
 from collections import Counter
@@ -26,11 +27,18 @@ def update_db(package, map):
     db.session.add(dataset)
     db.session.commit()
 
-    # print(db.session.execute("""Select * from datasets;""").fetchall())
-
 
 def find_dataset_by_user_and_dataset_name(user: str, name: str) -> Dataset:
     return Dataset.query.filter_by(owner=user, name=name).all()
+
+def remove_dataset_from_database(owner, name):
+    rel_path = get_dataset_location(owner, name)
+    if not rel_path:
+        return None
+    abs_path = os.path.join(current_app.config["DATASETS_FOLDER"], rel_path)
+
+    os.remove(abs_path)
+    db.session.commit()
 
 
 def get_dataset_meta_by_user(user):
@@ -69,8 +77,6 @@ def check_db_fullness(folders_mapped: dict):
                 user = dirname.split("\\")[-1]
                 folder_content.extend([os.path.join(user, file) for file in filenames])
 
-        # print(db_content)
-        # print(folder_content, "\n\n")
         if not (Counter(folder_content) == Counter(db_content)):
             failed = True
             diff_items = set(db_content) - set(folder_content)
