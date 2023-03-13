@@ -1,8 +1,13 @@
+import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
+import * as Yup from "yup";
+
 import scss from "./uploadForm.module.scss";
 
+import { AppRoutes } from "../../../router/routes";
 import AppButton from "../../UI/buttons/app/AppButton";
 import FileUpload from "../../UI/FileUpload/FileUpload";
-import TextFieldUnderline from "../../UI/textfields/TextFieldUnderline/TextFieldUnderline";
+import TextFieldForm from "../../UI/textfields/TextFieldForm/TextFieldForm";
 
 const FILE_FORMAT: string[] = [
   "расширение файла .csv с разделителем запятая;",
@@ -13,32 +18,49 @@ const FILE_FORMAT: string[] = [
 ];
 
 const UploadForm = () => {
-  // const handleExperimentClick = () => {
-  //   console.log("file", files);
-  // };
+  const navigate = useNavigate();
+
+  const { values, errors, isValid, handleChange, handleSubmit } = useFormik({
+    initialValues: {
+      display_name: "",
+      description:
+        "Данный граф построен с использованием различных методов обарботки ресурсов полученных из социальных сетей.",
+    },
+    onSubmit: (values) => {
+      console.log("values", values);
+    },
+    validationSchema: Yup.object().shape({
+      display_name: Yup.string().required("required"),
+      description: Yup.string().required("required"),
+    }),
+    validateOnMount: true,
+  });
+
+  const handleExperimentClick = () =>
+    isValid ? handleSubmit() : navigate(AppRoutes.EXPERIMENT);
 
   return (
     <div className={scss.root}>
-      <form onSubmit={(e) => e.preventDefault()} className={scss.form}>
+      <form onSubmit={handleSubmit} className={scss.form}>
         <h3 className={scss.title}>Parametrs</h3>
         <div className={scss.data}>
           <div className={scss.column}>
-            <TextFieldUnderline
+            <TextFieldForm
               className={scss.textfield}
-              // value={formik.values.display_name}
-              // onChange={formik.handleChange}
+              value={values.display_name}
+              onChange={handleChange}
               name="display_name"
               label="Display_name"
-              // className={scss.displayName}
-              placeholder="Name"
+              error={!!errors.display_name}
+              helperText={errors.display_name}
             />
-            <TextFieldUnderline
-              // value={formik.values.display_name}
-              // onChange={formik.handleChange}
+            <TextFieldForm
+              className={scss.textfield}
+              value={values.description}
               name="description"
               label="Description"
-              // className={scss.displayName}
-              placeholder="Description"
+              error={!!errors.description}
+              helperText={errors.description}
               multiline
               rows={5}
             />
@@ -63,7 +85,9 @@ const UploadForm = () => {
           </div>
         </div>
       </form>
-      <AppButton color="secondary">experiment</AppButton>
+      <AppButton onClick={handleExperimentClick} color="secondary">
+        experiment
+      </AppButton>
     </div>
   );
 };

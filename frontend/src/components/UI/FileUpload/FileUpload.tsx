@@ -47,6 +47,7 @@ const FileUpload: FC<DropzoneOptions & { className?: string }> = ({
                 2
               )} MB`}</span>
               <RemoveCircleOutlineIcon
+                fontSize="small"
                 onClick={() => handleFileRemove(index)}
               />
             </li>

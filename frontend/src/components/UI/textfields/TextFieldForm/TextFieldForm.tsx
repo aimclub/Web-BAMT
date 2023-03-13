@@ -3,9 +3,9 @@ import TextField, { TextFieldProps } from "@mui/material/TextField";
 
 import { FC } from "react";
 import { cl } from "../../../../assets/utils/classnames";
-import scss from "./textFieldUnderline.module.scss";
+import scss from "./textFieldForm.module.scss";
 
-const CustomTextField = styled(TextField)({
+const CustomTextForm = styled(TextField)({
   "& .MuiOutlinedInput-root": {
     borderRadius: 0,
   },
@@ -44,17 +44,13 @@ const CustomTextField = styled(TextField)({
   },
 });
 
-const TextFieldUnderline: FC<TextFieldProps> = ({
-  className,
-  label,
-  ...props
-}) => {
+const TextFieldForm: FC<TextFieldProps> = ({ className, label, ...props }) => {
   return (
     <label className={cl(scss.root, className)}>
       <p className={scss.label}>{label || props.name}</p>
-      <CustomTextField {...props} />
+      <CustomTextForm {...props} />
     </label>
   );
 };
 
-export default TextFieldUnderline;
+export default TextFieldForm;

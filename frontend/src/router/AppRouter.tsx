@@ -24,7 +24,7 @@ const MainPage = lazy(() => import("../pages/main/MainPage"));
 // const ModelOutlet = lazy(
 //   () => import("../components/outlets/model/ModelOutlet")
 // );
-// const ExperimentPage = lazy(() => import("../pages/experiment/ExperimentPage"));
+const ExperimentPage = lazy(() => import("../pages/experiment/ExperimentPage"));
 // const ModelPage = lazy(() => import("../pages/model/ModelPage"));
 // const SamplePage = lazy(() => import("../pages/sample/SamplePage"));
 
@@ -70,6 +70,7 @@ const AppRouter = () => {
         ) : (
           <Route path={AppRoutes.MAIN} element={<AppOutlet />}>
             <Route index element={<MainPage />} />
+            <Route path={AppRoutes.EXPERIMENT} element={<ExperimentPage />} />
             <Route path="*" element={<Navigate to={AppRoutes.MAIN} />} />
           </Route>
         )}
