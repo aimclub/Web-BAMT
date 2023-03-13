@@ -8,6 +8,7 @@ import { AppRoutes } from "../../../router/routes";
 import AppButton from "../../UI/buttons/app/AppButton";
 import FileUpload from "../../UI/FileUpload/FileUpload";
 import TextFieldForm from "../../UI/textfields/TextFieldForm/TextFieldForm";
+import { cl } from "../../../assets/utils/classnames";
 
 const FILE_FORMAT: string[] = [
   "расширение файла .csv с разделителем запятая;",
@@ -51,11 +52,13 @@ const UploadForm = () => {
               onChange={handleChange}
               name="display_name"
               label="Display_name"
+              placeholder="Enter display name ..."
               error={!!errors.display_name}
               helperText={errors.display_name}
             />
             <TextFieldForm
-              className={scss.textfield}
+              className={cl(scss.textfield, scss.description)}
+              variant="outlined"
               value={values.description}
               name="description"
               label="Description"

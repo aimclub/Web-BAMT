@@ -2,6 +2,7 @@ declare namespace UploadFormModuleScssNamespace {
   export interface IUploadFormModuleScss {
     column: string;
     data: string;
+    description: string;
     form: string;
     format: string;
     item: string;

@@ -54,6 +54,10 @@
 
   flex-direction: column;
   gap: 12px;
+
+  &.description {
+    align-items: stretch;
+  }
 }
 
 .label {
