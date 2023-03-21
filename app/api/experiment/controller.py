@@ -68,13 +68,12 @@ class BNResource(Resource):
             return {"message": "Scoring_func not defined"}, 400
 
         # ======= Main =========
+        result = bn_learning(dataset=dataset, parameters=bn_params, user=owner)
 
-        result, df_shape, status_code = bn_learning(dataset=dataset, parameters=bn_params, user=owner)
-
-        if status_code != 200:
+        if result[-1] != 200:
             return result
 
-        bn = result
+        bn, df_shape, status_code = result
 
         sampler = Sampler(bn)
         sample = sampler.sample(df_shape)
