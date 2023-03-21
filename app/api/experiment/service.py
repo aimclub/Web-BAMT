@@ -9,6 +9,7 @@ from bamt.utils.GraphUtils import nodes_types
 from sklearn import preprocessing as pp
 
 from .models import BayessianNet, Sample
+from utils import project_root
 
 from app import db
 from flask import current_app
@@ -54,12 +55,10 @@ class DataExtractor(object):
         """
 
         hyperparams = {"index_col": 0}
-
         if self.is_our:
-            loc = os.path.join(meta["location"])
+            loc = os.path.relpath(meta["location"]).replace("\\", "/")
         else:
-            loc = os.path.join(current_app.config["DATASETS_FOLDER"], meta["location"])
-
+            loc = os.path.join(current_app.config["DATASETS_FOLDER"], os.path.relpath(meta["location"]))
         dataset = pd.read_csv(loc, **hyperparams)
 
         if dataset.empty:
