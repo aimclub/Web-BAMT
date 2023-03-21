@@ -1,23 +1,10 @@
 import { createTheme } from "@mui/material/styles";
-
-import { ModelType } from "../../types/model";
-
-export const getModelColor = (model: ModelType) =>
-  model === "social" ? "#16A7E0" : "#86BD24";
-
-export const createModelTheme = (model: ModelType) =>
-  createTheme({
-    palette: {
-      primary: {
-        main: getModelColor(model),
-      },
-    },
-  });
+import { APP_COLOR } from "./constants";
 
 export const theme = createTheme({
   palette: {
     primary: {
-      main: "#b0bec5",
+      main: APP_COLOR,
     },
   },
 });

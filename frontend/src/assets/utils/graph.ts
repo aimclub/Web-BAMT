@@ -1,7 +1,7 @@
 import { INetwork } from "../../types/experiment";
 import { IGraph, ILink } from "../../types/graph";
 import { ModelType } from "../../types/model";
-import { getModelColor } from "./theme";
+import { APP_COLOR } from "./constants";
 
 export const formatNetwork = (data: INetwork): IGraph => ({
   nodes: data.nodes.map((name) => ({ id: name })),
@@ -25,9 +25,8 @@ export const colorizeNetwork = (
           activeNode?.network_name === network.name &&
           activeNode.node_name === name
         ) {
-          const color = getModelColor(model);
-          nodeProps.color = color;
-          nodeProps.fontColor = color;
+          nodeProps.color = APP_COLOR;
+          nodeProps.fontColor = APP_COLOR;
         }
       }
       return { id: name, ...nodeProps };

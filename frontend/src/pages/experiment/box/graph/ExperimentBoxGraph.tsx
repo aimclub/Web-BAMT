@@ -13,7 +13,7 @@ import {
   setSourceNode,
 } from "../../../../redux/experiment/experiment";
 import { colorizeGraph } from "../../../../assets/utils/graph";
-import { getModelColor } from "../../../../assets/utils/theme";
+import { APP_COLOR } from "../../../../assets/utils/constants";
 
 const myConfig: Partial<GraphConfiguration<GraphNode, GraphLink>> = {
   staticGraphWithDragAndDrop: true,
@@ -72,11 +72,11 @@ const ExperimentBoxGraph = () => {
           dispatch(setSourceNode(null));
         }
       } else {
-        dispatch(recolourNode({ nodeId, color: getModelColor(model) }));
+        dispatch(recolourNode({ nodeId, color: APP_COLOR }));
         dispatch(setSourceNode(nodeId));
       }
     },
-    [dispatch, model, sourceNodeId]
+    [dispatch, sourceNodeId]
   );
 
   const handleDeleteLink = useCallback(

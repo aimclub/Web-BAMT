@@ -1,7 +1,7 @@
 import WidgetsIcon from "@mui/icons-material/Widgets";
 import { useCallback, useState } from "react";
 import IconButton from "../../UI/buttons/icon/IconButton";
-import PopupModal from "../common/modal/PopupModal";
+import Modal from "../../modal/Modal";
 import NetworksList from "./list/NetworksList";
 
 const NetworksPopup = () => {
@@ -21,9 +21,9 @@ const NetworksPopup = () => {
         <WidgetsIcon />
       </IconButton>
 
-      <PopupModal open={opened} onClose={handleClose} title="Edite network">
+      <Modal open={opened} onClose={handleClose}>
         <NetworksList />
-      </PopupModal>
+      </Modal>
     </>
   );
 };

@@ -1,21 +1,20 @@
 import { ApexOptions } from "apexcharts";
 import { FC, memo } from "react";
 import ReactApexChart from "react-apexcharts";
+import { APP_COLOR } from "../../../../assets/utils/constants";
 import { useAppSelector } from "../../../../hooks/redux";
 import { IComparisonData } from "../../../../types/experiment";
-import { getModelColor } from "../../../../assets/utils/theme";
 
 const SampleComparisonChart: FC<{
   data: IComparisonData;
   title: string;
 }> = ({ data, title }) => {
   const { selectedNode } = useAppSelector((state) => state.sample);
-  const { model } = useAppSelector((state) => state.model);
 
   const series: ApexAxisChartSeries = [{ data: data.data, name: "" }];
   const options: ApexOptions = {
     chart: { toolbar: { show: false } },
-    colors: [model ? getModelColor(model) : "#ccc"],
+    colors: [APP_COLOR],
     plotOptions: { bar: { dataLabels: { position: "top" } } },
     dataLabels: {
       enabled: true,
