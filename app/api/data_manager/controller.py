@@ -103,10 +103,15 @@ class DatasetObserverResource(Resource):
         """
         Get a list with user's datasets
         """
-        user = request.args.get("user")
-        ours = load(open(os.path.join(project_root(), "data/our_datasets.json")))
+        user = request.args.get("user", None)
         if not user:
             return {"message": "User not passed"}, 422
+
+        if not find_user_by_username(user):
+            return {"message": "User not found."}, 404
+
+        ours = load(open(os.path.join(project_root(), "data/our_datasets.json")))
+
         return ours | get_dataset_meta_by_user(user=user)
 
 
@@ -155,10 +160,10 @@ class RootNodesResource(Resource):
         name = request.args.get("name")
 
         if name == "hack":
-            relpath = r"data\hack_processed_with_rf.csv"
+            relpath = os.path.relpath(r"data\hack_processed_with_rf.csv")
             source = project_root()
         elif name == "vk":
-            relpath = r"data\vk_data.csv"
+            relpath = os.path.relpath(r"data\vk_data.csv")
             source = project_root()
         else:
             user = request.args.get("owner")

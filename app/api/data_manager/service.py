@@ -74,7 +74,7 @@ def check_db_fullness(folders_mapped: dict):
 
         for dirname, dirnames, filenames in os.walk(upload_folder):
             if not dirnames:
-                user = dirname.split("\\")[-1]
+                user = os.path.abspath(dirname).split("\\")[-1]
                 folder_content.extend([os.path.join(user, file) for file in filenames])
 
         if not (Counter(folder_content) == Counter(db_content)):
