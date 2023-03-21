@@ -8,5 +8,5 @@ jobs:
     with:
       GITLAB_URL: https://gitlab.actcognitive.org/itmo-nirma-code/Web-BAMT
     secrets:
-      GITLAB_USER: ${{ secrets.GITLAB_USER }}
-      GITLAB_PASSWORD: ${{ secrets.GITLAB_PASSWORD }}
+      GITLAB_USER: ${{ secrets.GITLAB_USER_LOCAL }}
+      GITLAB_PASSWORD: ${{ secrets.GITLAB_PASSWORD_LOCAL }}
