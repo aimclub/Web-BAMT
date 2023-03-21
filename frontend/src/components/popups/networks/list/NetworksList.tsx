@@ -1,7 +1,7 @@
 import { bn_managerAPI } from "../../../../API/bn_manager/bn_managerAPI";
 import { cl } from "../../../../assets/utils/classnames";
 import { useAppSelector } from "../../../../hooks/redux";
-import NetworksListItem from "./item/NetworksListItem";
+import NetworksListItem from "../../data/networks/item/DataNetworksItem";
 import scss from "./networksList.module.scss";
 
 const NetworksList = () => {

@@ -5,9 +5,9 @@ import { useAppSelector } from "../../../../../hooks/redux";
 import AlertError from "../../../../UI/alerts/error/AlertError";
 import IconButton from "../../../../UI/buttons/icon/IconButton";
 import RingProgress from "../../../../UI/progress/ring/RingProgress";
-import scss from "./networksListItem.module.scss";
+import scss from "./dataNetworksItem.module.scss";
 
-const NetworksListItem: FC<{ network: string }> = ({ network }) => {
+const DataNetworksItem: FC<{ network: string }> = ({ network }) => {
   const { user } = useAppSelector((state) => state.auth);
   const [removeNetwork, { isLoading, isError }] =
     bn_managerAPI.useRemoveBNMutation();
@@ -19,7 +19,7 @@ const NetworksListItem: FC<{ network: string }> = ({ network }) => {
   }, [user, network, removeNetwork]);
 
   return (
-    <div className={scss.root}>
+    <li className={scss.root}>
       <p className={scss.name}>{network}</p>
       <IconButton onClick={handleRemoveNetwork} disabled={isLoading}>
         {isLoading ? <RingProgress /> : <DeleteIcon />}
@@ -28,8 +28,8 @@ const NetworksListItem: FC<{ network: string }> = ({ network }) => {
         isError={isError}
         message={`ERROR on delete ${network} network`}
       />
-    </div>
+    </li>
   );
 };
 
-export default NetworksListItem;
+export default DataNetworksItem;

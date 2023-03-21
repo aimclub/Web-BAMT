@@ -2,7 +2,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
 import { logout } from "../../../redux/auth/auth";
-import NetworksPopup from "../../popups/networks/NetworksPopup";
+import DataPopup from "../../popups/data/DataPopup";
 import IconButton from "../../UI/buttons/icon/IconButton";
 import scss from "./headerMenu.module.scss";
 
@@ -17,7 +17,7 @@ const HeaderMenu = () => {
   return (
     <div className={scss.auth}>
       <p className={scss.email}>{user?.username}</p>
-      <NetworksPopup />
+      <DataPopup />
       <IconButton onClick={handleLogout}>
         <ExitToAppIcon />
       </IconButton>
