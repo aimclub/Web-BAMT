@@ -1,9 +1,9 @@
 declare namespace HeaderLineModuleScssNamespace {
   export interface IHeaderLineModuleScss {
+    experiment: string;
     icon: string;
-    line: string;
-    line_geological: string;
-    line_social: string;
+    root: string;
+    sample: string;
     title: string;
   }
 }

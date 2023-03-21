@@ -9,6 +9,7 @@ import AppButton from "../../UI/buttons/app/AppButton";
 import FileUpload from "../../UI/FileUpload/FileUpload";
 import TextFieldForm from "../../UI/textfields/TextFieldForm/TextFieldForm";
 import { cl } from "../../../assets/utils/classnames";
+import { useEffect, useState } from "react";
 
 const FILE_FORMAT: string[] = [
   "расширение файла .csv с разделителем запятая;",
@@ -20,25 +21,32 @@ const FILE_FORMAT: string[] = [
 
 const UploadForm = () => {
   const navigate = useNavigate();
+  const [files, setFiles] = useState<File[]>([]);
+  const [datasets] = useState(["test"]);
 
-  const { values, errors, isValid, handleChange, handleSubmit } = useFormik({
-    initialValues: {
-      display_name: "",
-      description:
-        "Данный граф построен с использованием различных методов обарботки ресурсов полученных из социальных сетей.",
-    },
-    onSubmit: (values) => {
-      console.log("values", values);
-    },
-    validationSchema: Yup.object().shape({
-      display_name: Yup.string().required("required"),
-      description: Yup.string().required("required"),
-    }),
-    validateOnMount: true,
-  });
+  const { values, errors, touched, handleChange, handleSubmit, setErrors } =
+    useFormik({
+      initialValues: {
+        display_name: "",
+        description:
+          "Данный граф построен с использованием различных методов обработки ресурсов полученных из социальных сетей.",
+      },
+      onSubmit: (values) => {
+        console.log("values", values);
+      },
+      validationSchema: Yup.object().shape({
+        display_name: Yup.string().required("required"),
+        description: Yup.string().required("required"),
+      }),
+    });
 
   const handleExperimentClick = () =>
-    isValid ? handleSubmit() : navigate(AppRoutes.EXPERIMENT);
+    files.length > 0 ? handleSubmit() : navigate(AppRoutes.EXPERIMENT);
+
+  useEffect(() => {
+    if (datasets.includes(values.display_name))
+      setErrors({ ...errors, display_name: "error" });
+  }, [values.display_name, datasets, setErrors, errors]);
 
   return (
     <div className={scss.root}>
@@ -55,15 +63,18 @@ const UploadForm = () => {
               placeholder="Enter display name ..."
               error={!!errors.display_name}
               helperText={errors.display_name}
+              // error={touched.display_name && !!errors.display_name}
+              // helperText={touched.display_name && errors.display_name}
             />
             <TextFieldForm
               className={cl(scss.textfield, scss.description)}
               variant="outlined"
               value={values.description}
+              onChange={handleChange}
               name="description"
               label="Description"
-              error={!!errors.description}
-              helperText={errors.description}
+              error={touched.description && !!errors.description}
+              helperText={touched.description && errors.description}
               multiline
               rows={5}
             />
@@ -82,6 +93,8 @@ const UploadForm = () => {
             </ul>
 
             <FileUpload
+              files={files}
+              setFiles={setFiles}
               accept={{ "text/csv": [".csv"] }}
               className={scss.upload}
             />

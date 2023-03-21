@@ -1,26 +1,35 @@
 import Paper from "@mui/material/Paper";
-import { Link, Outlet, useMatch } from "react-router-dom";
+import { Link, Navigate, Route, Routes, useMatch } from "react-router-dom";
+
+import RestorePasswordForm from "../../components/forms/auth/RestorePasswordForm";
+import SigninForm from "../../components/forms/auth/SigninForm";
+import SignupForm from "../../components/forms/auth/SignupForm";
 
 import Logo from "../../components/logo/Logo";
-// import { useAppDispatch } from "../../hooks/redux";
-// import { login } from "../../redux/auth/auth";
 import { AppRoutes } from "../../router/routes";
 import scss from "./signinPage.module.scss";
 
 const SigninPage = () => {
-  // const dispatch = useAppDispatch();
   const isRestorePassword = useMatch(AppRoutes.RESTORE_PASSWORD);
   const isSignin = useMatch(AppRoutes.SIGNIN);
-
-  /*  const handleSkip = () => {
-    dispatch(login({ email: "not auth", token: "" }));
-  }; */
 
   return (
     <main className={scss.root}>
       <Logo className={scss.logo} />
       <Paper className={scss.paper} elevation={3} component="section">
-        <Outlet />
+        <Routes>
+          <Route
+            path={AppRoutes.MAIN}
+            element={<Navigate to={AppRoutes.SIGNIN} />}
+          />
+          <Route path={AppRoutes.SIGNIN} element={<SigninForm />} />
+          <Route path={AppRoutes.SIGNUP} element={<SignupForm />} />
+          <Route
+            path={AppRoutes.RESTORE_PASSWORD}
+            element={<RestorePasswordForm />}
+          />
+          <Route path="*" element={<Navigate to={AppRoutes.SIGNIN} />} />
+        </Routes>
         <div className={scss.foot}>
           {isSignin ? (
             <Link to={AppRoutes.SIGNUP} className={scss.footLink}>

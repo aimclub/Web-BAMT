@@ -1,8 +1,3 @@
-import { Suspense } from "react";
-import SpinnerProgress from "./components/UI/progress/spinner/SpinnerProgress";
-// import { authAPI } from "./API/auth/authAPI";
-// import { useAppDispatch, useAppSelector } from "./hooks/redux";
-// import { logout } from "./redux/auth/auth";
 import AppRouter from "./router/AppRouter";
 
 const App = () => {
@@ -22,11 +17,7 @@ const App = () => {
     //eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); */
 
-  return (
-    <Suspense fallback={<SpinnerProgress className="loader" />}>
-      <AppRouter />
-    </Suspense>
-  );
+  return <AppRouter />;
 };
 
 export default App;

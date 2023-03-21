@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import AppButton from "../../components/UI/buttons/app/AppButton";
-import { useAppDispatch, useAppSelector } from "../../hooks/redux";
+import { useAppDispatch } from "../../hooks/redux";
 import { clearSample } from "../../redux/sample/sample";
-import { goToPage } from "../../router/routes";
+import { AppRoutes } from "../../router/routes";
+
 import SampleСomparison from "./comparison/SampleComparison";
 import SampleNetwork from "./network/SampleNetwork";
 import scss from "./samplePage.module.scss";
 
 const SamplePage = () => {
   const dispatch = useAppDispatch();
-  const { model } = useAppSelector((state) => state.model);
 
   useEffect(() => {
     return () => {
@@ -32,10 +32,10 @@ const SamplePage = () => {
           Нажатие на узел связи распределение значений в узлах.
         </p>
         <div className={scss.btns}>
-          <AppButton to={goToPage.example(model)} variant="outlined">
+          {/* <AppButton to={goToPage.example(model)} variant="outlined">
             example
-          </AppButton>
-          <AppButton to={goToPage.experiment(model)} variant="outlined">
+          </AppButton> */}
+          <AppButton to={`/${AppRoutes.EXPERIMENT}`} variant="outlined">
             experiment
           </AppButton>
         </div>

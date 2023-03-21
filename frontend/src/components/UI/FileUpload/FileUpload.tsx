@@ -5,29 +5,31 @@ import scss from "./fileUpload.module.scss";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
-const FileUpload: FC<DropzoneOptions & { className?: string }> = ({
-  className,
-  multiple = false,
-  ...options
-}) => {
-  const [currentFiles, setCurrentFiles] = useState<File[]>([]);
+const FileUpload: FC<
+  {
+    className?: string;
+    files: File[];
+    setFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  } & DropzoneOptions
+> = ({ className, files, setFiles, multiple = false, ...options }) => {
+  const [currentFiles, setCurrentFiles] = useState<File[]>(files);
 
   const { getRootProps, getInputProps } = useDropzone({
     ...options,
     multiple,
     onDropAccepted: (files, event) => {
-      setCurrentFiles((prev) => prev.concat(files));
+      setFiles((prev) => prev.concat(files));
       options.onDropAccepted && options.onDropAccepted(files, event);
     },
   });
 
   const handleFileRemove = (index: number) => {
-    setCurrentFiles((prev) => prev.filter((_, i) => i !== index));
+    setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   useEffect(() => {
-    console.log("files", currentFiles);
-  }, [currentFiles]);
+    setCurrentFiles(files);
+  }, [files]);
 
   return (
     <div className={cl(className, scss.root)}>

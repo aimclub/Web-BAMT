@@ -1,4 +1,4 @@
-.line {
+.root {
   margin: 0 auto;
   padding: 0 48px;
   width: 100%;
@@ -6,7 +6,7 @@
   min-height: 48px;
   box-sizing: border-box;
 
-  background-color: #b0bec5;
+  background-color: #86bd24;
   background-position: center;
   background-repeat: no-repeat;
 
@@ -15,13 +15,11 @@
   align-items: center;
 }
 
-.line_social {
-  background-color: #8bdeff;
+.experiment {
   background-image: url("../../../assets/images/line_social.png");
 }
 
-.line_geological {
-  background-color: #86bd24;
+.sample {
   background-image: url("../../../assets/images/line_geological.png");
 }
 

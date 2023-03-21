@@ -1,17 +1,9 @@
-import { ModelType } from "../types/model";
-
 export enum AppRoutes {
-  SIGNIN = "/signin",
-  SIGNUP = "/signup",
-  RESTORE_PASSWORD = "/restore-password",
-  TEAM = "/team",
+  SIGNIN = "signin",
+  SIGNUP = "signup",
+  RESTORE_PASSWORD = "restore-password",
   MAIN = "/",
-  MODEL = "/:model",
   EXPERIMENT = "experiment",
   SAMPLE = "sample",
+  TEAM = "team",
 }
-
-export const goToPage = {
-  example: (model: ModelType) => `/${model}`,
-  experiment: (model: ModelType) => `/${model}/${AppRoutes.EXPERIMENT}`,
-};

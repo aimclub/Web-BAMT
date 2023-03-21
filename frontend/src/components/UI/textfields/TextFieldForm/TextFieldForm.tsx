@@ -5,6 +5,7 @@ import { FC } from "react";
 import { cl } from "../../../../assets/utils/classnames";
 import scss from "./textFieldForm.module.scss";
 
+// TODO: style textfield
 const CustomTextForm = styled(TextField)({
   "& .MuiInput-root": {
     fontFamily: "Open Sans",
