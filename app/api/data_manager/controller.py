@@ -160,10 +160,10 @@ class RootNodesResource(Resource):
         name = request.args.get("name")
 
         if name == "hack":
-            relpath = os.path.relpath(r"data\hack_processed_with_rf.csv")
+            relpath = os.path.relpath(r"data/hack_processed_with_rf.csv")
             source = project_root()
         elif name == "vk":
-            relpath = os.path.relpath(r"data\vk_data.csv")
+            relpath = os.path.relpath(r"data/vk_data.csv")
             source = project_root()
         else:
             user = request.args.get("owner")
