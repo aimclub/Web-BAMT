@@ -32,13 +32,15 @@ def find_dataset_by_user_and_dataset_name(user: str, name: str) -> Dataset:
     return Dataset.query.filter_by(owner=user, name=name).all()
 
 def remove_dataset_from_database(owner, name):
-    rel_path = get_dataset_location(owner, name)
-    if not rel_path:
+    meta = get_dataset_location(owner, name)
+    if not meta:
         return None
-    abs_path = os.path.join(current_app.config["DATASETS_FOLDER"], rel_path)
-
+    abs_path = os.path.join(current_app.config["DATASETS_FOLDER"], meta["location"])
     os.remove(abs_path)
+
+    Dataset.query.filter_by(owner=owner, name=name).delete()
     db.session.commit()
+    return True
 
 
 def get_dataset_meta_by_user(user):
@@ -49,8 +51,7 @@ def get_number_of_datasets(user: str, ) -> int:
 
 def get_dataset_location(owner: str, name: str):
     data = Dataset.query.filter_by(owner=owner, name=name).with_entities(Dataset.location).first()
-    if data:
-        return data["location"]
+    return data
 
 def get_header_from_csv(file):
     return pd.read_csv(file, index_col=0, nrows=0).columns.tolist()

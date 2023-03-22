@@ -22,7 +22,7 @@ class AuthTokenResource(Resource):
         password = obtained['password']
 
         if not isinstance(username, str):
-            raise BadRequest(f"{email.__class__}")
+            raise BadRequest(f"{username.__class__}")
 
         user = find_user_by_username(username)
         if not user or not check_password_hash(user.password, password):

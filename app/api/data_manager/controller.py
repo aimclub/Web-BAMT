@@ -93,7 +93,7 @@ class DatasetObserverResource(Resource):
         500: "User not passed",
         200: """
         {
-            {'datasets': {'dataset_name': str, 'description': Text}}
+            {'dataset_name': str, 'description': Text}}
         }
         """
     }
@@ -167,11 +167,12 @@ class RootNodesResource(Resource):
             source = project_root()
         else:
             user = request.args.get("owner")
-            relpath = get_dataset_location(owner=user, name=name)
+            meta = get_dataset_location(owner=user, name=name)
+            if not meta:
+                return {"message": "Dataset wasn't found in database."}, 404
+            relpath = meta["location"]
             source = current_app.config["DATASETS_FOLDER"]
 
-        if not relpath:
-            return {"message": "Dataset wasn't found in database."}, 404
 
         abspath = os.path.join(source, relpath)
 
