@@ -29,3 +29,19 @@
   overflow-y: auto;
   flex: 1;
 }
+
+.message {
+  margin: 16px 0;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 16px;
+
+  color: #000000;
+
+  &.error {
+    color: #d32f2f;
+  }
+}

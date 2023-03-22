@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { authAPI } from "../../API/auth/authAPI";
-import { IUser } from "../../types/auth";
+import { IUser } from "../../API/auth/authTypes";
 
 const initialState = {
   isAuth: false,

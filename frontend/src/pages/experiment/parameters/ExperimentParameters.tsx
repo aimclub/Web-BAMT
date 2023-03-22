@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Fade from "@mui/material/Fade";
 
 import { bn_managerAPI } from "../../../API/bn_manager/bn_managerAPI";
 import { experimentAPI } from "../../../API/experiment/experimentAPI";
-import { CASES_IDS, TRANSITION_TIMEOUT } from "../../../assets/utils/constants";
+import { TRANSITION_TIMEOUT } from "../../../assets/utils/constants";
 import ExperimentForm from "../../../components/forms/experiment/ExperimentForm";
 import MessagePopup from "../../../components/popups/message/MessagePopup";
 import AlertError from "../../../components/UI/alerts/error/AlertError";
@@ -11,11 +12,10 @@ import { useCheckDisplayName } from "../../../hooks/useCheckDisplayName";
 import { useTrainModel } from "../../../hooks/useTrainModel";
 
 const ExperimentParameters = () => {
-  const case_id = useAppSelector((state) => CASES_IDS[state.model.model]);
   const { user } = useAppSelector((state) => state.auth);
 
-  const { data: rootNodesData, isError: getRootNodesError } =
-    experimentAPI.useGetRootNodesQuery({ case_id });
+  // const { data: rootNodesData, isError: getRootNodesError } =
+  //   experimentAPI.useGetRootNodesQuery({ case_id: 0 });
   const { isError: getBNNamesError } = bn_managerAPI.useGetBNDataNamesQuery({
     owner: user?.username || "",
   });
@@ -25,21 +25,21 @@ const ExperimentParameters = () => {
 
   const { handleTrainModel, result, handleCloseResult, isSuccess } =
     useTrainModel({
-      case_id,
+      case_id: 0,
       checkDisplayName,
     });
 
   return (
     <Fade in={true} timeout={TRANSITION_TIMEOUT}>
       <section>
-        <ExperimentForm
+        {/* <ExperimentForm
           rootNodes={rootNodesData ? rootNodesData.root_nodes : []}
           onTrain={handleTrainModel}
-        />
-        <AlertError
+        /> */}
+        {/* <AlertError
           isError={getRootNodesError}
           message="Error on get root nodes"
-        />
+        /> */}
         <AlertError
           isError={getBNNamesError}
           message="Error on get bn data names"

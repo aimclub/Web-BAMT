@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 
 import { BASE_URL } from "../baseURL";
-import { IToken, IUserAuth } from "../../types/auth";
+import { IToken, IUserAuth } from "./authTypes";
 
 export const authAPI = createApi({
   reducerPath: "userAPI",

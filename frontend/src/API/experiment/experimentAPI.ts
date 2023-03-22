@@ -1,30 +1,32 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { formatBNParamsToString } from "../../assets/utils/format";
 
-import { BASE_URL, URLendpoints } from "../baseURL";
+import { BASE_URL } from "../baseURL";
+import { ITrainBN } from "../../types/experiment";
 import {
-  IBNParams,
-  IExperimentRootNodes,
-  ITrainBN,
-} from "../../types/experiment";
+  ExperimentModelType,
+  IExperimentModels,
+  IExperimentParameters,
+} from "./experimentTypes";
 
 export const experimentAPI = createApi({
   reducerPath: "experimentAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: `${BASE_URL}/${URLendpoints.EXPERIMENT}`,
+    baseUrl: `${BASE_URL}/api/experiment`,
   }),
   endpoints: (build) => ({
-    getRootNodes: build.query<IExperimentRootNodes, { case_id: number }>({
-      query: ({ case_id }) => ({
-        url: `get_root_nodes/${case_id}`,
+    getModels: build.query<
+      IExperimentModels,
+      { model_type: ExperimentModelType }
+    >({
+      query: ({ model_type }) => ({
+        url: `get_models`,
+        params: { model_type },
       }),
     }),
-    train: build.mutation<
-      ITrainBN,
-      { owner: string; name: string; case_id: number; bn_params: IBNParams }
-    >({
-      query: ({ owner, name, case_id, bn_params }) => ({
-        url: `${owner}/${name}/${case_id}/${formatBNParamsToString(bn_params)}`,
+    train: build.mutation<ITrainBN, IExperimentParameters>({
+      query: ({ owner, name, dataset, bn_params }) => ({
+        url: `${owner}/${name}/${dataset}/${formatBNParamsToString(bn_params)}`,
         method: "GET",
       }),
     }),

@@ -17,12 +17,10 @@ import { experimentAPI } from "../API/experiment/experimentAPI";
 
 import authReducer from "./auth/auth";
 import experimentReducer from "./experiment/experiment";
-import modelReducer from "./model/model";
 import sampleReducer from "./sample/sample";
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  model: modelReducer,
   experiment: experimentReducer,
   sample: sampleReducer,
   [authAPI.reducerPath]: authAPI.reducer,

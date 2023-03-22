@@ -1,52 +1,59 @@
 import { useFormik } from "formik";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import * as Yup from "yup";
 
 import scss from "./uploadForm.module.scss";
 
+import { data_managerAPI } from "../../../API/data_manager/data_managerAPI";
+import { cl } from "../../../assets/utils/classnames";
+import { VALIDATION_MESSAGES } from "../../../assets/utils/constants";
+import { useUser } from "../../../hooks/useUser";
 import { AppRoutes } from "../../../router/routes";
+import AlertError from "../../UI/alerts/error/AlertError";
 import AppButton from "../../UI/buttons/app/AppButton";
 import FileUpload from "../../UI/FileUpload/FileUpload";
 import TextFieldForm from "../../UI/textfields/TextFieldForm/TextFieldForm";
-import { cl } from "../../../assets/utils/classnames";
-import { useEffect, useState } from "react";
-
-const FILE_FORMAT: string[] = [
-  "расширение файла .csv с разделителем запятая;",
-  "первый столбец должен быть индексом и в header не иметь названия (аналог index_col=0 в pandas);",
-  "ориентация файла: столбцы - это признаки, строки - это наблюдения;",
-  "все непрерывные признаки должны быть числами с точкой (например, 50.0), все дискретные должны быть строками или целыми числами без точки;",
-  "не более 5000 наблюдений.",
-];
+import { FILE_FORMAT, validationSchema } from "./UploadFormValidation";
 
 const UploadForm = () => {
   const navigate = useNavigate();
-  const [files, setFiles] = useState<File[]>([]);
-  const [datasets] = useState(["test"]);
 
-  const { values, errors, touched, handleChange, handleSubmit, setErrors } =
-    useFormik({
-      initialValues: {
-        display_name: "",
-        description:
-          "Данный граф построен с использованием различных методов обработки ресурсов полученных из социальных сетей.",
-      },
-      onSubmit: (values) => {
-        console.log("values", values);
-      },
-      validationSchema: Yup.object().shape({
-        display_name: Yup.string().required("required"),
-        description: Yup.string().required("required"),
+  const { username: user } = useUser();
+  const { data: datasets, isError: isErrorGetDatasets } =
+    data_managerAPI.useGetDatasetsQuery({ user });
+
+  const [uploadDataset, { isLoading, isError, isSuccess, error }] =
+    data_managerAPI.useUploadDatasetMutation();
+
+  const [files, setFiles] = useState<File[]>([]);
+
+  const { values, errors, touched, handleChange, handleSubmit } = useFormik({
+    initialValues: {
+      display_name: "",
+      description:
+        "Данный граф построен с использованием различных методов обработки ресурсов полученных из социальных сетей.",
+    },
+    onSubmit: (values) =>
+      uploadDataset({
+        owner: user,
+        name: values.display_name,
+        description: values.description,
+        file: files[0],
       }),
-    });
+    validationSchema,
+  });
 
   const handleExperimentClick = () =>
     files.length > 0 ? handleSubmit() : navigate(AppRoutes.EXPERIMENT);
 
+  const isRepeatDisplayName = useMemo(
+    () => Boolean(datasets && datasets[values.display_name]),
+    [datasets, values.display_name]
+  );
+
   useEffect(() => {
-    if (datasets.includes(values.display_name))
-      setErrors({ ...errors, display_name: "error" });
-  }, [values.display_name, datasets, setErrors, errors]);
+    if (isSuccess) navigate(AppRoutes.EXPERIMENT);
+  }, [isSuccess, navigate]);
 
   return (
     <div className={scss.root}>
@@ -61,10 +68,15 @@ const UploadForm = () => {
               name="display_name"
               label="Display_name"
               placeholder="Enter display name ..."
-              error={!!errors.display_name}
-              helperText={errors.display_name}
-              // error={touched.display_name && !!errors.display_name}
-              // helperText={touched.display_name && errors.display_name}
+              error={
+                (touched.display_name && !!errors.display_name) ||
+                isRepeatDisplayName
+              }
+              helperText={
+                isRepeatDisplayName
+                  ? VALIDATION_MESSAGES.unique("Dataset")
+                  : touched.display_name && errors.display_name
+              }
             />
             <TextFieldForm
               className={cl(scss.textfield, scss.description)}
@@ -101,9 +113,20 @@ const UploadForm = () => {
           </div>
         </div>
       </form>
-      <AppButton onClick={handleExperimentClick} color="secondary">
+      <AppButton onClick={handleExperimentClick} disabled={isLoading}>
         experiment
       </AppButton>
+
+      <AlertError
+        isError={isErrorGetDatasets}
+        message={`ERROR on get datasets`}
+      />
+      <AlertError
+        isError={isError}
+        message={`ERROR on upload dataset. ${
+          (error as { data?: { message?: string } })?.data?.message || ""
+        }`}
+      />
     </div>
   );
 };

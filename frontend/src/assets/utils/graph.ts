@@ -1,6 +1,5 @@
 import { INetwork } from "../../types/experiment";
 import { IGraph, ILink } from "../../types/graph";
-import { ModelType } from "../../types/model";
 import { APP_COLOR } from "./constants";
 
 export const formatNetwork = (data: INetwork): IGraph => ({
@@ -10,7 +9,6 @@ export const formatNetwork = (data: INetwork): IGraph => ({
 
 export const colorizeNetwork = (
   network: INetwork,
-  model?: ModelType,
   activeNode?: { network_name: string; node_name: string }
 ): IGraph => {
   return {
@@ -20,37 +18,27 @@ export const colorizeNetwork = (
           color: undefined,
           fontColor: undefined,
         };
-      if (model) {
-        if (
-          activeNode?.network_name === network.name &&
-          activeNode.node_name === name
-        ) {
-          nodeProps.color = APP_COLOR;
-          nodeProps.fontColor = APP_COLOR;
-        }
+      if (
+        activeNode?.network_name === network.name &&
+        activeNode.node_name === name
+      ) {
+        nodeProps.color = APP_COLOR;
+        nodeProps.fontColor = APP_COLOR;
       }
+
       return { id: name, ...nodeProps };
     }),
     links: network.edges.map(([source, target]) => ({ source, target })),
   };
 };
 
-export const colorizeGraph = ({ nodes, links }: IGraph, model?: ModelType) => {
-  const color =
-    model === "social"
-      ? "#0074A2"
-      : model === "geological"
-      ? "#86BD24"
-      : "#ff0000";
-
-  return {
-    nodes,
-    links: links.map((link) => ({
-      ...link,
-      color: link.isHightLight ? color : "#000000",
-    })),
-  };
-};
+export const colorizeGraph = ({ nodes, links }: IGraph) => ({
+  nodes,
+  links: links.map((link) => ({
+    ...link,
+    color: link.isHightLight ? APP_COLOR : "#000000",
+  })),
+});
 
 export const markCommonLinks = (
   { nodes, links }: IGraph,

@@ -1,4 +1,4 @@
-import { IUser } from "../types/auth";
+import { IUser } from "../API/auth/authTypes";
 import { useAppSelector } from "./redux";
 
 export const useUser = (): IUser =>

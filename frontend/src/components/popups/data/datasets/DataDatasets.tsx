@@ -2,15 +2,16 @@ import { FC } from "react";
 
 import { data_managerAPI } from "../../../../API/data_manager/data_managerAPI";
 import { cl } from "../../../../assets/utils/classnames";
-import { useAppSelector } from "../../../../hooks/redux";
+import { useUser } from "../../../../hooks/useUser";
 import DataDatasetsItem from "./item/DataDatasetsItem";
 
 import scss from "./dataDatasets.module.scss";
+import AlertError from "../../../UI/alerts/error/AlertError";
 
 const DataDatasets: FC<{ className?: string }> = ({ className }) => {
-  const { user } = useAppSelector((state) => state.auth);
-  const { data: datasets } = data_managerAPI.useGetDatasetsQuery({
-    user: user?.username || "",
+  const { username: user } = useUser();
+  const { data: datasets, isError } = data_managerAPI.useGetDatasetsQuery({
+    user,
   });
 
   return (
@@ -32,6 +33,8 @@ const DataDatasets: FC<{ className?: string }> = ({ className }) => {
             />
           ))}
       </ul>
+
+      <AlertError isError={isError} message={`ERROR on get datasets`} />
     </div>
   );
 };

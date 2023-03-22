@@ -1,6 +1,6 @@
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useEffect } from "react";
 
 import { authAPI } from "../../../API/auth/authAPI";
 import TextFieldSignin from "../../../components/UI/textfields/TextFieldSignin/TextFieldSignin";
@@ -9,8 +9,6 @@ import scss from "./authForms.module.scss";
 import { validationSchemaTwoPassword } from "./authFormsValidator";
 
 const SignupForm = () => {
-  const [passwordMatch, setPasswordMatch] = useState<boolean>(true);
-
   const [signup, { isLoading, isError, error, isSuccess }] =
     authAPI.useRegisterMutation();
 
@@ -25,20 +23,17 @@ const SignupForm = () => {
     },
     validationSchema: validationSchemaTwoPassword,
     onSubmit: (values) => {
-      const passMatch = values.password === values.confirm_password;
-      setPasswordMatch(passMatch);
-
-      if (passMatch) {
-        signup({ username: values.login, password: values.password }).then(
-          (res) => {
-            if ((res as { data: { message: string } })?.data) {
-              login({ username: values.login, password: values.password });
-            }
-          }
-        );
-      }
+      signup({ username: values.login, password: values.password });
     },
   });
+
+  useEffect(() => {
+    if (isSuccess)
+      login({
+        username: formik.values.login,
+        password: formik.values.password,
+      });
+  }, [formik.values.login, formik.values.password, isSuccess, login]);
 
   return (
     <form onSubmit={formik.handleSubmit} className={scss.root}>
@@ -75,9 +70,7 @@ const SignupForm = () => {
       />
 
       <p className={scss.error}>
-        {!passwordMatch
-          ? "Passwords don`t match"
-          : isError
+        {isError
           ? `Registration error! ${
               ((error as FetchBaseQueryError).data as { message: string })
                 .message

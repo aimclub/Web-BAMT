@@ -14,11 +14,19 @@ const DataNetworks: FC<{ className?: string }> = ({ className }) => {
   return (
     <div className={cl(className, scss.root)}>
       <div className={scss.title}>Display name</div>
-      <ul className={scss.list}>
-        {networks?.networks.map((network) => (
-          <DataNetworksItem key={network} network={network} />
-        ))}
-      </ul>
+      {networks ? (
+        networks.networks.length > 0 ? (
+          <ul className={scss.list}>
+            {networks.networks.map((network) => (
+              <DataNetworksItem key={network} network={network} />
+            ))}
+          </ul>
+        ) : (
+          <p className={scss.message}>No networks</p>
+        )
+      ) : (
+        <p className={cl(scss.message, scss.error)}>Error on get networks</p>
+      )}
     </div>
   );
 };
