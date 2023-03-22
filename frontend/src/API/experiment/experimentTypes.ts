@@ -23,3 +23,14 @@ export interface IExperimentBNParams {
     remove_init_edges?: boolean;
   };
 }
+
+export interface IExperimentFormValues {
+  display_name: string;
+  dataset: string;
+  regressor: "";
+  classifier: "";
+  logit: "";
+  mixture: "";
+  score_function: "";
+  root_nodes: string[];
+}

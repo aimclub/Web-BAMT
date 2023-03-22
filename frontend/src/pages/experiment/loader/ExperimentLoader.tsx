@@ -1,13 +1,11 @@
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { cl } from "../../../assets/utils/classnames";
 import LinearProgress from "../../../components/UI/progress/linear/LineProgress";
 import SpinnerProgress from "../../../components/UI/progress/spinner/SpinnerProgress";
 
-import { useAppSelector } from "../../../hooks/redux";
 import scss from "./experimentLoader.module.scss";
 
-const ExperimentLoader = () => {
-  const { isTraining } = useAppSelector((state) => state.experiment);
+const ExperimentLoader: FC<{ isTraining: boolean }> = ({ isTraining }) => {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {

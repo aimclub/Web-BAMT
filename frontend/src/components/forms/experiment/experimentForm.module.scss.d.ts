@@ -3,6 +3,7 @@ declare namespace ExperimentFormModuleScssNamespace {
     content: string;
     displayName: string;
     item: string;
+    parameter: string;
     root: string;
     title: string;
   }

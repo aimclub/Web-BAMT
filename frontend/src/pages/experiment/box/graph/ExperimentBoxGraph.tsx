@@ -54,7 +54,6 @@ const myConfig: Partial<GraphConfiguration<GraphNode, GraphLink>> = {
 };
 
 const ExperimentBoxGraph = () => {
-  const { model } = useAppSelector((state) => state.model);
   const dispatch = useAppDispatch();
   const { nodes, links, sourceNodeId } = useAppSelector(
     (state) => state.experiment
@@ -86,10 +85,7 @@ const ExperimentBoxGraph = () => {
     [dispatch]
   );
 
-  const data = useMemo(
-    () => colorizeGraph({ nodes, links }, model),
-    [links, model, nodes]
-  );
+  const data = useMemo(() => colorizeGraph({ nodes, links }), [links, nodes]);
 
   return (
     <Graph

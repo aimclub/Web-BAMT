@@ -16,6 +16,10 @@
   letter-spacing: 0.15px;
 
   color: #000000;
+
+  .disabled & {
+    color: #c4c3c3;
+  }
 }
 
 .item {
@@ -25,7 +29,7 @@
   font-size: 14px;
   line-height: 120%;
   letter-spacing: 0.15px;
-  text-transform: capitalize;
+  // text-transform: capitalize;
 
   color: #000000;
 }
@@ -49,4 +53,8 @@
   line-height: 16px;
 
   color: #878787;
+
+  &.error {
+    color: #d32f2f;
+  }
 }

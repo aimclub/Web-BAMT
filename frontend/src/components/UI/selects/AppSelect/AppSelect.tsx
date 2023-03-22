@@ -19,7 +19,7 @@ const CustomSelect = styled(Select)({
     fontSize: 14,
     lineHeight: "16px",
     letterSpacing: "0.4px",
-    textTransform: "capitalize",
+    // textTransform: "capitalize",
 
     color: "rgba(0, 0, 0, 0.87)",
   },
@@ -44,11 +44,11 @@ const CustomSelect = styled(Select)({
 const AppSelect: FC<
   SelectProps & {
     options: string[] | { id?: string; name: string; disabled?: boolean }[];
-    helperText?: string;
+    helperText?: string | undefined | false;
   }
 > = ({ className, options, label, helperText = "select", ...props }) => {
   return (
-    <div className={cl(scss.root, className)}>
+    <div className={cl(scss.root, className, props.disabled && scss.disabled)}>
       {label && <p className={scss.label}>{label}</p>}
       <div className={scss.select}>
         <CustomSelect {...props}>
@@ -68,7 +68,11 @@ const AppSelect: FC<
             )
           )}
         </CustomSelect>
-        {helperText && <p className={scss.helperText}>{helperText}</p>}
+        {helperText && (
+          <p className={cl(scss.helperText, props.error && scss.error)}>
+            {helperText}
+          </p>
+        )}
       </div>
     </div>
   );

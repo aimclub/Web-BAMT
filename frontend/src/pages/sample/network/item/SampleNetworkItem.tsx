@@ -19,7 +19,6 @@ const SampleNetworkItem: FC<{ index: number; network: INetwork | "" }> = ({
   network,
 }) => {
   const { user } = useAppSelector((state) => state.auth);
-  const { model } = useAppSelector((state) => state.model);
   const { networks, selectedNode } = useAppSelector((state) => state.sample);
 
   const { data } = bn_managerAPI.useGetBNDataQuery({
@@ -71,7 +70,7 @@ const SampleNetworkItem: FC<{ index: number; network: INetwork | "" }> = ({
         {network ? (
           <SampleNetworkItemData
             index={index}
-            data={colorizeNetwork(network, model, selectedNode)}
+            data={colorizeNetwork(network, selectedNode)}
             onNodeClick={handleNodeClick}
           />
         ) : (

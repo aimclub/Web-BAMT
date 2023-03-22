@@ -1,54 +1,69 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import Fade from "@mui/material/Fade";
-
+import { useCallback, useEffect, useState } from "react";
 import { bn_managerAPI } from "../../../API/bn_manager/bn_managerAPI";
+
 import { experimentAPI } from "../../../API/experiment/experimentAPI";
+import { IExperimentFormValues } from "../../../API/experiment/experimentTypes";
 import { TRANSITION_TIMEOUT } from "../../../assets/utils/constants";
 import ExperimentForm from "../../../components/forms/experiment/ExperimentForm";
 import MessagePopup from "../../../components/popups/message/MessagePopup";
-import AlertError from "../../../components/UI/alerts/error/AlertError";
 import { useAppSelector } from "../../../hooks/redux";
-import { useCheckDisplayName } from "../../../hooks/useCheckDisplayName";
-import { useTrainModel } from "../../../hooks/useTrainModel";
+import { useUser } from "../../../hooks/useUser";
+import ExperimentLoader from "../loader/ExperimentLoader";
 
 const ExperimentParameters = () => {
-  const { user } = useAppSelector((state) => state.auth);
+  const { username } = useUser();
+  const { links } = useAppSelector((state) => state.experiment);
 
-  // const { data: rootNodesData, isError: getRootNodesError } =
-  //   experimentAPI.useGetRootNodesQuery({ case_id: 0 });
-  const { isError: getBNNamesError } = bn_managerAPI.useGetBNDataNamesQuery({
-    owner: user?.username || "",
-  });
+  const { refetch } = bn_managerAPI.useGetBNDataNamesQuery({ owner: username });
 
-  const { checkDisplayName, displayNameError, clearDisplayNameError } =
-    useCheckDisplayName();
+  const [train, { isLoading, isError, isSuccess }] =
+    experimentAPI.useTrainMutation();
 
-  const { handleTrainModel, result, handleCloseResult, isSuccess } =
-    useTrainModel({
-      case_id: 0,
-      checkDisplayName,
+  const [result, setResult] = useState<string | undefined>(undefined);
+
+  const handleTrainModel = (values: IExperimentFormValues) => {
+    console.log("train model", values);
+
+    train({
+      owner: username,
+      name: values.display_name,
+      dataset: values.dataset,
+      bn_params: {
+        scoring_function: values.score_function,
+        use_mixture: Boolean(values.mixture),
+        has_logit: Boolean(values.logit),
+        classifier: values.classifier,
+        regressor: values.regressor,
+        params: {
+          init_nodes: values.root_nodes,
+          init_edges: links.map(({ source, target }) => [source, target]),
+        },
+      },
     });
+  };
+
+  const handleCloseResult = useCallback(() => setResult(undefined), []);
+
+  useEffect(() => {
+    if (isError) setResult("Error on train model.");
+  }, [isError]);
+
+  useEffect(() => {
+    if (isSuccess) setResult("Model train and save.");
+  }, [isSuccess]);
+
+  useEffect(() => {
+    refetch();
+  }, [isSuccess, isError, refetch]);
 
   return (
     <Fade in={true} timeout={TRANSITION_TIMEOUT}>
       <section>
-        {/* <ExperimentForm
-          rootNodes={rootNodesData ? rootNodesData.root_nodes : []}
-          onTrain={handleTrainModel}
-        /> */}
-        {/* <AlertError
-          isError={getRootNodesError}
-          message="Error on get root nodes"
-        /> */}
-        <AlertError
-          isError={getBNNamesError}
-          message="Error on get bn data names"
-        />
-        <MessagePopup
-          message={displayNameError || ""}
-          open={!!displayNameError}
-          onClose={clearDisplayNameError}
-        />
+        <ExperimentForm onSubmit={handleTrainModel} />
+
+        <ExperimentLoader isTraining={isLoading} />
+
         <MessagePopup
           title={isSuccess ? "Success" : "Error"}
           isError={!isSuccess}

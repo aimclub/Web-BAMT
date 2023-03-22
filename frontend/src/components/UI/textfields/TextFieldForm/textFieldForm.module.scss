@@ -1,11 +1,11 @@
 .root {
   display: flex;
-  justify-content: stretch;
+  justify-content: space-between;
   align-items: flex-start;
 }
 
 .label {
-  margin: 0 10px 0 0;
+  margin: 8px 10px 0 0;
   min-width: 100px;
 
   font-family: "Roboto";

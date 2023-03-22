@@ -4,27 +4,28 @@
 body {
   margin: 0;
   font-family: "Open Sans", "Arial", Helvetica, sans-serif;
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #c4c4c4 #f7f8f8;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      border-radius: 6px;
+      background-color: #f7f8f8;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 6px;
+      background-color: #c4c4c4;
+    }
+  }
 }
 
 .loader {
   min-height: 100vh;
-}
-
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #c4c4c4 #f7f8f8;
-
-  &::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  &::-webkit-scrollbar-track {
-    border-radius: 6px;
-    background-color: #f7f8f8;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    border-radius: 6px;
-    background-color: #c4c4c4;
-  }
 }

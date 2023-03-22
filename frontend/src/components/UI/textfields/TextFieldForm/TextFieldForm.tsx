@@ -11,7 +11,7 @@ const CustomTextForm = styled(TextField)({
     fontFamily: "Open Sans",
     fontStyle: "normal",
     fontWeight: 300,
-    fontSize: "14px",
+    fontSize: 14,
     lineHeight: "16px",
     letterSpacing: "0.15px",
 
@@ -45,11 +45,18 @@ const CustomTextForm = styled(TextField)({
   // "&:hover :not(.Mui-error).Mui-focused .MuiOutlinedInput-notchedOutline": {
   //   borderBottom: "1px solid #000000",
   // },
-  // "& .MuiFormHelperText-root": {
-  //   margin: "4px 0 0",
-  // },
+  "& .MuiFormHelperText-root": {
+    margin: "2px 0 0",
+
+    fontFamily: "Roboto",
+    fontStyle: "normal",
+    fontWeight: 300,
+    fontSize: 12,
+    lineHeight: "16px",
+  },
 });
 
+// TODO: info
 const TextFieldForm: FC<TextFieldProps> = ({ className, label, ...props }) => {
   return (
     <label className={cl(scss.root, className)}>

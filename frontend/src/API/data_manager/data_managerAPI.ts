@@ -1,6 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
 import { BASE_URL } from "../baseURL";
-import { IDataSets, IUploadDataset } from "./data_managerTypes";
+import {
+  IDatasetRootNodes,
+  IDataSets,
+  IUploadDataset,
+} from "./data_managerTypes";
 
 export const data_managerAPI = createApi({
   reducerPath: "data_managerAPI",
@@ -16,6 +20,18 @@ export const data_managerAPI = createApi({
       }),
       providesTags: ["Datasets"],
     }),
+
+    getDatasetRootNodes: build.query<
+      IDatasetRootNodes,
+      { name: string; owner: string }
+    >({
+      query: ({ name, owner }) => ({
+        url: `get_root_nodes`,
+        params: { name, owner },
+      }),
+      providesTags: ["Datasets"],
+    }),
+
     uploadDataset: build.mutation<unknown, IUploadDataset>({
       query: ({ name, owner, description, file }) => {
         const body = new FormData();
@@ -33,6 +49,7 @@ export const data_managerAPI = createApi({
       },
       invalidatesTags: ["Datasets"],
     }),
+
     removeDataset: build.mutation<unknown, { owner: string; name: string }>({
       query: ({ owner, name }) => ({
         url: `remove_dataset`,

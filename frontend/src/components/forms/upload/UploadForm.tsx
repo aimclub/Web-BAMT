@@ -33,13 +33,15 @@ const UploadForm = () => {
       description:
         "Данный граф построен с использованием различных методов обработки ресурсов полученных из социальных сетей.",
     },
-    onSubmit: (values) =>
+    onSubmit: (values) => {
+      if (isRepeatDisplayName) return;
       uploadDataset({
         owner: user,
         name: values.display_name,
         description: values.description,
         file: files[0],
-      }),
+      });
+    },
     validationSchema,
   });
 

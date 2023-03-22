@@ -1,5 +1,7 @@
 declare namespace AppSelectModuleScssNamespace {
   export interface IAppSelectModuleScss {
+    disabled: string;
+    error: string;
     helperText: string;
     item: string;
     label: string;
