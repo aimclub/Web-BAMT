@@ -11,7 +11,7 @@ type TagsType = "networks" | "datasets";
 const tags: TagsType[] = ["datasets", "networks"];
 
 const DataPopup = () => {
-  const [opened, setOpened] = useState(true);
+  const [opened, setOpened] = useState(false);
   const [current, setCurrent] = useState<TagsType>("networks");
 
   const handleOpen = useCallback(() => {

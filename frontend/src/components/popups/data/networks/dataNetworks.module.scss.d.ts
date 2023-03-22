@@ -1,6 +1,7 @@
 declare namespace DataNetworksModuleScssNamespace {
   export interface IDataNetworksModuleScss {
     list: string;
+    root: string;
     title: string;
   }
 }

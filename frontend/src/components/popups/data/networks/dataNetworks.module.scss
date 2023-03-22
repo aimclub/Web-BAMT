@@ -1,3 +1,10 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
 .title {
   padding: 6px 0;
 
@@ -15,8 +22,10 @@
 }
 
 .list {
-  padding: 0;
+  padding: 0 8px 0 0;
   margin: 0;
 
   list-style: none;
+  overflow-y: auto;
+  flex: 1;
 }

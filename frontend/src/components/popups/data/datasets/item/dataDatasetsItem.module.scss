@@ -1,9 +1,5 @@
 .root {
-  padding: 16px 6px 16px 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding: 16px 0;
 
   &:not(:last-child) {
     border-bottom: 1px solid #f1f3f5;
@@ -28,6 +24,18 @@
   font-size: 14px;
   line-height: 19px;
   letter-spacing: 0.25px;
+
+  color: #000000;
+}
+
+.text {
+  margin: 0;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 16px;
 
   color: #000000;
 }

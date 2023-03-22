@@ -16,12 +16,13 @@ export const data_managerAPI = createApi({
       }),
       providesTags: ["Datasets"],
     }),
-    // removeBN: build.mutation<unknown, { owner: string; name: string }>({
-    //   query: ({ owner, name }) => ({
-    //     url: `remove/${owner}/${name}`,
-    //     method: "DELETE",
-    //   }),
-    //   invalidatesTags: ["Networks"],
-    // }),
+    removeDataset: build.mutation<unknown, { owner: string; name: string }>({
+      query: ({ owner, name }) => ({
+        url: `remove_dataset`,
+        method: "DELETE",
+        params: { name, owner },
+      }),
+      invalidatesTags: ["Datasets"],
+    }),
   }),
 });

@@ -1,3 +1,38 @@
 .root {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+.row {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 80px 1fr 30px;
+  align-items: flex-start;
+}
+
+.head {
+  padding: 6px 0;
+
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0.1px;
+
+  color: rgba(0, 0, 0, 0.55);
+  p {
+    margin: 0;
+  }
+}
+
+.list {
+  margin: 0;
+  padding: 0 8px 0 0;
+
+  list-style: none;
   overflow-y: auto;
+  flex: 1;
 }

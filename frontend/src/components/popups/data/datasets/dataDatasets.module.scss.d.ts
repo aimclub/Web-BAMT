@@ -1,6 +1,9 @@
 declare namespace DataDatasetsModuleScssNamespace {
   export interface IDataDatasetsModuleScss {
+    head: string;
+    list: string;
     root: string;
+    row: string;
   }
 }
 
