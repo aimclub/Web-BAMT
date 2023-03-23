@@ -26,6 +26,7 @@ import TextFieldForm from "../../UI/textfields/TextFieldForm/TextFieldForm";
 import { validationSchema } from "./ExperimentFormValidator";
 
 import scss from "./experimentForm.module.scss";
+import Switch from "../../UI/Switch/Switch";
 
 const initialValues: IExperimentFormValues = {
   display_name: "",
@@ -36,6 +37,7 @@ const initialValues: IExperimentFormValues = {
   mixture: "",
   score_function: "",
   root_nodes: [] as string[],
+  comparison: false,
 };
 
 const ExperimentForm: FC<{
@@ -191,7 +193,7 @@ const ExperimentForm: FC<{
             helperText={touched.score_function && errors.score_function}
           />
           <AppMultiSelect
-            className={scss.item}
+            className={scss.parameter}
             options={rootNodes?.root_nodes || []}
             value={values.root_nodes}
             onChange={handleChange}
@@ -199,7 +201,14 @@ const ExperimentForm: FC<{
             label="Root nodes"
             helperText="select node type"
           />
-          {/* TODO: add switcher */}
+          <Switch
+            checked={values.comparison}
+            onChange={handleChange}
+            className={scss.switch}
+            name="comparison"
+            label="Comparison with the classical algorithm"
+            disabled
+          />
         </div>
       </div>
 

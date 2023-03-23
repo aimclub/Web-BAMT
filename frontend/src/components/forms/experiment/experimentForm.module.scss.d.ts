@@ -2,9 +2,9 @@ declare namespace ExperimentFormModuleScssNamespace {
   export interface IExperimentFormModuleScss {
     content: string;
     displayName: string;
-    item: string;
     parameter: string;
     root: string;
+    switch: string;
     title: string;
   }
 }

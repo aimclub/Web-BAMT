@@ -33,4 +33,5 @@ export interface IExperimentFormValues {
   mixture: "";
   score_function: "";
   root_nodes: string[];
+  comparison: boolean;
 }
