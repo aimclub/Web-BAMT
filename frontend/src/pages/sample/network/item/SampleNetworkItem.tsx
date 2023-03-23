@@ -1,17 +1,20 @@
 // import StarIcon from "@mui/icons-material/Star";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { FC, useRef } from "react";
+
 import { bn_managerAPI } from "../../../../API/bn_manager/bn_managerAPI";
 
+import { INetwork } from "../../../../API/experiment/experimentTypes";
+import { colorizeNetwork } from "../../../../assets/utils/graph";
 import AppSelect from "../../../../components/UI/selects/AppSelect/AppSelect";
 import { useAppDispatch, useAppSelector } from "../../../../hooks/redux";
+import { useUser } from "../../../../hooks/useUser";
 import {
   selectNetworkNode,
   setSelectedNetwork,
 } from "../../../../redux/sample/sample";
-import { INetwork } from "../../../../types/experiment";
-import { colorizeNetwork } from "../../../../assets/utils/graph";
 import SampleNetworkItemData from "./graph/SampleNetworkItemGraph";
+
 import scss from "./sampleNetworkItem.module.scss";
 
 const SampleNetworkItem: FC<{ index: number; network: INetwork | "" }> = ({
@@ -19,12 +22,10 @@ const SampleNetworkItem: FC<{ index: number; network: INetwork | "" }> = ({
   network,
 }) => {
   const refContainer = useRef<HTMLDivElement | null>(null);
-  const { user } = useAppSelector((state) => state.auth);
+  const { username: owner } = useUser();
   const { networks, selectedNode } = useAppSelector((state) => state.sample);
 
-  const { data } = bn_managerAPI.useGetBNDataQuery({
-    owner: user?.username || "",
-  });
+  const { data } = bn_managerAPI.useGetBNDataQuery({ owner });
   const all_networks: INetwork[] = data ? Object.values(data.networks) : [];
   const dispatch = useAppDispatch();
 
@@ -44,6 +45,7 @@ const SampleNetworkItem: FC<{ index: number; network: INetwork | "" }> = ({
         selectNetworkNode({
           network_name: network.name,
           node_name: node,
+          dataset_name: network.dataset_name,
         })
       );
   };

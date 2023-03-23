@@ -1,14 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { INetwork } from "../../types/experiment";
+import { INetwork, INetworkNode } from "../../API/experiment/experimentTypes";
 
 const initialState = {
   networks: Array(2).fill("") as (INetwork | "")[],
-  selectedNode: undefined as
-    | {
-        network_name: string;
-        node_name: string;
-      }
-    | undefined,
+  selectedNode: undefined as INetworkNode | undefined,
 };
 
 export const modelSlice = createSlice({
@@ -22,10 +17,7 @@ export const modelSlice = createSlice({
     ) => {
       state.networks[action.payload.index] = action.payload.network;
     },
-    selectNetworkNode: (
-      state,
-      action: PayloadAction<{ network_name: string; node_name: string }>
-    ) => {
+    selectNetworkNode: (state, action: PayloadAction<INetworkNode>) => {
       state.selectedNode = action.payload;
     },
   },

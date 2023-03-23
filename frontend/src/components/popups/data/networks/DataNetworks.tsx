@@ -1,15 +1,13 @@
 import { FC } from "react";
 import { bn_managerAPI } from "../../../../API/bn_manager/bn_managerAPI";
 import { cl } from "../../../../assets/utils/classnames";
-import { useAppSelector } from "../../../../hooks/redux";
+import { useUser } from "../../../../hooks/useUser";
 import scss from "./dataNetworks.module.scss";
 import DataNetworksItem from "./item/DataNetworksItem";
 
 const DataNetworks: FC<{ className?: string }> = ({ className }) => {
-  const { user } = useAppSelector((state) => state.auth);
-  const { data: networks } = bn_managerAPI.useGetBNDataNamesQuery({
-    owner: user?.username || "",
-  });
+  const { username: owner } = useUser();
+  const { data: networks } = bn_managerAPI.useGetBNDataNamesQuery({ owner });
 
   return (
     <div className={cl(className, scss.root)}>

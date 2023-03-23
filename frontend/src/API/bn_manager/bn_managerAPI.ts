@@ -1,5 +1,10 @@
-import { IBNData, IBNDataNames, ISample } from "../../types/experiment";
 import { commonApi } from "../baseURL";
+import {
+  IBNData,
+  IBNDataNames,
+  ISample,
+  ISampleNetworkNode,
+} from "./bn_managerType";
 
 const BASE_URL = "bn_manager/";
 
@@ -21,13 +26,10 @@ export const bn_managerAPI = commonApi.injectEndpoints({
       providesTags: ["Networks"],
     }),
 
-    // get network
-    getSampleData: build.query<
-      ISample,
-      { owner: string; name: string; node: string }
-    >({
-      query: ({ owner, name, node }) => ({
-        url: `${BASE_URL}get_sample/${owner}/${name}/${node}`,
+    // get sample data for network node
+    getSampleNodeData: build.query<ISample, ISampleNetworkNode>({
+      query: ({ owner, net_name, dataset_name, node }) => ({
+        url: `${BASE_URL}get_graph_data/${owner}/${net_name}/${dataset_name}/${node}`,
       }),
       providesTags: ["Networks"],
     }),

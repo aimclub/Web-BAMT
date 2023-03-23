@@ -1,4 +1,4 @@
-import { INetwork } from "../../types/experiment";
+import { INetwork } from "../../API/experiment/experimentTypes";
 import { IGraph, ILink } from "../../types/graph";
 import { APP_COLOR } from "./constants";
 

@@ -1,16 +1,15 @@
 import { bn_managerAPI } from "../../../API/bn_manager/bn_managerAPI";
 import AlertError from "../../../components/UI/alerts/error/AlertError";
 import { useAppSelector } from "../../../hooks/redux";
+import { useUser } from "../../../hooks/useUser";
 import SampleNetworkItem from "./item/SampleNetworkItem";
 import scss from "./sampleNetwork.module.scss";
 
 const SampleNetwork = () => {
-  const { user } = useAppSelector((state) => state.auth);
+  const { username: owner } = useUser();
   const { networks } = useAppSelector((state) => state.sample);
 
-  const { isError } = bn_managerAPI.useGetBNDataQuery({
-    owner: user?.username || "",
-  });
+  const { isError } = bn_managerAPI.useGetBNDataQuery({ owner });
 
   return (
     <section>

@@ -1,11 +1,11 @@
 import { formatBNParamsToString } from "../../assets/utils/format";
 
-import { ITrainBN } from "../../types/experiment";
 import { commonApi } from "../baseURL";
 import {
   ExperimentModelType,
   IExperimentModels,
   IExperimentParameters,
+  ITrainBN,
 } from "./experimentTypes";
 
 const BASE_URL = "experiment/";

@@ -1,12 +1,12 @@
 import { ApexOptions } from "apexcharts";
 import { FC, memo } from "react";
 import ReactApexChart from "react-apexcharts";
+import { ISample } from "../../../../API/bn_manager/bn_managerType";
 import { APP_COLOR } from "../../../../assets/utils/constants";
 import { useAppSelector } from "../../../../hooks/redux";
-import { IComparisonData } from "../../../../types/experiment";
 
 const SampleComparisonChart: FC<{
-  data: IComparisonData;
+  data: ISample;
   title: string;
 }> = ({ data, title }) => {
   const { selectedNode } = useAppSelector((state) => state.sample);
