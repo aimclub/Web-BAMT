@@ -1,38 +1,41 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
-import { BASE_URL, URLendpoints } from "../baseURL";
 import { IBNData, IBNDataNames, ISample } from "../../types/experiment";
+import { commonApi } from "../baseURL";
 
-export const bn_managerAPI = createApi({
-  reducerPath: "bn_managerAPI",
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${BASE_URL}/${URLendpoints.BN_MANAGER}`,
-  }),
-  tagTypes: ["Networks"],
+const BASE_URL = "bn_manager/";
+
+export const bn_managerAPI = commonApi.injectEndpoints({
   endpoints: (build) => ({
+    // get networks data
     getBNData: build.query<IBNData, { owner: string }>({
       query: ({ owner }) => ({
-        url: `get_BN/${owner}`,
+        url: `${BASE_URL}get_BN/${owner}`,
       }),
       providesTags: ["Networks"],
     }),
+
+    // get networks names
     getBNDataNames: build.query<IBNDataNames, { owner: string }>({
       query: ({ owner }) => ({
-        url: `get_BN_names/${owner}`,
+        url: `${BASE_URL}get_BN_names/${owner}`,
       }),
       providesTags: ["Networks"],
     }),
+
+    // get network
     getSampleData: build.query<
       ISample,
       { owner: string; name: string; node: string }
     >({
       query: ({ owner, name, node }) => ({
-        url: `get_sample/${owner}/${name}/${node}`,
+        url: `${BASE_URL}get_sample/${owner}/${name}/${node}`,
       }),
       providesTags: ["Networks"],
     }),
+
+    // remove network
     removeBN: build.mutation<unknown, { owner: string; name: string }>({
       query: ({ owner, name }) => ({
-        url: `remove/${owner}/${name}`,
+        url: `${BASE_URL}remove/${owner}/${name}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Networks"],

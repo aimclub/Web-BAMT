@@ -1,45 +1,68 @@
 .root {
-  padding: 12px 32px;
+  max-height: 720px;
+  width: 100%;
 
-  align-self: flex-start;
-  display: grid;
-  grid-template: "desc net" "comp comp" / 1fr auto;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  gap: 16px;
+}
 
-  border-radius: 4px;
-  background-color: #ffffff;
+.panel {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
 }
 
 .info {
-  padding: 0 0 10px 20px;
+  margin: 0 0 2px;
+  padding: 16px;
+  max-width: 320px;
+  box-sizing: border-box;
 
-  .title {
-    margin: 0 0 18px;
+  background: #ffffff;
+  border-radius: 4px;
 
-    font-family: "Roboto";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 150%;
-    letter-spacing: 0.15px;
+  flex: 1;
+}
 
-    color: #263238;
-  }
+.title {
+  margin: 0 0 18px;
 
-  .text {
-    margin: 6px 0;
-    font-family: "Roboto";
-    font-style: normal;
-    font-weight: 300;
-    font-size: 16px;
-    line-height: 145%;
-    letter-spacing: 0.15px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.15px;
 
-    color: #263238;
-  }
+  color: #263238;
+}
 
-  .btns {
-    display: grid;
-    grid-template-columns: 5fr 7fr;
-    gap: 4px;
-  }
+.text {
+  margin: 6px 0;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 145%;
+  letter-spacing: 0.15px;
+
+  color: #263238;
+}
+
+.btns {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 4px;
+}
+
+.content {
+  padding: 16px;
+
+  background: #ffffff;
+  border-radius: 4px;
+
+  flex: 1;
 }

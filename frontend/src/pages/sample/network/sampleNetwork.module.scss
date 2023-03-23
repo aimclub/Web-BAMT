@@ -17,11 +17,23 @@
   padding: 0;
 
   list-style: none;
-  display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
 }
 
 .item {
   padding: 16px 20px;
+  position: relative;
+
+  &:not(:last-child)::after {
+    content: "";
+    width: 1px;
+    height: calc(100% - 50px);
+
+    background: rgba(0, 0, 0, 0.5);
+
+    position: absolute;
+    bottom: 10px;
+    right: 0;
+  }
 }

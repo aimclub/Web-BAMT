@@ -2,14 +2,17 @@ import { FC } from "react";
 import { Graph, GraphConfiguration } from "react-d3-graph";
 import { IGraph, ILink, INode } from "../../../../../types/graph";
 
-const myConfig: Partial<GraphConfiguration<INode, ILink>> = {
+const myConfig: (size: {
+  height: number;
+  width: number;
+}) => Partial<GraphConfiguration<INode, ILink>> = ({ height, width }) => ({
   directed: true,
-  height: 160,
+  height,
   linkHighlightBehavior: false,
   nodeHighlightBehavior: false,
-  width: 290,
+  width,
   d3: {
-    gravity: -200,
+    gravity: -400,
   },
   node: {
     color: "transparent",
@@ -30,21 +33,30 @@ const myConfig: Partial<GraphConfiguration<INode, ILink>> = {
     opacity: 1,
     renderLabel: false,
     strokeWidth: 4,
-    markerHeight: 4,
-    markerWidth: 4,
+    markerHeight: 3,
+    markerWidth: 3,
   },
-  initialZoom: 0.4,
-};
+  initialZoom: 0.6,
+});
 
 const SampleNetworkItemData: FC<{
   onNodeClick: (node: string) => void;
   data: IGraph;
   index: number;
-}> = ({ onNodeClick, data, index }) => {
+  size?: {
+    height?: number;
+    width?: number;
+  };
+}> = ({
+  onNodeClick,
+  data,
+  index,
+  size: { height = 160, width = 290 } = {},
+}) => {
   return (
     <Graph
       id={`graph-${index}`}
-      config={myConfig}
+      config={myConfig({ height, width })}
       data={data}
       onClickNode={onNodeClick}
     />

@@ -1,6 +1,5 @@
 import Fade from "@mui/material/Fade";
 import { useCallback, useEffect, useState } from "react";
-import { bn_managerAPI } from "../../../API/bn_manager/bn_managerAPI";
 
 import { experimentAPI } from "../../../API/experiment/experimentAPI";
 import { IExperimentFormValues } from "../../../API/experiment/experimentTypes";
@@ -15,15 +14,13 @@ const ExperimentParameters = () => {
   const { username } = useUser();
   const { links } = useAppSelector((state) => state.experiment);
 
-  const { refetch } = bn_managerAPI.useGetBNDataNamesQuery({ owner: username });
-
   const [train, { isLoading, isError, isSuccess }] =
     experimentAPI.useTrainMutation();
 
   const [result, setResult] = useState<string | undefined>(undefined);
 
   const handleTrainModel = (values: IExperimentFormValues) => {
-    console.log("train model", values);
+    // console.log("train model", values);
 
     train({
       owner: username,
@@ -52,10 +49,6 @@ const ExperimentParameters = () => {
   useEffect(() => {
     if (isSuccess) setResult("Model train and save.");
   }, [isSuccess]);
-
-  useEffect(() => {
-    refetch();
-  }, [isSuccess, isError, refetch]);
 
   return (
     <Fade in={true} timeout={TRANSITION_TIMEOUT}>

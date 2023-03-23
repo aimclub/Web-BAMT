@@ -1,6 +1,12 @@
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query/react";
+
 export const BASE_URL = process.env.REACT_APP_BASE_URL;
 
-export enum URLendpoints {
-  EXAMPLE = "api/example",
-  BN_MANAGER = "api/bn_manager",
-}
+export const commonApi = createApi({
+  reducerPath: "api",
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${BASE_URL}/api`,
+  }),
+  tagTypes: ["Networks"],
+  endpoints: () => ({}),
+});

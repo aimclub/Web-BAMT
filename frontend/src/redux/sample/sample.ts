@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { INetwork } from "../../types/experiment";
 
 const initialState = {
-  networks: Array(3).fill("") as (INetwork | "")[],
+  networks: Array(2).fill("") as (INetwork | "")[],
   selectedNode: undefined as
     | {
         network_name: string;

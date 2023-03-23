@@ -10,9 +10,8 @@ import {
 } from "redux-persist";
 import storage from "redux-persist/lib/storage/session";
 import { authAPI } from "../API/auth/authAPI";
-import { bn_managerAPI } from "../API/bn_manager/bn_managerAPI";
+import { commonApi } from "../API/baseURL";
 import { data_managerAPI } from "../API/data_manager/data_managerAPI";
-import { exampleAPI } from "../API/example/exampleAPI";
 import { experimentAPI } from "../API/experiment/experimentAPI";
 
 import authReducer from "./auth/auth";
@@ -25,9 +24,8 @@ const rootReducer = combineReducers({
   sample: sampleReducer,
   [authAPI.reducerPath]: authAPI.reducer,
   [experimentAPI.reducerPath]: experimentAPI.reducer,
-  [bn_managerAPI.reducerPath]: bn_managerAPI.reducer,
-  [exampleAPI.reducerPath]: exampleAPI.reducer,
   [data_managerAPI.reducerPath]: data_managerAPI.reducer,
+  [commonApi.reducerPath]: commonApi.reducer,
 });
 
 const persistConfig = {
@@ -47,10 +45,9 @@ export const setupstore = () => {
           ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
         },
       }).concat(
+        commonApi.middleware,
         authAPI.middleware,
         experimentAPI.middleware,
-        bn_managerAPI.middleware,
-        exampleAPI.middleware,
         data_managerAPI.middleware
       );
     },

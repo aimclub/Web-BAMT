@@ -1,6 +1,6 @@
 // import StarIcon from "@mui/icons-material/Star";
 import { SelectChangeEvent } from "@mui/material/Select";
-import { FC } from "react";
+import { FC, useRef } from "react";
 import { bn_managerAPI } from "../../../../API/bn_manager/bn_managerAPI";
 
 import AppSelect from "../../../../components/UI/selects/AppSelect/AppSelect";
@@ -18,6 +18,7 @@ const SampleNetworkItem: FC<{ index: number; network: INetwork | "" }> = ({
   index,
   network,
 }) => {
+  const refContainer = useRef<HTMLDivElement | null>(null);
   const { user } = useAppSelector((state) => state.auth);
   const { networks, selectedNode } = useAppSelector((state) => state.sample);
 
@@ -66,12 +67,16 @@ const SampleNetworkItem: FC<{ index: number; network: INetwork | "" }> = ({
           <span className={scss.value}>200</span>
         </div> */}
       </div>
-      <div className={scss.graph}>
+      <div className={scss.graph} ref={refContainer}>
         {network ? (
           <SampleNetworkItemData
             index={index}
             data={colorizeNetwork(network, selectedNode)}
             onNodeClick={handleNodeClick}
+            size={{
+              height: refContainer.current?.clientHeight,
+              width: refContainer.current?.clientWidth,
+            }}
           />
         ) : (
           <p className={scss.info}>choose networks</p>
