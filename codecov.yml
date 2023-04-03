@@ -1,0 +1,5 @@
+codecov:
+  token: ${{ secrets.CODECOV_TOKEN }}
+  file:
+    - ./target/site/jacoco/jacoco.xml
+  branch: master
