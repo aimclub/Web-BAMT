@@ -85,7 +85,7 @@ class BNResource(Resource):
         package = manager.packing(bn_params)
         manager.update_db(*package)
 
-        # =========== Clearing memory of models ==============
+        # =========== Clearing memory of joblib models ==============
         if os.path.isdir(os.path.join(STORAGE, owner)):
             shutil.rmtree(os.path.join(STORAGE, owner))
 

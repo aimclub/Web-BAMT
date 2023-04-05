@@ -11,6 +11,8 @@ from sklearn.mixture import GaussianMixture
 from ast import literal_eval
 from flask import current_app
 from utils import project_root
+from scipy import stats
+from statsmodels.graphics.gofplots import ProbPlot
 
 
 class SampleWorker(object):
@@ -62,10 +64,7 @@ class SampleWorker(object):
             sys_loc = current_app.config["SAMPLES_FOLDER"]
         path = os.path.join(sys_loc, rel_loc)
 
-        if mode == "dataset":
-            df = pd.read_csv(path, index_col=0)
-        else:
-            df = pd.read_csv(path, index_col=0)
+        df = pd.read_csv(path, index_col=0)
 
         if df.empty:
             raise FileNotFoundError
@@ -89,7 +88,7 @@ class SampleWorker(object):
         return {"data": numeric_values, "xvals": category_vals}
 
     @staticmethod
-    def get_data_for_qq_plot(data1, data2):
+    def get_data_for_qq_plot_cont(data1, data2):
         # Sort the data
         data1_sorted = np.sort(data1)
         data2_sorted = np.sort(data2)
@@ -100,6 +99,13 @@ class SampleWorker(object):
         quantiles_data2 = np.quantile(data2_sorted, quantiles)
 
         return quantiles_data1, quantiles_data2
+
+    @staticmethod
+    def get_data_for_qq_plot_disc(probas1, probas2):
+        x_sample = stats.multinomial.rvs(n=100, p=probas1, random_state=42)
+        x_theor = stats.multinomial.rvs(n=100, p=probas2, random_state=42)
+
+        return ProbPlot(x_sample).sample_quantiles, ProbPlot(x_theor).sample_quantiles
 
     @staticmethod
     def kl_divergence(p, q):
@@ -132,11 +138,8 @@ class SampleWorker(object):
 
         series_from_dataset = self.extract_file(truth_meta.location, mode="dataset")[self.node]
         if literal_eval(truth_meta.map)[self.node] == "float":
-            q1, q2 = self.get_data_for_qq_plot(series_from_dataset, series_from_sample)
+            q1, q2 = self.get_data_for_qq_plot_cont(series_from_dataset, series_from_sample)
             kl_div = self.kl_divergence(*self.make_probas_cont(series_from_dataset, series_from_sample))
-            return {"data": list(q1), "xvals": list(q2),
-                    "metrics": {"kl_divergence": kl_div},
-                    "type": "cont"}
         else:
             freq_sample = pd.value_counts(series_from_sample, normalize=True)
             freq_df = pd.value_counts(series_from_dataset, normalize=True)
@@ -146,17 +149,12 @@ class SampleWorker(object):
             for column in not_predicted:
                 freq_sample[column] = 0.0
 
-            n_s = series_from_sample.shape[0]
-            n_d = series_from_dataset.shape[0]
-
-            survival = (n_s - n_d) / n_d
+            q1, q2 = self.get_data_for_qq_plot_disc(freq_sample.tolist(), freq_df.tolist())
 
             kl_div = self.kl_divergence(freq_sample.values, freq_df.values)
-
-            return {"data": freq_sample.values.tolist(), "xvals": freq_sample.index.tolist(),
-                    "metrics": {"kl_divergence": kl_div,
-                                "survival": survival},
-                    "type": "disc"}
+        return {"data": [int(i) for i in q1],
+                "xvals": [int(i) for i in q2],
+                "metrics": {"kl_divergence": kl_div}}
 
 
 def find_bns_by_user(owner):

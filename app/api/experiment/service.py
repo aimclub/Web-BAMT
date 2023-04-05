@@ -2,14 +2,16 @@ import json
 import os
 import pandas as pd
 
-import bamt.networks as Networks
+from bamt.networks.hybrid_bn import HybridBN
+from bamt.networks.discrete_bn import DiscreteBN
+from bamt.networks.continuous_bn import ContinuousBN
+
 from bamt.preprocessors import Preprocessor
 from bamt.utils.GraphUtils import nodes_types
 
 from sklearn import preprocessing as pp
 
 from .models import BayessianNet, Sample
-from utils import project_root
 
 from app import db
 from flask import current_app
@@ -117,11 +119,11 @@ class BnBuilder(object):
 
     def choose_network(self, info: dict):
         if all("cont" == i for i in info.values()):
-            return Networks.ContinuousBN(use_mixture=self.parameters["use_mixture"])
+            return ContinuousBN(use_mixture=self.parameters["use_mixture"])
         elif all(i in ["str", "disc_num"] for i in info.values()):
-            return Networks.DiscreteBN()
+            return DiscreteBN()
         else:
-            return Networks.HybridBN(use_mixture=self.parameters["use_mixture"],
+            return HybridBN(use_mixture=self.parameters["use_mixture"],
                                      has_logit=self.parameters["has_logit"])
 
     @staticmethod
@@ -140,6 +142,7 @@ class BnBuilder(object):
         bn.add_edges(data=discretized_data, optimizer='HC',
                      scoring_function=(self.parameters["scoring_function"],),
                      classifier=self.make_obj(self.parameters.get("classifier", None)),
+                     regressor=self.make_obj(self.parameters.get("regressor", None)),
                      params=self.parameters.get("params", None),
                      progress_bar=False)
 
