@@ -1,5 +1,9 @@
 import ast
-from flask import request
+
+from json import dumps
+from io import BytesIO
+
+from flask import request, send_file
 
 from flask_accepts import responds
 from flask_restx import Namespace, Resource
@@ -15,10 +19,9 @@ api = Namespace("BN_manager", description="BN store operations")
 
 @api.route("/get_BN/<string:owner>")
 class BNManagerResource(Resource):
-    # @responds(schema=BNGetSchema0)
     @api.doc(responses={200: """
             {"networks": 
-                {"nummer": {
+                {"number": {
                     "name": name of net,
                     "dataset_name": name of dataset bn trained on,
                     "edges": edges,
@@ -43,22 +46,56 @@ class BNManagerResource(Resource):
         # if not find_user_by_token(token=obtained["token"]):
         #     raise BadRequest("No token was found")
         nets = find_bns_by_user(owner=owner)
-        return {"networks": {n: {
-            "name": data.name,
-            "dataset_name": data.dataset_name,
-            "edges": ast.literal_eval(data.edges),
-            "nodes": ast.literal_eval(data.nodes),
-            "use_mixture": data.use_mixture,
-            "has_logit": data.has_logit,
-            "classifier": data.classifier,
-            "regressor": data.regressor,
-            "params": {"init_edges": ast.literal_eval(data.init_edges) if data.init_edges else None,
-                       "init_nodes": ast.literal_eval(data.init_nodes) if data.init_nodes else None,
-                       # "white_list": data.white_list,
-                       # "bl_add": data.bl_add,
-                       "remove_init_edges": data.remove_init_edges},
-            "scoring_function": data.scoring_function,
-            "descriptor": ast.literal_eval(data.descriptor)} for n, data in enumerate(nets)}}, 200
+
+        return {"networks": {n: net.unpack()["network"] for n, net in enumerate(nets)}}, 200
+
+
+@api.route("/download_BN")
+class BNDownloaderResource(Resource):
+    @api.doc(responses={200: """
+            {"network": 
+                {
+                    "name": name of net,
+                    "dataset_name": name of dataset bn trained on,
+                    "edges": edges,
+                    "nodes": nodes,
+                    "use_mixture": bool,
+                    "has_logit": bool,
+                    "classifier": str,
+                    "regressor": str,
+                    "params": {"init_edges": None or List[List[str]],
+                               "init_nodes": None or List[str],
+                               "white_list": EXPERIMENTAL: not used yet,
+                               "bl_add": EXPERIMENTAL: not used yet,
+                               "remove_init_edges": bool or none},
+                    "scoring_function": str,
+                    "descriptor": str}
+            }"""
+                        }
+             )
+
+    @api.doc(params={'user': 'username', 'bn_name': 'name of bn'})
+    def get(self):
+        """Download BN"""
+
+        user = request.args.get("user", None)
+        bn_name = request.args.get("bn_name", None)
+
+        if not (user and bn_name):
+            raise BadRequest("User or bn_name wasn't found.")
+
+        if not find_user_by_username(username=user):
+            raise NotFound("User not found.")
+
+        nets = find_bns_by_owner_and_name(owner=user, name=bn_name)
+        if not nets:
+            raise NotFound("Network was not found.")
+
+        file = BytesIO(dumps(nets[0].unpack()).encode('utf-8'))
+        return send_file(path_or_file=file,
+                         mimetype="application/octet-stream",
+                         download_name=f"{bn_name}.json",
+                         as_attachment=True)
 
 
 @api.route("/get_BN_names/<string:owner>")
