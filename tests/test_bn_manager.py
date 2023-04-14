@@ -1,39 +1,47 @@
-from app import db
+def test_get_BN_data(client):
+    response = client.get("api/bn_manager/get_BN/test")
+    assert response.json["networks"] != {}
 
 
-def test_get_BN_data(client, app, auth, bn_actions):
-    auth.register_user(client)
-    _ = bn_actions.register_bn(user="test")
+def test_get_sample(client):
+    user_name, dataset_name, net_name, node = "test", "hack", "test", "Gross"
 
-    response1 = client.get("api/bn_manager/get_BN/test")
-    assert response1.json["networks"] != {}
+    response = client.get(f"api/bn_manager/get_display_data/{user_name}/{net_name}/{dataset_name}/{node}")
 
-    response2 = client.get("api/bn_manager/get_BN/test")
-    print(response2.json)
-    assert response2.json["networks"] != []
+    assert response.status_code == 200, response.json
+    assert response.json["xvals"] != []
+    assert response.json["data"] != []
+    assert response.json["metrics"] != {}
 
+def test_delete(client):
+    _ = client.delete("api/bn_manager/remove/test/test")
 
-def test_get_sample(client, app, auth, bn_actions):
-    auth.register_user(client)
-    _ = bn_actions.register_bn(user="test")
-    response = client.get("api/bn_manager/get_sample/test/test/Gross").json
+    bns = client.get("api/bn_manager/get_BN/test").json
 
-    assert response["sampled_data"]["xvals"] != []
-    assert response["sampled_data"]["data"] != []
-    assert response["real_data"]["xvals"] != []
-    assert response["real_data"]["data"] != []
+    user_name, dataset_name, net_name, node = "test", "hack", "test", "Gross"
 
+    assert not bns["networks"]
+    response = client.get(f"api/bn_manager/get_display_data/{user_name}/{net_name}/{dataset_name}/{node}")
 
-def test_delete(client, app, auth, bn_actions):
-    auth.register_user(client)
-    _ = bn_actions.register_bn(user="test")
-    response = client.delete("api/bn_manager/remove/a/test")
-    assert response.json["message"] == "Success"
+    assert response.status_code == 404
 
-    with app.app_context():
-        assert db.session.execute(
-            "SELECT * FROM nets WHERE owner = 'test'",
-        ).fetchone() is None
-        assert db.session.execute(
-            "SELECT * FROM samples WHERE owner = 'test'",
-        ).fetchone() is None
+def test_get_equal_edges(client, bn_actions):
+    _ = bn_actions.register_bn(params=dict(
+        owner="test",
+        name="a1",
+        dataset="hack",
+        bn_params={"has_logit": False,
+                   "use_mixture": False,
+                   "scoring_function": "K2"}))
+    _ = bn_actions.register_bn(params=dict(
+        owner="test",
+        name="a2",
+        dataset="hack",
+        bn_params={"has_logit": False,
+                   "use_mixture": False,
+                   "scoring_function": "MI"}))
+
+    response = client.get("api/bn_manager/get_equal_edges", query_string={"names": str(['a1', 'a2']), "owner": "test"})
+
+    assert response.status_code == 200
+    assert response.json["equal_edges"] == [['Structural setting', 'Period']]
