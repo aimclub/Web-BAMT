@@ -95,7 +95,7 @@ def app():
         db.drop_all()
 
 
-@pytest.fixture(scope="module", autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def initialize_bn_and_user(app):
     client = app.test_client()
 

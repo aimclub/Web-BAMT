@@ -1,7 +1,6 @@
 from flask_seeder import Seeder
 
 from app.api.data_manager.models import Dataset
-# from app.api.experiment.models import Sample
 
 
 class DatasetsSeeder(Seeder):

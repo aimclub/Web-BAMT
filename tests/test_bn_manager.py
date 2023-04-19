@@ -13,6 +13,7 @@ def test_get_sample(client):
     assert response.json["data"] != []
     assert response.json["metrics"] != {}
 
+
 def test_delete(client):
     _ = client.delete("api/bn_manager/remove/test/test")
 
@@ -24,6 +25,7 @@ def test_delete(client):
     response = client.get(f"api/bn_manager/get_display_data/{user_name}/{net_name}/{dataset_name}/{node}")
 
     assert response.status_code == 404
+
 
 def test_get_equal_edges(client, bn_actions):
     _ = bn_actions.register_bn(params=dict(
