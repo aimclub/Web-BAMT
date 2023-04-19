@@ -15,6 +15,7 @@ from .models import BayessianNet, Sample
 
 from app import db
 from flask import current_app
+from utils import project_root
 
 
 class DataExtractor(object):
@@ -58,7 +59,7 @@ class DataExtractor(object):
 
         hyperparams = {"index_col": 0}
         if self.is_our:
-            loc = os.path.relpath(meta["location"])
+            loc = os.path.join(project_root(), os.path.relpath(meta["location"]))
         else:
             loc = os.path.join(current_app.config["DATASETS_FOLDER"], os.path.relpath(meta["location"]))
         dataset = pd.read_csv(loc, **hyperparams)

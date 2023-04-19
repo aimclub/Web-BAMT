@@ -110,7 +110,7 @@ class DatasetObserverResource(Resource):
         if not find_user_by_username(user):
             return {"message": "User not found."}, 404
 
-        ours = load(open(os.path.join(project_root(), "data/our_datasets.json")))
+        ours = load(open(os.path.join(project_root(), "data", "our_datasets.json")))
 
         return ours | get_dataset_meta_by_user(user=user)
 
@@ -157,13 +157,16 @@ class RootNodesResource(Resource):
         If you want to get them, you don't need to pass an owner
         """
 
-        name = request.args.get("name")
+        name = request.args.get("name", None)
+
+        if not name:
+            return {"message": "request error."}, 400
 
         if name == "hack":
-            relpath = os.path.relpath(r"data/hack_processed_with_rf.csv")
+            relpath = os.path.relpath(os.path.join("data", "hack_processed_with_rf.csv"))
             source = project_root()
         elif name == "vk":
-            relpath = os.path.relpath(r"data/vk_data.csv")
+            relpath = os.path.relpath(os.path.join("data", "vk_data.csv"))
             source = project_root()
         else:
             user = request.args.get("owner")

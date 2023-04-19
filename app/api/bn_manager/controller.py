@@ -126,7 +126,7 @@ class BNRemoverResource(Resource):
         return {"message": "Success"}
 
 
-@api.route("/get_graph_data/<string:owner>/<string:net_name>/<string:dataset_name>/<string:node>")
+@api.route("/get_display_data/<string:owner>/<string:net_name>/<string:dataset_name>/<string:node>")
 class SamplerResource(Resource):
     @api.doc(responses={401: 'No User found'})
     @api.doc(responses={200: """
@@ -151,9 +151,12 @@ class BNAnalyserResource(Resource):
     @api.doc(params={"names": "List[str], names of nets",
                      "owner": "net holder name"})
     def get(self):
-        """get equal edges"""
-        names = request.args.get("names")
-        owner = request.args.get("owner")
+        """get different edges between 2 nets"""
+        names = request.args.get("names", None)
+        owner = request.args.get("owner", None)
+
+        if not (names and owner):
+            return {"message": "request error."}, 400
 
         names = ast.literal_eval(names)
         out = find_edges_by_owner_and_nets_names(owner=owner, names=names)
@@ -171,4 +174,4 @@ class BNAnalyserResource(Resource):
         edges0 = set(map(tuple, edges[0]))
         edges1 = set(map(tuple, edges[1]))
 
-        return {"Difference": list(edges0.intersection(edges1))}
+        return {"equal_edges": list(edges0.intersection(edges1))}
