@@ -2,7 +2,7 @@ from marshmallow import Schema, fields
 
 
 class BNGetNamesSchema(Schema):
-    networks = fields.List(fields.String(many=True))
+    networks = fields.List(fields.String(metadata={'many': True}))
 
 
 class SampleSchema(Schema):

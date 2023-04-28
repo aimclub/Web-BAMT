@@ -113,7 +113,7 @@ class SampleWorker(object):
 
     def make_probas_cont(self, df_series, sample):
         total = df_series.shape[0]
-        train, test = df_series[0:int(.8 * total)].values, df_series[int(.2 * total):].values
+        train, test = df_series.iloc[0:int(.8 * total)].values, df_series.iloc[int(.2 * total):].values
 
         gaussian_mixture = GaussianMixture(n_components=3, random_state=42)
         gaussian_mixture.fit(train.reshape(-1, 1))
