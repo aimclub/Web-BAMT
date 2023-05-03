@@ -121,7 +121,7 @@ class BnBuilder(object):
     def choose_network(self, info: dict):
         if all("cont" == i for i in info.values()):
             return ContinuousBN(use_mixture=self.parameters["use_mixture"])
-        elif all(i in ["str", "disc_num"] for i in info.values()):
+        elif all(i in ["disc", "disc_num"] for i in info.values()):
             return DiscreteBN()
         else:
             return HybridBN(use_mixture=self.parameters["use_mixture"],

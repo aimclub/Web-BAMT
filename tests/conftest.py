@@ -4,6 +4,10 @@ from app.api.data_manager.models import Dataset
 from app import create_app, db
 from shutil import rmtree
 
+import os
+
+from werkzeug.datastructures import FileStorage
+
 
 class AuthActions(object):
     def __init__(self, client):
@@ -46,6 +50,29 @@ class BNActions(object):
             return responce.json["network"]
 
 
+class DatasetActions(object):
+    def __init__(self, client):
+        self._client = client
+
+    def register_dataset(self):
+        file_correct = FileStorage(
+            stream=open("test_types_data.csv", "rb"),
+            filename="test_types_data.csv",
+        )
+
+        package = {
+            "name": "test_dataset",
+            "content": file_correct,
+            "owner": "test",
+            "description": "test dataset"}
+
+        rv = self._client.post(
+            "api/data_manager/upload",
+            data=package,
+            content_type="multipart/form-data"
+        )
+
+
 @pytest.fixture()
 def bn_actions(client):
     return BNActions(client)
@@ -60,7 +87,7 @@ def auth(client):
 def app():
     dataset_hack = Dataset(name="hack",
                            owner="dev",
-                           location="data/hack_processed_with_rf.csv",
+                           location=os.path.join("data", "hack_processed_with_rf.csv"),
                            map={'Tectonic regime': 'str', 'Period': 'str', 'Lithology': 'str',
                                 'Structural setting': 'str', 'Gross': 'float', 'Netpay': 'float',
                                 'Porosity': 'float',
@@ -68,7 +95,7 @@ def app():
 
     dataset_vk = Dataset(name="vk",
                          owner="dev",
-                         location="data/vk_data.csv",
+                         location=os.path.join("data", "vk_data.csv"),
                          map={'age': 'float', 'sex': 'str', 'has_pets': 'str', 'is_parent': 'str',
                               'relation': 'str',
                               'is_driver': 'str', 'tr_per_month': 'float', 'median_tr': 'float',

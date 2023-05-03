@@ -13,7 +13,6 @@ def test_get_sample(client):
     assert response.json["data"] != []
     assert response.json["metrics"] != {}
 
-
 def test_delete(client):
     _ = client.delete("api/bn_manager/remove/test/test")
 
