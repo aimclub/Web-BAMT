@@ -58,7 +58,7 @@ pure-eval==0.2.2
 pyarrow==11.0.0
 pycparser==2.21
 Pygments==2.11.2
-pyitlib==0.2.2
+pyitlib==0.2.3
 PyJWT==2.3.0
 pyparsing==3.0.8
 pyrsistent==0.18.1
