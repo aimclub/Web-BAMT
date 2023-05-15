@@ -98,7 +98,7 @@ const ExperimentForm: FC<{
 
   useEffect(() => {
     dispatch(cleanExperiment());
-  }, [values.root_nodes, values.dataset, dispatch]);
+  }, [values.dataset, dispatch]);
 
   return (
     <form className={scss.root} onSubmit={handleSubmit}>

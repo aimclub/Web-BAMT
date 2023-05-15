@@ -61,10 +61,8 @@ const AppSelect: FC<
 }) => {
   return (
     <div className={cl(scss.root, className, props.disabled && scss.disabled)}>
-      <div className={scss.labelGroup}>
-        {label && <p className={scss.label}>{label}</p>}
-        {infoText && <AppTooltip title={infoText} />}
-      </div>
+      {label && <p className={scss.label}>{label}</p>}
+      {infoText && <AppTooltip title={infoText} />}
       <div className={scss.select}>
         <CustomSelect {...props}>
           {options.map((item) =>

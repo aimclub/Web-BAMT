@@ -1,24 +1,13 @@
 .root {
   display: flex;
-  justify-content: stretch;
+  justify-content: flex-start;
   align-items: flex-start;
   gap: 8px;
 }
 
-.labelGroup {
-  min-width: 88px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  .btn {
-    padding: 0;
-  }
-}
-
 .label {
   margin: 0;
+  flex: 1;
 
   font-family: "Roboto";
   font-style: normal;
@@ -47,7 +36,7 @@
 }
 
 .select {
-  width: 100%;
+  width: 160px;
 
   display: flex;
   flex-direction: column;
