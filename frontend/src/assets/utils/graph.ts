@@ -9,6 +9,7 @@ export const formatNetwork = (data: INetwork): IGraph => ({
 
 export const colorizeNetwork = (
   network: INetwork,
+  equal_edges: [string, string][],
   activeNode?: { network_name: string; node_name: string }
 ): IGraph => {
   return {
@@ -28,7 +29,13 @@ export const colorizeNetwork = (
 
       return { id: name, ...nodeProps };
     }),
-    links: network.edges.map(([source, target]) => ({ source, target })),
+    links: network.edges.map(([source, target]) => ({
+      source,
+      target,
+      color: equal_edges.some(([s, t]) => s === source && t === target)
+        ? APP_COLOR
+        : undefined,
+    })),
   };
 };
 
@@ -36,7 +43,7 @@ export const colorizeGraph = ({ nodes, links }: IGraph) => ({
   nodes,
   links: links.map((link) => ({
     ...link,
-    color: link.isHightLight ? APP_COLOR : "#000000",
+    color: link.isHightLight ? APP_COLOR : undefined,
   })),
 });
 

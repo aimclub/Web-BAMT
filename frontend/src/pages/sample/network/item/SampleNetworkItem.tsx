@@ -23,7 +23,9 @@ const SampleNetworkItem: FC<{ index: number; network: INetwork | "" }> = ({
 }) => {
   const refContainer = useRef<HTMLDivElement | null>(null);
   const { username: owner } = useUser();
-  const { networks, selectedNode } = useAppSelector((state) => state.sample);
+  const { networks, equalNodes, selectedNode } = useAppSelector(
+    (state) => state.sample
+  );
 
   const { data } = bn_managerAPI.useGetBNDataQuery({ owner });
   const all_networks: INetwork[] = data ? Object.values(data.networks) : [];
@@ -73,7 +75,7 @@ const SampleNetworkItem: FC<{ index: number; network: INetwork | "" }> = ({
         {network ? (
           <SampleNetworkItemData
             index={index}
-            data={colorizeNetwork(network, selectedNode)}
+            data={colorizeNetwork(network, equalNodes, selectedNode)}
             onNodeClick={handleNodeClick}
             size={{
               height: refContainer.current?.clientHeight,

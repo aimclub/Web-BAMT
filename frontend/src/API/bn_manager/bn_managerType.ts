@@ -21,3 +21,7 @@ export interface ISample {
   metrics: Record<string, string>; // { kl_divergence: number; survival?: number };
   type: string; // "cont" |"disc"
 }
+
+export interface IEqualEdges {
+  equal_edges: [string, string][];
+}

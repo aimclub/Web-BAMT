@@ -2,6 +2,7 @@ import { commonApi } from "../baseURL";
 import {
   IBNData,
   IBNDataNames,
+  IEqualEdges,
   ISample,
   ISampleNetworkNode,
 } from "./bn_managerType";
@@ -30,6 +31,21 @@ export const bn_managerAPI = commonApi.injectEndpoints({
     getSampleNodeData: build.query<ISample, ISampleNetworkNode>({
       query: ({ owner, net_name, dataset_name, node }) => ({
         url: `${BASE_URL}get_graph_data/${owner}/${net_name}/${dataset_name}/${node}`,
+      }),
+      providesTags: ["Networks"],
+    }),
+
+    // get egual edges for users networks
+    getEqualEdges: build.query<
+      IEqualEdges,
+      { networks_names: string[]; owner: string }
+    >({
+      query: ({ owner, networks_names }) => ({
+        url: `${BASE_URL}get_equal_edges`,
+        params: {
+          names: JSON.stringify(networks_names),
+          owner,
+        },
       }),
       providesTags: ["Networks"],
     }),
