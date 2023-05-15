@@ -21,24 +21,31 @@ import {
 import AlertError from "../../UI/alerts/error/AlertError";
 import AppButton from "../../UI/buttons/app/AppButton";
 import AppMultiSelect from "../../UI/selects/AppMultiSelect/AppMultiSelect";
-import AppSelect from "../../UI/selects/AppSelect/AppSelect";
+import AppSelect, {
+  IAppSelectOptions,
+} from "../../UI/selects/AppSelect/AppSelect";
 import TextFieldForm from "../../UI/textfields/TextFieldForm/TextFieldForm";
-import { validationSchema } from "./ExperimentFormValidator";
+import { info, initialValues, validationSchema } from "./utils";
 
 import scss from "./experimentForm.module.scss";
 import Switch from "../../UI/Switch/Switch";
 
-const initialValues: IExperimentFormValues = {
-  display_name: "",
-  dataset: "",
-  regressor: "",
-  classifier: "",
-  logit: "",
-  mixture: "",
-  score_function: "",
-  root_nodes: [] as string[],
-  comparison: false,
-};
+type SelectorsType =
+  | "dataset"
+  | "regressor"
+  | "classifier"
+  | "logit"
+  | "mixture"
+  | "score_function";
+
+const SELECTORS: { name: SelectorsType; label: string }[] = [
+  { name: "dataset", label: "Dataset" },
+  { name: "regressor", label: "Regressor" },
+  { name: "classifier", label: "Classifier" },
+  { name: "logit", label: "Logit" },
+  { name: "mixture", label: "Mixture" },
+  { name: "score_function", label: "Score function" },
+];
 
 const ExperimentForm: FC<{
   onSubmit: (values: IExperimentFormValues) => void;
@@ -62,6 +69,18 @@ const ExperimentForm: FC<{
     experimentAPI.useGetModelsQuery({
       model_type: "classifier",
     });
+
+  const options = useMemo<Record<SelectorsType, IAppSelectOptions>>(
+    () => ({
+      dataset: Object.keys(datasets || {}),
+      regressor: regressor?.models || [],
+      classifier: classifier?.models || [],
+      logit: ["True", "False"],
+      mixture: ["True", "False"],
+      score_function: SCORE_FUNCTION_VALUES,
+    }),
+    [classifier?.models, datasets, regressor?.models]
+  );
 
   const { values, touched, errors, handleSubmit, handleChange, setValues } =
     useFormik({
@@ -131,67 +150,20 @@ const ExperimentForm: FC<{
                 : touched.display_name && errors.display_name
             }
           />
-          <AppSelect
-            options={Object.keys(datasets || {})}
-            value={values.dataset}
-            onChange={handleChange}
-            name="dataset"
-            label="Dataset"
-            className={scss.parameter}
-            error={touched.dataset && !!errors.dataset}
-            helperText={touched.dataset && errors.dataset}
-          />
-          <AppSelect
-            options={regressor?.models || []}
-            value={values.regressor}
-            onChange={handleChange}
-            name="regressor"
-            label="Regressor"
-            className={scss.parameter}
-            error={touched.regressor && !!errors.regressor}
-            helperText={touched.regressor && errors.regressor}
-            disabled
-          />
-          <AppSelect
-            options={classifier?.models || []}
-            value={values.classifier}
-            onChange={handleChange}
-            name="classifier"
-            label="Classifier"
-            className={scss.parameter}
-            error={touched.classifier && !!errors.classifier}
-            helperText={touched.classifier && errors.classifier}
-          />
-          <AppSelect
-            options={["True", "False"]}
-            value={values.logit}
-            onChange={handleChange}
-            name="logit"
-            label="Logit"
-            className={scss.parameter}
-            error={touched.logit && !!errors.logit}
-            helperText={touched.logit && errors.logit}
-          />
-          <AppSelect
-            options={["True", "False"]}
-            value={values.mixture}
-            onChange={handleChange}
-            name="mixture"
-            label="Mixture"
-            className={scss.parameter}
-            error={touched.mixture && !!errors.mixture}
-            helperText={touched.mixture && errors.mixture}
-          />
-          <AppSelect
-            options={SCORE_FUNCTION_VALUES}
-            value={values.score_function}
-            onChange={handleChange}
-            name="score_function"
-            label="Score function"
-            className={scss.parameter}
-            error={touched.score_function && !!errors.score_function}
-            helperText={touched.score_function && errors.score_function}
-          />
+          {SELECTORS.map(({ name, label }) => (
+            <AppSelect
+              key={name}
+              className={scss.parameter}
+              options={options[name]}
+              value={values[name]}
+              onChange={handleChange}
+              name={name}
+              label={label}
+              error={touched[name] && !!errors[name]}
+              helperText={touched[name] && errors[name]}
+              infoText={info[name]}
+            />
+          ))}
           <AppMultiSelect
             className={scss.parameter}
             options={rootNodes?.root_nodes || []}

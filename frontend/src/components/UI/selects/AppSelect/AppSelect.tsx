@@ -1,10 +1,10 @@
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectProps } from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
-
 import { FC } from "react";
-import { cl } from "../../../../assets/utils/classnames";
 
+import { cl } from "../../../../assets/utils/classnames";
+import AppTooltip from "../AppTooltip/AppTooltip";
 import scss from "./appSelect.module.scss";
 
 const CustomSelect = styled(Select)({
@@ -41,15 +41,30 @@ const CustomSelect = styled(Select)({
   },
 });
 
+export type IAppSelectOptions =
+  | string[]
+  | { id?: string; name: string; disabled?: boolean }[];
+
 const AppSelect: FC<
   SelectProps & {
-    options: string[] | { id?: string; name: string; disabled?: boolean }[];
+    options: IAppSelectOptions;
     helperText?: string | undefined | false;
+    infoText?: string;
   }
-> = ({ className, options, label, helperText = "select", ...props }) => {
+> = ({
+  className,
+  options,
+  label,
+  helperText = "select",
+  infoText,
+  ...props
+}) => {
   return (
     <div className={cl(scss.root, className, props.disabled && scss.disabled)}>
-      {label && <p className={scss.label}>{label}</p>}
+      <div className={scss.labelGroup}>
+        {label && <p className={scss.label}>{label}</p>}
+        {infoText && <AppTooltip title={infoText} />}
+      </div>
       <div className={scss.select}>
         <CustomSelect {...props}>
           {options.map((item) =>

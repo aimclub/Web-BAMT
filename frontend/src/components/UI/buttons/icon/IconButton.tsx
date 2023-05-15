@@ -5,10 +5,14 @@ const IconButton = styled(MUIButton)({
   borderRadius: 8,
   color: "#000000",
 
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+
   transition: "all 0.5s ease-in-out",
 
   "&:hover": {
-    color: "#B0BEC5",
+    color: "#86BD24",
     background: "transparent",
   },
 });

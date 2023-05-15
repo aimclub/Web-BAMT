@@ -2,11 +2,23 @@
   display: flex;
   justify-content: stretch;
   align-items: flex-start;
+  gap: 8px;
+}
+
+.labelGroup {
+  min-width: 88px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .btn {
+    padding: 0;
+  }
 }
 
 .label {
-  margin: 0 32px 0 0;
-  min-width: 75px;
+  margin: 0;
 
   font-family: "Roboto";
   font-style: normal;

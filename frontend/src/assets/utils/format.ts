@@ -12,6 +12,8 @@ export const formatBNParamsToString = (bn_params: IExperimentBNParams) =>
     bn_params.use_mixture
   )},"has_logit":${formatBoolean(bn_params.has_logit)},"classifier":"${
     bn_params.classifier
+  }","regressor":"${
+    bn_params.regressor
   }","params":{"init_nodes":${JSON.stringify(
     bn_params.params.init_nodes
   )},"init_edges":[${
