@@ -34,6 +34,7 @@
 
 .graph {
   min-height: 280px;
+  box-sizing: border-box;
 
   display: flex;
   justify-content: center;
@@ -52,6 +53,7 @@
   }
 
   svg {
+    box-sizing: border-box;
     font-family: "Roboto";
     font-style: normal;
     letter-spacing: 0.15px;
@@ -59,5 +61,12 @@
     border: 1px solid black;
 
     display: block;
+
+    .node {
+      text {
+        pointer-events: none;
+        cursor: default;
+      }
+    }
   }
 }

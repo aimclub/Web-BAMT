@@ -9,7 +9,7 @@ import { INetwork } from "../../../API/experiment/experimentTypes";
 
 const SampleNetwork = () => {
   const { username: owner } = useUser();
-  const { networks, equalNodes } = useAppSelector((state) => state.sample);
+  const { networks } = useAppSelector((state) => state.sample);
 
   const { isError } = bn_managerAPI.useGetBNDataQuery({ owner });
 
@@ -27,10 +27,6 @@ const SampleNetwork = () => {
       });
     }
   }, [getEqualEdges, networks, owner]);
-
-  useEffect(() => {
-    console.log(equalNodes);
-  }, [equalNodes]);
 
   return (
     <section>

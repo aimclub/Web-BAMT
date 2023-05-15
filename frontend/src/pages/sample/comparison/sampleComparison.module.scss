@@ -1,5 +1,7 @@
 .root {
-  grid-area: comp;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
@@ -16,27 +18,92 @@
   background: #f1f3f5;
 }
 
-.content {
-  min-height: 300px;
+.subtitle {
+  margin: 20px 16px 12px;
 
   display: flex;
   align-items: center;
-  justify-content: center;
 
-  .infо {
-    margin: 0;
-
-    font-family: "Roboto";
-    font-style: normal;
-    font-weight: 300;
-    font-size: 14px;
-    line-height: 16px;
-
-    color: #878787;
+  > * {
+    &:not(:last-child) {
+      position: relative;
+      margin-right: 24px;
+      padding-right: 24px;
+      &::after {
+        content: "";
+        background-color: #000000;
+        width: 1px;
+        height: 18px;
+        display: block;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        translate: 0 -50%;
+      }
+    }
   }
 }
 
-.chart {
-  padding: 30px;
+.text {
+  margin: 0;
+
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  letter-spacing: 0.15px;
+
+  color: #000000;
+}
+
+.data {
   flex: 1;
+  display: flex;
+  justify-content: stretch;
+  gap: 30px;
+}
+
+.chart {
+  flex: 1;
+}
+
+.result {
+  min-width: 200px;
+  padding-inline: 32px;
+
+  .item {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 150%;
+    letter-spacing: 0.15px;
+
+    color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    .value {
+      font-weight: 400;
+    }
+  }
+}
+
+.empty {
+  margin: 12px 0;
+
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 16px;
+
+  color: #878787;
+
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

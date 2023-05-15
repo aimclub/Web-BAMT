@@ -1,10 +1,15 @@
 declare namespace SampleComparisonModuleScssNamespace {
   export interface ISampleComparisonModuleScss {
     chart: string;
-    content: string;
-    infо: string;
+    data: string;
+    empty: string;
+    item: string;
+    result: string;
     root: string;
+    subtitle: string;
+    text: string;
     title: string;
+    value: string;
   }
 }
 
