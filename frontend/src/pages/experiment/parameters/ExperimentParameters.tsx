@@ -1,68 +1,63 @@
 import Fade from "@mui/material/Fade";
-import { useCallback, useEffect, useState } from "react";
+import { useMemo } from "react";
 
+import { data_managerAPI } from "../../../API/data_manager/data_managerAPI";
 import { experimentAPI } from "../../../API/experiment/experimentAPI";
-import { IExperimentFormValues } from "../../../API/experiment/experimentTypes";
-import { TRANSITION_TIMEOUT } from "../../../assets/utils/constants";
-import ExperimentForm from "../../../components/forms/experiment/ExperimentForm";
-import MessagePopup from "../../../components/popups/message/MessagePopup";
-import { useAppSelector } from "../../../hooks/redux";
+import {
+  SCORE_FUNCTION_VALUES,
+  TRANSITION_TIMEOUT,
+} from "../../../assets/utils/constants";
+import AlertError from "../../../components/UI/alerts/error/AlertError";
+import { IAppSelectOptions } from "../../../components/UI/selects/AppSelect/AppSelect";
+import { ExperimentFormSelectorsType } from "../../../components/forms/experiment/ExperimentForm";
 import { useUser } from "../../../hooks/useUser";
-import ExperimentLoader from "../loader/ExperimentLoader";
+import ExperimentParametersTrain from "./train/ExperimentParametersTrain";
 
 const ExperimentParameters = () => {
   const { username } = useUser();
-  const { links } = useAppSelector((state) => state.experiment);
 
-  const [train, { isLoading, isError, isSuccess }] =
-    experimentAPI.useTrainMutation();
-
-  const [result, setResult] = useState<string | undefined>(undefined);
-
-  const handleTrainModel = (values: IExperimentFormValues) => {
-    // console.log("train model", values);
-
-    train({
-      owner: username,
-      name: values.display_name,
-      dataset: values.dataset,
-      bn_params: {
-        scoring_function: values.score_function,
-        use_mixture: Boolean(values.mixture),
-        has_logit: Boolean(values.logit),
-        classifier: values.classifier,
-        regressor: values.regressor,
-        params: {
-          init_nodes: values.root_nodes,
-          init_edges: links.map(({ source, target }) => [source, target]),
-        },
-      },
+  const { data: datasets, isError: isErrorGetDatasets } =
+    data_managerAPI.useGetDatasetsQuery({
+      user: username,
     });
-  };
+  const { data: regressor, isError: isErrorGetRegressor } =
+    experimentAPI.useGetModelsQuery({
+      model_type: "regressor",
+    });
+  const { data: classifier, isError: isErrorGetClassifier } =
+    experimentAPI.useGetModelsQuery({
+      model_type: "classifier",
+    });
 
-  const handleCloseResult = useCallback(() => setResult(undefined), []);
-
-  useEffect(() => {
-    if (isError) setResult("Error on train model.");
-  }, [isError]);
-
-  useEffect(() => {
-    if (isSuccess) setResult("Model train and save.");
-  }, [isSuccess]);
+  const options = useMemo<
+    Record<ExperimentFormSelectorsType, IAppSelectOptions>
+  >(
+    () => ({
+      dataset: Object.keys(datasets || {}),
+      regressor: regressor?.models || [],
+      classifier: classifier?.models || [],
+      logit: ["True", "False"],
+      mixture: ["True", "False"],
+      score_function: SCORE_FUNCTION_VALUES,
+    }),
+    [classifier?.models, datasets, regressor?.models]
+  );
 
   return (
     <Fade in={true} timeout={TRANSITION_TIMEOUT}>
       <section>
-        <ExperimentForm onSubmit={handleTrainModel} />
-
-        <ExperimentLoader isTraining={isLoading} />
-
-        <MessagePopup
-          title={isSuccess ? "Success" : "Error"}
-          isError={!isSuccess}
-          message={result || ""}
-          open={!!result}
-          onClose={handleCloseResult}
+        <ExperimentParametersTrain options={options} />
+        <AlertError
+          isError={isErrorGetDatasets}
+          message="Error on get datasets"
+        />
+        <AlertError
+          isError={isErrorGetRegressor}
+          message="Error on get regressor model_type"
+        />
+        <AlertError
+          isError={isErrorGetClassifier}
+          message="Error on get classifier model_type"
         />
       </section>
     </Fade>

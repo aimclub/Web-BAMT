@@ -3,11 +3,9 @@ import { FC, useCallback, useEffect, useMemo } from "react";
 
 import { bn_managerAPI } from "../../../API/bn_manager/bn_managerAPI";
 import { data_managerAPI } from "../../../API/data_manager/data_managerAPI";
-import { experimentAPI } from "../../../API/experiment/experimentAPI";
 import { IExperimentFormValues } from "../../../API/experiment/experimentTypes";
 import {
   NETWORKS_LIMIT,
-  SCORE_FUNCTION_VALUES,
   VALIDATION_MESSAGES,
 } from "../../../assets/utils/constants";
 import { createNodes } from "../../../assets/utils/graph";
@@ -27,10 +25,10 @@ import AppSelect, {
 import TextFieldForm from "../../UI/textfields/TextFieldForm/TextFieldForm";
 import { info, initialValues, validationSchema } from "./utils";
 
-import scss from "./experimentForm.module.scss";
 import Switch from "../../UI/Switch/Switch";
+import scss from "./experimentForm.module.scss";
 
-type SelectorsType =
+export type ExperimentFormSelectorsType =
   | "dataset"
   | "regressor"
   | "classifier"
@@ -38,7 +36,7 @@ type SelectorsType =
   | "mixture"
   | "score_function";
 
-const SELECTORS: { name: SelectorsType; label: string }[] = [
+const SELECTORS: { name: ExperimentFormSelectorsType; label: string }[] = [
   { name: "dataset", label: "Dataset" },
   { name: "regressor", label: "Regressor" },
   { name: "classifier", label: "Classifier" },
@@ -49,7 +47,8 @@ const SELECTORS: { name: SelectorsType; label: string }[] = [
 
 const ExperimentForm: FC<{
   onSubmit: (values: IExperimentFormValues) => void;
-}> = ({ onSubmit }) => {
+  options: Record<ExperimentFormSelectorsType, IAppSelectOptions>;
+}> = ({ onSubmit, options }) => {
   const dispatch = useAppDispatch();
   const { username } = useUser();
 
@@ -57,30 +56,6 @@ const ExperimentForm: FC<{
     bn_managerAPI.useGetBNDataNamesQuery({
       owner: username,
     });
-  const { data: datasets, isError: isErrorGetDatasets } =
-    data_managerAPI.useGetDatasetsQuery({
-      user: username,
-    });
-  const { data: regressor, isError: isErrorGetRegressor } =
-    experimentAPI.useGetModelsQuery({
-      model_type: "regressor",
-    });
-  const { data: classifier, isError: isErrorGetClassifier } =
-    experimentAPI.useGetModelsQuery({
-      model_type: "classifier",
-    });
-
-  const options = useMemo<Record<SelectorsType, IAppSelectOptions>>(
-    () => ({
-      dataset: Object.keys(datasets || {}),
-      regressor: regressor?.models || [],
-      classifier: classifier?.models || [],
-      logit: ["True", "False"],
-      mixture: ["True", "False"],
-      score_function: SCORE_FUNCTION_VALUES,
-    }),
-    [classifier?.models, datasets, regressor?.models]
-  );
 
   const { values, touched, errors, handleSubmit, handleChange, setValues } =
     useFormik({
@@ -197,18 +172,6 @@ const ExperimentForm: FC<{
       <AlertError
         isError={isErrorGetNetworks}
         message="Error on get networks"
-      />
-      <AlertError
-        isError={isErrorGetDatasets}
-        message="Error on get datasets"
-      />
-      <AlertError
-        isError={isErrorGetRegressor}
-        message="Error on get regressor model_type"
-      />
-      <AlertError
-        isError={isErrorGetClassifier}
-        message="Error on get classifier model_type"
       />
       <AlertError
         isError={isErrorGetRootNodes}
