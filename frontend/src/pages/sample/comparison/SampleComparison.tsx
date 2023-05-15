@@ -5,15 +5,17 @@ import AlertError from "../../../components/UI/alerts/error/AlertError";
 import { useAppSelector } from "../../../hooks/redux";
 import { useUser } from "../../../hooks/useUser";
 import scss from "./sampleComparison.module.scss";
+import SampleComparisonChart from "./chart/SampleComparisonChart";
 
 const SampleСomparison = () => {
   const { username: owner } = useUser();
   const { selectedNode } = useAppSelector((state) => state.sample);
 
-  const [getSample, { isError }] = bn_managerAPI.useLazyGetSampleNodeDataQuery({
-    refetchOnReconnect: false,
-    refetchOnFocus: false,
-  });
+  const [getSample, { isError, data }] =
+    bn_managerAPI.useLazyGetSampleNodeDataQuery({
+      refetchOnReconnect: false,
+      refetchOnFocus: false,
+    });
 
   useEffect(() => {
     if (selectedNode)
@@ -29,25 +31,11 @@ const SampleСomparison = () => {
     <section className={scss.root}>
       <h2 className={scss.title}>Сomparison window</h2>
       <div className={scss.content}>
-        {/* {data ? (
-          <>
-            <article className={scss.chart}>
-              <SampleComparisonChart
-                data={data.real_data}
-                title={"Real Data"}
-              />
-            </article>
-            <article className={scss.chart}>
-              <SampleComparisonChart
-                data={data.sampled_data}
-                title={"Sampled Data"}
-              />
-            </article>
-          </>
+        {data ? (
+          <SampleComparisonChart data={data} title={"Real Data"} />
         ) : (
-          
-        )} */}
-        <p className={scss.infо}>Select node</p>
+          <p className={scss.infо}>Select node</p>
+        )}
       </div>
       <AlertError
         isError={isError}

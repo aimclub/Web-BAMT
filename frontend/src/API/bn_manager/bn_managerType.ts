@@ -19,7 +19,7 @@ export interface ISample {
   data: number[];
   xvals: string[];
   metrics: Record<string, string>; // { kl_divergence: number; survival?: number };
-  type: string; // "cont" |"disc"
+  type?: string; // "cont" |"disc"
 }
 
 export interface IEqualEdges {

@@ -30,7 +30,7 @@ export const bn_managerAPI = commonApi.injectEndpoints({
     // get sample data for network node
     getSampleNodeData: build.query<ISample, ISampleNetworkNode>({
       query: ({ owner, net_name, dataset_name, node }) => ({
-        url: `${BASE_URL}get_graph_data/${owner}/${net_name}/${dataset_name}/${node}`,
+        url: `${BASE_URL}get_display_data/${owner}/${net_name}/${dataset_name}/${node}`,
       }),
       providesTags: ["Networks"],
     }),
