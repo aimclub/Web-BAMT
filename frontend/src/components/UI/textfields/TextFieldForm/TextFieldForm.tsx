@@ -7,15 +7,13 @@ import scss from "./textFieldForm.module.scss";
 
 // TODO: style textfield
 const CustomTextForm = styled(TextField)({
-  "& .MuiInput-root": {
+  "& .MuiInputBase-input": {
     fontFamily: "Open Sans",
     fontStyle: "normal",
     fontWeight: 300,
     fontSize: 14,
     lineHeight: "16px",
     letterSpacing: "0.15px",
-
-    // borderRadius: 0,
   },
   // "& .MuiOutlinedInput-input": {
   //   padding: 0,

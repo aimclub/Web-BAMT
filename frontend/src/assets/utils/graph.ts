@@ -1,5 +1,5 @@
 import { INetwork } from "../../API/experiment/experimentTypes";
-import { IGraph, ILink } from "../../types/graph";
+import { IGraph } from "../../types/graph";
 import { APP_COLOR } from "./constants";
 
 export const formatNetwork = (data: INetwork): IGraph => ({
@@ -46,21 +46,6 @@ export const colorizeGraph = ({ nodes, links }: IGraph) => ({
     color: link.isHightLight ? APP_COLOR : undefined,
   })),
 });
-
-export const markCommonLinks = (
-  { nodes, links }: IGraph,
-  common: ILink[]
-): IGraph => {
-  return {
-    nodes,
-    links: links.map((link) => ({
-      ...link,
-      isHightLight: common.some(
-        (l) => l.source === link.source && l.target === link.target
-      ),
-    })),
-  };
-};
 
 const STEP_X = 100;
 const STEP_Y = 150;
