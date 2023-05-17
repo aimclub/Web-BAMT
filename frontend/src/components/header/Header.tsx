@@ -1,7 +1,7 @@
 import Logo from "../logo/Logo";
 import scss from "./header.module.scss";
 import HeaderLine from "./line/HeaderLine";
-import HeaderMenu from "./menu/HeaderMenu";
+import HeaderUser from "./user/HeaderUser";
 import HeaderNav from "./nav/HeaderNav";
 
 const Header = () => {
@@ -10,7 +10,7 @@ const Header = () => {
       <div className={scss.head}>
         <Logo />
         <HeaderNav />
-        <HeaderMenu />
+        <HeaderUser />
       </div>
       <HeaderLine />
     </header>

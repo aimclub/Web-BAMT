@@ -26,9 +26,16 @@
   transition: all 0.5s ease-in-out;
   position: relative;
 
-  &:hover,
-  &.active {
+  &:hover {
     opacity: 0.7;
+  }
+
+  &.active {
+    color: #86bd24;
+    pointer-events: none;
+    &::after {
+      background-color: #86bd24;
+    }
   }
 
   &::after {
