@@ -28,7 +28,10 @@ const SampleComparisonChart: FC<{
   ];
 
   const options: ApexOptions = {
-    chart: { zoom: { enabled: false }, toolbar: { show: false } },
+    chart: {
+      zoom: { enabled: false },
+      toolbar: { show: false },
+    },
     colors: [APP_COLOR],
     markers: { size: [4, 0] },
     stroke: { width: [0, 1] },

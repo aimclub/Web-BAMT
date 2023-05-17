@@ -3,7 +3,6 @@ declare namespace SampleNetworkItemModuleScssNamespace {
     graph: string;
     head: string;
     info: string;
-    node: string;
     score: string;
     select: string;
     title: string;

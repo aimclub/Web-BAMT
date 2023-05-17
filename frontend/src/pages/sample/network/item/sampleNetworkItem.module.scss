@@ -62,7 +62,7 @@
 
     display: block;
 
-    .node {
+    g[class~="node"] {
       text {
         pointer-events: none;
         cursor: default;
