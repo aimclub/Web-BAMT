@@ -15,34 +15,18 @@ const CustomTextForm = styled(TextField)({
     lineHeight: "16px",
     letterSpacing: "0.15px",
   },
-  // "& .MuiOutlinedInput-input": {
-  //   padding: 0,
-  //   paddingBottom: 4,
 
-  //   color: "#000000",
-
-  //   "&::placeholder": {
-  //     color: "#b0bec5",
-  //   },
-  // },
-  // "& .MuiInputBase-multiline": {
-  //   padding: 0,
-  // },
-  // "& .MuiInputBase-input": {
-  //   padding: 0,
-  //   paddingBottom: 4,
-  // },
-
-  // "& .MuiOutlinedInput-notchedOutline": {
-  //   border: 0,
-  //   borderBottom: "1px solid #F2F2F2",
-  // },
-  // "& :not(.Mui-error).Mui-focused .MuiOutlinedInput-notchedOutline": {
-  //   borderBottom: "1px solid #000000",
-  // },
-  // "&:hover :not(.Mui-error).Mui-focused .MuiOutlinedInput-notchedOutline": {
-  //   borderBottom: "1px solid #000000",
-  // },
+  "& .MuiInputBase-root": {
+    "&:not(.Mui-disabled):hover": {
+      "&::before": {
+        borderWidth: 1,
+        borderColor: "#000",
+      },
+      "&:not(.Mui-focused).MuiOutlinedInput-notchedOutline": {
+        borderColor: "#000",
+      },
+    },
+  },
   "& .MuiFormHelperText-root": {
     margin: "2px 0 0",
 
@@ -54,7 +38,6 @@ const CustomTextForm = styled(TextField)({
   },
 });
 
-// TODO: info
 const TextFieldForm: FC<TextFieldProps> = ({ className, label, ...props }) => {
   return (
     <label className={cl(scss.root, className)}>
