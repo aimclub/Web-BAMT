@@ -1,11 +1,11 @@
-// import StarIcon from "@mui/icons-material/Star";
 import Fade from "@mui/material/Fade";
-import { useAppSelector } from "../../../hooks/redux";
+
 import { TRANSITION_TIMEOUT } from "../../../assets/utils/constants";
+import AppButton from "../../../components/UI/buttons/app/AppButton";
+import { useAppSelector } from "../../../hooks/redux";
+import { AppRoutes } from "../../../router/routes";
 import scss from "./experimentBox.module.scss";
 import ExperimentBoxGraph from "./graph/ExperimentBoxGraph";
-import { AppRoutes } from "../../../router/routes";
-import AppButton from "../../../components/UI/buttons/app/AppButton";
 
 const ExperimentBox = () => {
   const { nodes } = useAppSelector((state) => state.experiment);
@@ -16,11 +16,6 @@ const ExperimentBox = () => {
         <div className={scss.box}>
           <div className={scss.head}>
             <h2 className={scss.title}>Model structure</h2>
-            {/* <div className={scss.score}>
-              <StarIcon fontSize="small" />
-              <span>Score</span>
-              <span className={scss.value}>-</span>
-            </div> */}
           </div>
           {nodes.length > 0 ? (
             <div className={scss.graph}>
@@ -35,13 +30,7 @@ const ExperimentBox = () => {
           )}
         </div>
 
-        <AppButton
-          to={`/${AppRoutes.SAMPLE}`}
-          // TODO: disable sample button
-          // disabled={!(data && data?.networks.length > 0)}
-        >
-          sample
-        </AppButton>
+        <AppButton to={`/${AppRoutes.SAMPLE}`}>sample</AppButton>
       </section>
     </Fade>
   );

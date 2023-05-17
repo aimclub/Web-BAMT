@@ -1,15 +1,17 @@
+import scss from "./headerNav.module.scss";
+
 import { FC } from "react";
 import { NavLink } from "react-router-dom";
+
 import { cl } from "../../../assets/utils/classnames";
 import { AppRoutes } from "../../../router/routes";
-import scss from "./headerNav.module.scss";
 
 interface IHeaderLink {
   name: string;
   link: string;
 }
 
-const navLinks: IHeaderLink[] = [
+const NAV_LINKS: IHeaderLink[] = [
   { name: "BAMT", link: "https://github.com/ITMO-NSS-team/BAMT" },
   { name: "Team", link: AppRoutes.TEAM },
   { name: "Repository", link: "https://github.com/ITMO-NSS-team/Web-BAMT" },
@@ -35,7 +37,7 @@ const HeaderNav = () => {
   return (
     <nav>
       <ul className={scss.list}>
-        {navLinks.map((item) => (
+        {NAV_LINKS.map((item) => (
           <li key={item.name} className={scss.item}>
             <HeaderNavLink {...item} />
           </li>

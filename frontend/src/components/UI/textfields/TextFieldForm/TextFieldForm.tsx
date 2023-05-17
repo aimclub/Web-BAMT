@@ -1,7 +1,7 @@
 import { styled } from "@mui/material/styles";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 
-import { FC } from "react";
+import { FC, memo } from "react";
 import { cl } from "../../../../assets/utils/classnames";
 import scss from "./textFieldForm.module.scss";
 
@@ -64,4 +64,4 @@ const TextFieldForm: FC<TextFieldProps> = ({ className, label, ...props }) => {
   );
 };
 
-export default TextFieldForm;
+export default memo(TextFieldForm);

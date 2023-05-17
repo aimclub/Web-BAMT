@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 import { cl } from "../../../../assets/utils/classnames";
 import scss from "./ringProgress.module.scss";
 
@@ -16,4 +16,4 @@ const RingProgress: FC<{ className?: string; visible?: boolean }> = ({
   );
 };
 
-export default RingProgress;
+export default memo(RingProgress);

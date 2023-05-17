@@ -1,8 +1,10 @@
+import scss from "./appOutlet.module.scss";
+
 import { Suspense } from "react";
 import { Outlet } from "react-router-dom";
-import Header from "../header/Header";
+
 import SpinnerProgress from "../UI/progress/spinner/SpinnerProgress";
-import scss from "./appOutlet.module.scss";
+import Header from "../header/Header";
 
 const AppOutlet = () => {
   return (

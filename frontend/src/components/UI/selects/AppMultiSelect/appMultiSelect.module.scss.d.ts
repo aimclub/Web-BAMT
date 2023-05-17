@@ -1,5 +1,6 @@
 declare namespace AppMultiSelectModuleScssNamespace {
   export interface IAppMultiSelectModuleScss {
+    disabled: string;
     helperText: string;
     input: string;
     item: string;

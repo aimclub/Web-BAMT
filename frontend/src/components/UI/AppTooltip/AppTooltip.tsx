@@ -1,10 +1,10 @@
 import HelpIcon from "@mui/icons-material/Help";
 import Tooltip, { TooltipProps, tooltipClasses } from "@mui/material/Tooltip";
-import { ComponentType, FC } from "react";
+import { ComponentType, FC, memo } from "react";
 
 import { styled } from "@mui/material/styles";
 
-import IconButton from "../../buttons/icon/IconButton";
+import IconButton from "../buttons/icon/IconButton";
 
 const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
@@ -48,4 +48,4 @@ const AppTooltip: FC<{
   );
 };
 
-export default AppTooltip;
+export default memo(AppTooltip);

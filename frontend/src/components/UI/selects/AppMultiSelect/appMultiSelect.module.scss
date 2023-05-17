@@ -16,6 +16,10 @@
   letter-spacing: 0.15px;
 
   color: #000000;
+
+  .disabled & {
+    color: #c4c3c3;
+  }
 }
 
 .item {

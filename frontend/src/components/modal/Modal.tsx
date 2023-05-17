@@ -1,7 +1,9 @@
-import Dialog from "@mui/material/Dialog";
-import { FC, ReactNode } from "react";
-import PopupButton from "../UI/buttons/popup/PopupButton";
 import scss from "./modal.module.scss";
+
+import Dialog from "@mui/material/Dialog";
+import { FC, ReactNode, memo } from "react";
+
+import PopupButton from "../UI/buttons/popup/PopupButton";
 
 const Modal: FC<{
   open: boolean;
@@ -22,4 +24,4 @@ const Modal: FC<{
   );
 };
 
-export default Modal;
+export default memo(Modal);

@@ -1,8 +1,8 @@
+import scss from "./uploadForm.module.scss";
+
 import { useFormik } from "formik";
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import scss from "./uploadForm.module.scss";
 
 import { data_managerAPI } from "../../../API/data_manager/data_managerAPI";
 import { cl } from "../../../assets/utils/classnames";

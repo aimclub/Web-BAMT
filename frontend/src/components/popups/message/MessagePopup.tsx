@@ -1,7 +1,9 @@
-import { FC } from "react";
+import scss from "./messagePopup.module.scss";
+
+import { FC, memo } from "react";
+
 import { cl } from "../../../assets/utils/classnames";
 import Modal from "../../modal/Modal";
-import scss from "./messagePopup.module.scss";
 
 const MessagePopup: FC<{
   message: string;
@@ -17,4 +19,4 @@ const MessagePopup: FC<{
   );
 };
 
-export default MessagePopup;
+export default memo(MessagePopup);

@@ -1,5 +1,5 @@
 import { useTheme, styled } from "@mui/material/styles";
-import { FC } from "react";
+import { FC, memo } from "react";
 import { cl } from "../../../../assets/utils/classnames";
 import scss from "./spinnerProgress.module.scss";
 
@@ -35,4 +35,4 @@ const SpinnerProgress: FC<{ time?: string; className?: string }> = ({
     </div>
   );
 };
-export default SpinnerProgress;
+export default memo(SpinnerProgress);

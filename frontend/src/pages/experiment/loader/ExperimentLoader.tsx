@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, memo, useEffect, useState } from "react";
 import { cl } from "../../../assets/utils/classnames";
 import LinearProgress from "../../../components/UI/progress/linear/LineProgress";
 import SpinnerProgress from "../../../components/UI/progress/spinner/SpinnerProgress";
@@ -34,4 +34,4 @@ const ExperimentLoader: FC<{ isTraining: boolean }> = ({ isTraining }) => {
     </div>
   );
 };
-export default ExperimentLoader;
+export default memo(ExperimentLoader);

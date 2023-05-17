@@ -1,6 +1,7 @@
 import Button, { ButtonProps } from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { Link } from "react-router-dom";
+import { memo } from "react";
 
 interface IProps extends ButtonProps {
   to?: string;
@@ -41,4 +42,4 @@ const AppButton = styled((props: IProps) => {
   },
 }));
 
-export default AppButton;
+export default memo(AppButton);

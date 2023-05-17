@@ -1,3 +1,5 @@
+import scss from "./authForms.module.scss";
+
 import { FetchBaseQueryError } from "@reduxjs/toolkit/dist/query";
 import { useFormik } from "formik";
 import { useEffect } from "react";
@@ -5,7 +7,6 @@ import { useEffect } from "react";
 import { authAPI } from "../../../API/auth/authAPI";
 import TextFieldSignin from "../../../components/UI/textfields/TextFieldSignin/TextFieldSignin";
 import SignButton from "../../UI/buttons/sign/SignButton";
-import scss from "./authForms.module.scss";
 import { validationSchemaTwoPassword } from "./authFormsValidator";
 
 const SignupForm = () => {

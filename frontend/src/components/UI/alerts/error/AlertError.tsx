@@ -1,6 +1,6 @@
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-import { FC, useEffect, useState } from "react";
+import { FC, memo, useEffect, useState } from "react";
 
 const AlertError: FC<{ message?: string; isError: boolean }> = ({
   message = "API error",
@@ -42,4 +42,4 @@ const AlertError: FC<{ message?: string; isError: boolean }> = ({
   );
 };
 
-export default AlertError;
+export default memo(AlertError);

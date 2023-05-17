@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { FC, memo, useEffect, useState } from "react";
 import { DropzoneOptions, useDropzone } from "react-dropzone";
 import { cl } from "../../../assets/utils/classnames";
 import scss from "./fileUpload.module.scss";
@@ -60,4 +60,4 @@ const FileUpload: FC<
   );
 };
 
-export default FileUpload;
+export default memo(FileUpload);

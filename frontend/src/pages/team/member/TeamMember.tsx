@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 import { ITeamMember } from "../../../types/team";
 import scss from "./teamMember.module.scss";
 
@@ -19,4 +19,4 @@ const TeamMember: FC<{ member: ITeamMember }> = ({ member }) => {
   );
 };
 
-export default TeamMember;
+export default memo(TeamMember);

@@ -1,4 +1,4 @@
-import { FC, useCallback, useEffect, useState } from "react";
+import { FC, memo, useCallback, useEffect, useState } from "react";
 import { experimentAPI } from "../../../../API/experiment/experimentAPI";
 import { IExperimentFormValues } from "../../../../API/experiment/experimentTypes";
 import { IAppSelectOptions } from "../../../../components/UI/selects/AppSelect/AppSelect";
@@ -69,4 +69,4 @@ const ExperimentParametersTrain: FC<{
   );
 };
 
-export default ExperimentParametersTrain;
+export default memo(ExperimentParametersTrain);

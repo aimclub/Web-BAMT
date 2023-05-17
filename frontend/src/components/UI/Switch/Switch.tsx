@@ -1,4 +1,4 @@
-import { FC, InputHTMLAttributes } from "react";
+import { FC, InputHTMLAttributes, memo } from "react";
 import { cl } from "../../../assets/utils/classnames";
 import scss from "./switch.module.scss";
 
@@ -20,4 +20,4 @@ const Switch: FC<ISwitch> = ({ label, className, ...props }) => {
   );
 };
 
-export default Switch;
+export default memo(Switch);

@@ -1,10 +1,10 @@
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectProps } from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
-import { FC } from "react";
+import { FC, memo } from "react";
 
 import { cl } from "../../../../assets/utils/classnames";
-import AppTooltip from "../AppTooltip/AppTooltip";
+import AppTooltip from "../../AppTooltip/AppTooltip";
 import scss from "./appSelect.module.scss";
 
 const CustomSelect = styled(Select)({
@@ -91,4 +91,4 @@ const AppSelect: FC<
   );
 };
 
-export default AppSelect;
+export default memo(AppSelect);

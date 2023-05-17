@@ -1,8 +1,9 @@
+import scss from "./authForms.module.scss";
+
 import { useFormik } from "formik";
 
 import TextFieldSignin from "../../../components/UI/textfields/TextFieldSignin/TextFieldSignin";
 import SignButton from "../../UI/buttons/sign/SignButton";
-import scss from "./authForms.module.scss";
 
 const RestorePasswordForm = () => {
   const formik = useFormik({

@@ -1,9 +1,9 @@
-// import StarIcon from "@mui/icons-material/Star";
+import scss from "./sampleNetworkItem.module.scss";
+
 import { SelectChangeEvent } from "@mui/material/Select";
-import { FC, useRef } from "react";
+import { FC, memo, useCallback, useMemo, useRef } from "react";
 
 import { bn_managerAPI } from "../../../../API/bn_manager/bn_managerAPI";
-
 import { INetwork } from "../../../../API/experiment/experimentTypes";
 import { colorizeNetwork } from "../../../../assets/utils/graph";
 import AppSelect from "../../../../components/UI/selects/AppSelect/AppSelect";
@@ -14,43 +14,60 @@ import {
   setSelectedNetwork,
 } from "../../../../redux/sample/sample";
 import SampleNetworkItemData from "./graph/SampleNetworkItemGraph";
-
-import scss from "./sampleNetworkItem.module.scss";
+import { IGraph } from "../../../../types/graph";
 
 const SampleNetworkItem: FC<{ index: number; network: INetwork | "" }> = ({
   index,
   network,
 }) => {
   const refContainer = useRef<HTMLDivElement | null>(null);
+
+  const dispatch = useAppDispatch();
   const { username: owner } = useUser();
   const { networks, equalNodes, selectedNode } = useAppSelector(
     (state) => state.sample
   );
 
   const { data } = bn_managerAPI.useGetBNDataQuery({ owner });
-  const all_networks: INetwork[] = data ? Object.values(data.networks) : [];
-  const dispatch = useAppDispatch();
+  const all_networks = useMemo<INetwork[]>(
+    () => (data ? Object.values(data.networks) : []),
+    [data]
+  );
 
-  const handleNetworkChange = (event: SelectChangeEvent<unknown>) => {
-    const name = event.target.value as string;
-    dispatch(
-      setSelectedNetwork({
-        network: all_networks.find((n) => n.name === name) || "",
-        index,
-      })
-    );
-  };
+  const chartData = useMemo<IGraph>(
+    () =>
+      network
+        ? colorizeNetwork(network, equalNodes, selectedNode)
+        : { nodes: [], links: [] },
+    [equalNodes, network, selectedNode]
+  );
 
-  const handleNodeClick = (node: string) => {
-    if (network)
+  const handleNetworkChange = useCallback(
+    (event: SelectChangeEvent<unknown>) => {
+      const name = event.target.value as string;
       dispatch(
-        selectNetworkNode({
-          network_name: network.name,
-          node_name: node,
-          dataset_name: network.dataset_name,
+        setSelectedNetwork({
+          network: all_networks.find((n) => n.name === name) || "",
+          index,
         })
       );
-  };
+    },
+    [all_networks, dispatch, index]
+  );
+
+  const handleNodeClick = useCallback(
+    (node: string) => {
+      if (network)
+        dispatch(
+          selectNetworkNode({
+            network_name: network.name,
+            node_name: node,
+            dataset_name: network.dataset_name,
+          })
+        );
+    },
+    [dispatch, network]
+  );
 
   return (
     <article>
@@ -65,17 +82,12 @@ const SampleNetworkItem: FC<{ index: number; network: INetwork | "" }> = ({
           helperText="select network"
           onChange={handleNetworkChange}
         />
-        {/* <div className={scss.score}>
-          <StarIcon fontSize="small" />
-          <span className={scss.title}>Score</span>
-          <span className={scss.value}>200</span>
-        </div> */}
       </div>
       <div className={scss.graph} ref={refContainer}>
         {network ? (
           <SampleNetworkItemData
             index={index}
-            data={colorizeNetwork(network, equalNodes, selectedNode)}
+            data={chartData}
             onNodeClick={handleNodeClick}
             size={{
               height: refContainer.current?.clientHeight,
@@ -90,4 +102,4 @@ const SampleNetworkItem: FC<{ index: number; network: INetwork | "" }> = ({
   );
 };
 
-export default SampleNetworkItem;
+export default memo(SampleNetworkItem);

@@ -1,5 +1,7 @@
+import scss from "./experimentForm.module.scss";
+
 import { useFormik } from "formik";
-import { FC, useCallback, useEffect, useMemo } from "react";
+import { FC, memo, useCallback, useEffect, useMemo } from "react";
 
 import { bn_managerAPI } from "../../../API/bn_manager/bn_managerAPI";
 import { data_managerAPI } from "../../../API/data_manager/data_managerAPI";
@@ -16,6 +18,7 @@ import {
   setLinks,
   setNodes,
 } from "../../../redux/experiment/experiment";
+import Switch from "../../UI/Switch/Switch";
 import AlertError from "../../UI/alerts/error/AlertError";
 import AppButton from "../../UI/buttons/app/AppButton";
 import AppMultiSelect from "../../UI/selects/AppMultiSelect/AppMultiSelect";
@@ -23,10 +26,7 @@ import AppSelect, {
   IAppSelectOptions,
 } from "../../UI/selects/AppSelect/AppSelect";
 import TextFieldForm from "../../UI/textfields/TextFieldForm/TextFieldForm";
-import { info, initialValues, validationSchema } from "./utils";
-
-import Switch from "../../UI/Switch/Switch";
-import scss from "./experimentForm.module.scss";
+import { info, initialValues, validationSchema } from "./experimentFormUtils";
 
 export type ExperimentFormSelectorsType =
   | "dataset"
@@ -147,6 +147,7 @@ const ExperimentForm: FC<{
             name="root_nodes"
             label="Root nodes"
             helperText="select node type"
+            disabled={!rootNodes}
           />
           <Switch
             checked={values.comparison}
@@ -181,4 +182,4 @@ const ExperimentForm: FC<{
   );
 };
 
-export default ExperimentForm;
+export default memo(ExperimentForm);

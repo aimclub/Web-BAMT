@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, memo } from "react";
 import { Graph, GraphConfiguration } from "react-d3-graph";
 import { IGraph, ILink, INode } from "../../../../../types/graph";
 
@@ -63,4 +63,4 @@ const SampleNetworkItemData: FC<{
   );
 };
 
-export default SampleNetworkItemData;
+export default memo(SampleNetworkItemData);

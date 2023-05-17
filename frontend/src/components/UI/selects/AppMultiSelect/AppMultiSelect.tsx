@@ -2,8 +2,9 @@ import CheckIcon from "@mui/icons-material/Check";
 import MenuItem from "@mui/material/MenuItem";
 import Select, { SelectProps } from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
-import { FC } from "react";
+import { FC, memo } from "react";
 import scss from "./appMultiSelect.module.scss";
+import { cl } from "../../../../assets/utils/classnames";
 
 const CustomSelect = styled(Select)({
   width: "100%",
@@ -48,7 +49,7 @@ const AppMultiSelect: FC<
   ...props
 }) => {
   return (
-    <div className={className}>
+    <div className={cl(className, props.disabled && scss.disabled)}>
       <div className={scss.input}>
         <p className={scss.label}>{label || props.name}</p>
         <div className={scss.select}>
@@ -87,4 +88,4 @@ const AppMultiSelect: FC<
   );
 };
 
-export default AppMultiSelect;
+export default memo(AppMultiSelect);
