@@ -2,12 +2,12 @@ import json
 import os
 import pandas as pd
 
-from bamt.networks.hybrid_bn import HybridBN
-from bamt.networks.discrete_bn import DiscreteBN
-from bamt.networks.continuous_bn import ContinuousBN
+from bamt_special.networks.hybrid_bn import HybridBN
+from bamt_special.networks.discrete_bn import DiscreteBN
+from bamt_special.networks.continuous_bn import ContinuousBN
 
-from bamt.preprocessors import Preprocessor
-from bamt.utils.GraphUtils import nodes_types
+from bamt_special.preprocessors import Preprocessor
+from bamt_special.utils.GraphUtils import nodes_types
 
 from sklearn import preprocessing as pp
 

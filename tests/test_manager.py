@@ -1,7 +1,7 @@
 import os
 
 from app.api.experiment.service import Sampler, Manager
-from bamt.networks.hybrid_bn import HybridBN
+from bamt_special.networks.hybrid_bn import HybridBN
 from os.path import isfile
 
 import pytest
