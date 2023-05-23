@@ -35,6 +35,7 @@ def create_user(username: str, password) -> User:
     save_changes(new_user)
     return new_user
 
+
 def create_user_space(user):
     dst = os.path.join(current_app.config["DATASETS_FOLDER"], user)
     if not os.path.isdir(dst):
@@ -43,6 +44,7 @@ def create_user_space(user):
     dst = os.path.join(current_app.config["SAMPLES_FOLDER"], user)
     if not os.path.isdir(dst):
         os.mkdir(os.path.join(current_app.config["SAMPLES_FOLDER"], user))
+
 
 def set_user_data(user: User, token: Dict[str, Any]) -> None:
     # user.name = user_data['name']

@@ -2,6 +2,7 @@ from werkzeug.datastructures import FileStorage
 
 import os
 
+
 def test_upload(client, app):
     file_correct = FileStorage(
         stream=open("test_types_data.csv", "rb"),
@@ -18,11 +19,10 @@ def test_upload(client, app):
 
     package_without_file = {"content": file_without_file, "name": "no_file.csv"} | correct_default
 
-
     package_correct = {
-        "name": "test_dataset",
-        "content": file_correct,
-    } | correct_default
+                          "name": "test_dataset",
+                          "content": file_correct,
+                      } | correct_default
 
     package_without_content = {"name": "no_user.csv"} | correct_default
 
@@ -70,11 +70,13 @@ def test_get_datasets(client, app):
     assert response.status_code == 200
     assert list(response.json.keys())[2:] == dataset_names
 
+
 def test_remove_dataset(client, app):
     rv = client.delete("api/data_manager/remove_dataset", query_string={"owner": "test", "name": "test_dataset2"})
     assert rv.status_code == 200
     datasets = client.get("api/data_manager/get_datasets", query_string={"user": "test"}).json
     assert "test_dataset2" not in datasets.keys()
+
 
 def test_get_root_nodes(client, app):
     # ours
@@ -89,4 +91,3 @@ def test_get_root_nodes(client, app):
 
     assert r3.status_code == 200
     assert r4.status_code == 404
-

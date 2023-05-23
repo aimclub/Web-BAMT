@@ -73,7 +73,6 @@ class BNDownloaderResource(Resource):
             }"""
                         }
              )
-
     @api.doc(params={'user': 'username', 'bn_name': 'name of bn'})
     def get(self):
         """Download BN"""

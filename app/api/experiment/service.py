@@ -35,13 +35,13 @@ class DataExtractor(object):
         """
         if not self.is_our:
             query = \
-            f"""
+                f"""
             SELECT location, map from datasets 
             WHERE owner='{user}' and name='{self.dataset}';
             """
         else:
             query = \
-            f"""
+                f"""
             SELECT location, map from datasets 
             WHERE owner='dev' and name='{self.dataset}';
             """
@@ -117,7 +117,6 @@ class BnBuilder(object):
         info = p.info
         return discretized_data, info
 
-
     def choose_network(self, info: dict):
         if all("cont" == i for i in info.values()):
             return ContinuousBN(use_mixture=self.parameters["use_mixture"])
@@ -125,7 +124,7 @@ class BnBuilder(object):
             return DiscreteBN()
         else:
             return HybridBN(use_mixture=self.parameters["use_mixture"],
-                                     has_logit=self.parameters["has_logit"])
+                            has_logit=self.parameters["has_logit"])
 
     @staticmethod
     def make_obj(model_str):
@@ -158,7 +157,7 @@ class Sampler(object):
         self.bn = bn
 
     def sample(self, df_shape):
-        sample = self.bn.sample(df_shape*5, progress_bar=False)
+        sample = self.bn.sample(df_shape * 5, progress_bar=False)
 
         pos_cols = []
         for node, sign in self.bn.descriptor["signs"].items():
@@ -182,6 +181,7 @@ class Manager(object):
         self.owner = owner
         self.net_name = net_name
         self.dataset_name = dataset_name
+
     def save_sample(self):
         self.sample.to_csv(os.path.join(current_app.config["SAMPLES_FOLDER"],
                                         self.owner,
@@ -212,7 +212,7 @@ class Manager(object):
         sample_loc = os.path.join(self.owner,
                                   self.net_name + ".csv")
         sample_to_db = {"sample_loc": sample_loc, "owner": self.owner, "net_name": self.net_name,
-                        "dataset_name":self.dataset_name}
+                        "dataset_name": self.dataset_name}
         return network_to_db, sample_to_db
 
     def update_db(self, network, sample):

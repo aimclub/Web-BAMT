@@ -1,5 +1,6 @@
 from app import db
 
+
 def test_register_and_token(client, app):
     response1 = client.post(
         'api/auth/signup', json={'username': 'a', 'password': 'a'}

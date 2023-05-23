@@ -1,5 +1,6 @@
 BASE_ROUTE = "api/auth"
 
+
 def register_routes(api, app):
     from .controller import api as model_api
 
