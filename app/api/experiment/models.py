@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 from ast import literal_eval
-# from sqlalchemy import JSON
-# from datetime import datetime
 
 from app import db
 
@@ -34,22 +32,22 @@ class BayessianNet(db.Model):
 
     def unpack(self):
         return {"network": {
-                            "name": self.name,
-                            "dataset_name": self.dataset_name,
-                            "edges": literal_eval(self.edges),
-                            "nodes": literal_eval(self.nodes),
-                            "use_mixture": self.use_mixture,
-                            "has_logit": self.has_logit,
-                            "classifier": self.classifier,
-                            "regressor": self.regressor,
-                            "params": {"init_edges": literal_eval(self.init_edges) if self.init_edges else None,
-                                       "init_nodes": literal_eval(self.init_nodes) if self.init_nodes else None,
-                                       # "white_list": data.white_list,
-                                       # "bl_add": data.bl_add,
-                                       "remove_init_edges": self.remove_init_edges},
-                            "scoring_function": self.scoring_function,
-                            "descriptor": literal_eval(self.descriptor)}
-                }
+            "name": self.name,
+            "dataset_name": self.dataset_name,
+            "edges": literal_eval(self.edges),
+            "nodes": literal_eval(self.nodes),
+            "use_mixture": self.use_mixture,
+            "has_logit": self.has_logit,
+            "classifier": self.classifier,
+            "regressor": self.regressor,
+            "params": {"init_edges": literal_eval(self.init_edges) if self.init_edges else None,
+                       "init_nodes": literal_eval(self.init_nodes) if self.init_nodes else None,
+                       # "white_list": data.white_list,
+                       # "bl_add": data.bl_add,
+                       "remove_init_edges": self.remove_init_edges},
+            "scoring_function": self.scoring_function,
+            "descriptor": literal_eval(self.descriptor)}
+        }
 
 
 @dataclass

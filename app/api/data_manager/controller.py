@@ -69,7 +69,7 @@ class DataUploaderResource(Resource):
 
         if "Unnamed: 0" in df.columns:
             return {"message": "Wrong data format"}, 400
-        
+
         if df.empty:
             return {"message": "Convertion Error"}, 404
 
@@ -98,7 +98,6 @@ class DatasetObserverResource(Resource):
         """
     }
     )
-
     def get(self):
         """
         Get a list with user's datasets
@@ -176,7 +175,6 @@ class RootNodesResource(Resource):
             relpath = meta["location"]
             source = current_app.config["DATASETS_FOLDER"]
 
-
         abspath = os.path.join(source, relpath)
 
         if os.path.isfile(abspath):
@@ -184,8 +182,8 @@ class RootNodesResource(Resource):
         else:
             return {"message": "Empty location was provided."}, 400
 
-
         return {"root_nodes": root_nodes}, 200
+
 
 @api.route("/check_fullness")
 class CheckFullnessResource(Resource):
@@ -193,12 +191,11 @@ class CheckFullnessResource(Resource):
         """
         Return True if the upload_folder is the same as the list of locations from the database
         """
-        result, diff = check_db_fullness({"datasets":current_app.config["DATASETS_FOLDER"],
+        result, diff = check_db_fullness({"datasets": current_app.config["DATASETS_FOLDER"],
                                           "samples": current_app.config["SAMPLES_FOLDER"]})
 
         if not result:
             return {"message": {"datasets": f"Corrupted records: {diff['datasets']}",
-                                "samples":  f"Corrupted records: {diff['samples']}"}}, 200
+                                "samples": f"Corrupted records: {diff['samples']}"}}, 200
         else:
             return {"message": "Database is full."}, 200
-

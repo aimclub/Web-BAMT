@@ -8,7 +8,7 @@ class BaseConfig:
     CONFIG_NAME = "base"
     USE_MOCK_EQUIVALENCY = False
     DEBUG = False
-    
+
     DATASETS_FOLDER = os.getenv("DATASETS_FOLDER")
     SAMPLES_FOLDER = os.getenv("SAMPLES_FOLDER")
 
@@ -33,6 +33,7 @@ class TestingConfig(BaseConfig):
 
     DATASETS_FOLDER = os.path.join("..", "tests", "Datasets")
     SAMPLES_FOLDER = os.path.join("..", "tests", "Samples")
+
 
 class ProductionConfig(BaseConfig):
     CONFIG_NAME = "prod"

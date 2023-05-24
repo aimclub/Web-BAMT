@@ -3,6 +3,7 @@ from flask_seeder import Seeder
 from app.api.data_manager.models import Dataset
 import os
 
+
 class DatasetsSeeder(Seeder):
     def run(self):
         dataset_hack = Dataset(name="hack",

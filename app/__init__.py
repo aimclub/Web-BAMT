@@ -7,6 +7,7 @@ from flask_cors import CORS
 
 db = SQLAlchemy()
 
+
 def create_app(env=None):
     from app.config import config_by_name
     template_dir = os.path.abspath('frontend/build')

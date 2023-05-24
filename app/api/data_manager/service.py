@@ -31,6 +31,7 @@ def update_db(package, map):
 def find_dataset_by_user_and_dataset_name(user: str, name: str) -> Dataset:
     return Dataset.query.filter_by(owner=user, name=name).all()
 
+
 def remove_dataset_from_database(owner, name):
     meta = get_dataset_location(owner, name)
     if not meta:
@@ -44,17 +45,21 @@ def remove_dataset_from_database(owner, name):
 
 
 def get_dataset_meta_by_user(user):
-    return {dataset.name:dataset.description for dataset in Dataset.query.filter_by(owner=user).all()}
+    return {dataset.name: dataset.description for dataset in Dataset.query.filter_by(owner=user).all()}
+
 
 def get_number_of_datasets(user: str, ) -> int:
     return len(Dataset.query.filter_by(owner=user).all())
+
 
 def get_dataset_location(owner: str, name: str):
     data = Dataset.query.filter_by(owner=owner, name=name).with_entities(Dataset.location).first()
     return data
 
+
 def get_header_from_csv(file):
     return pd.read_csv(file, index_col=0, nrows=0).columns.tolist()
+
 
 def check_db_fullness(folders_mapped: dict):
     """
@@ -65,7 +70,7 @@ def check_db_fullness(folders_mapped: dict):
     result = {i: {} for i in folders_mapped.keys()}
     for table, upload_folder in folders_mapped.items():
         query = \
-        f"""
+            f"""
         SELECT {"location" if table == "datasets" else "sample_loc"} FROM {table}
         {"WHERE id not in (1, 2)" if table == "datasets" else ""};
         """
@@ -87,4 +92,3 @@ def check_db_fullness(folders_mapped: dict):
         return True, result
     else:
         return False, result
-

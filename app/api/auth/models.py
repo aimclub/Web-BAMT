@@ -20,6 +20,7 @@ class User(UserMixin, db.Model):
     # avatar = db.Column(db.String(200))
     # active = db.Column(db.Boolean, default=False)
     tokens = db.Column(db.Text)
+
     # created_at = db.Column(db.DateTime, default=datetime.utcnow())
 
     def __repr__(self):
