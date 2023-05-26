@@ -1,11 +1,11 @@
-from sklearn.linear_model import ElasticNet
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import RandomForestRegressor
 from sklearn import linear_model
-
-# from sklearn.neighbors import KNeighborsClassifier
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import ElasticNet
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeRegressor
+
+# from sklearn.ensemble import RandomForestClassifier
 
 regressors = \
     {
@@ -18,9 +18,9 @@ regressors = \
 classifiers = \
     {
         "LogisticRegression": linear_model.LogisticRegression,
-        # "KNeighborsClassifier": KNeighborsClassifier,
+        "KNeighborsClassifier": KNeighborsClassifier,
         "DecisionTreeClassifier": DecisionTreeClassifier,
-        "RandomForestClassifier": RandomForestClassifier
+        # "RandomForestClassifier": RandomForestClassifier
     }
 
 models = regressors | classifiers

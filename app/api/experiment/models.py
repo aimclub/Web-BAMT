@@ -1,5 +1,5 @@
-from dataclasses import dataclass
 from ast import literal_eval
+from dataclasses import dataclass
 
 from app import db
 
@@ -59,6 +59,7 @@ class Sample(db.Model):
     dataset_name = db.Column(db.String)
 
     sample_loc = db.Column(db.String)
+    is_default = db.Column(db.Boolean, default=False)
 
     def __repr__(self):
         return f"Sample(owner={self.owner}, net_name={self.net_name}, dataset_name={self.dataset_name})"

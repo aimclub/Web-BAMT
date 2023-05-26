@@ -1,7 +1,8 @@
 from dataclasses import dataclass
-from app import db
 
 from sqlalchemy import JSON
+
+from app import db
 
 
 @dataclass

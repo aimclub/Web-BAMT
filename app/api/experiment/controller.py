@@ -1,17 +1,15 @@
-from flask_restx import Namespace, Resource
-from flask import request
-
-from .service import bn_learning, Sampler, Manager
-from app.api.bn_manager.service import find_bns_by_user
-from app.api.auth.service import find_user_by_username
-
-from . import STORAGE
 import ast
 import os
 import shutil
 
+from flask import request
+from flask_restx import Namespace, Resource
 from werkzeug.exceptions import BadRequest, NotFound
 
+from app.api.auth.service import find_user_by_username
+from app.api.bn_manager.service import find_bns_by_user
+from . import STORAGE
+from .service import bn_learning, Sampler, Manager
 from .str2callable import regressors, classifiers
 
 api = Namespace("experiment", description="Operations with BNs")
@@ -34,6 +32,8 @@ class BNResource(Resource):
                          "use_mixture": bool, 
                          "has_logit": bool,
                          "classifier": str or None,
+                         "regressor": str or None,
+                         "compare_with_default": bool,
                          "params": {"remove_init_edges": bool or None,
                                  "init_edges": List[List[str]] or None,
                                  "init_nodes": List[str] or None
@@ -60,10 +60,15 @@ class BNResource(Resource):
         if name in [bn.name for bn in find_bns_by_user(owner)]:
             return {"message": "Net name must be unique"}, 422
 
+        if len(name) > 35:
+            return {"message": "Net name is too big."}, 400
+
         if not "use_mixture" in bn_params.keys():
             return {"message": "use_mixture not defined"}, 400
+
         elif not "has_logit" in bn_params.keys():
             return {"message": "has_logit not defined"}, 400
+
         elif not "scoring_function" in bn_params.keys():
             return {"message": "Scoring_func not defined"}, 400
 
@@ -73,14 +78,14 @@ class BNResource(Resource):
         if result[-1] != 200:
             return result
 
-        bn, df_shape, status_code = result
+        bn, bn_default, df_shape, status_code = result
 
-        sampler = Sampler(bn)
-        sample = sampler.sample(df_shape)
+        sampler = Sampler()
+        samples = sampler.sample(df_shape, bn, bn_default)
 
-        manager = Manager(bn, sample, owner=owner,
+        manager = Manager(bn, samples, owner=owner,
                           net_name=name, dataset_name=dataset)
-        manager.save_sample()
+        manager.save_samples()
 
         package = manager.packing(bn_params)
         manager.update_db(*package)

@@ -1,11 +1,11 @@
 import os.path
+from collections import Counter
 
 import pandas as pd
-from app import db
 from flask import current_app
 
+from app import db
 from .models import Dataset
-from collections import Counter
 
 
 def automapping(raw_df: pd.DataFrame):
@@ -80,7 +80,7 @@ def check_db_fullness(folders_mapped: dict):
 
         for dirname, dirnames, filenames in os.walk(upload_folder):
             if not dirnames:
-                user = os.path.abspath(dirname).split("/")[-1]
+                user = os.path.basename(dirname)
                 folder_content.extend([os.path.join(user, file) for file in filenames])
 
         if not (Counter(folder_content) == Counter(db_content)):
