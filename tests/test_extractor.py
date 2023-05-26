@@ -1,6 +1,6 @@
-import pytest
-
 from app.api.experiment.service import DataExtractor
+
+import pytest
 from .conftest import DatasetActions
 
 

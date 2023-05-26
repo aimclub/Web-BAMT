@@ -1,6 +1,6 @@
-import os
-
 from werkzeug.datastructures import FileStorage
+
+import os
 
 
 def test_upload(client, app):

@@ -1,5 +1,5 @@
-import numpy as np
 import pandas as pd
+import numpy as np
 
 from app.api.experiment.service import BnBuilder
 
@@ -43,11 +43,12 @@ def test_choose_network():
 
 def test_build():
     # this also tests that compare_with_default works normally
-    builder = BnBuilder(parameters={"scoring_function": "K2", "use_mixture": False, "has_logit": False})
+    builder = BnBuilder(parameters={"scoring_function": "K2", "use_mixture": False, "has_logit": False,
+                                    "compare_with_default": True})
 
     df = pd.read_csv("test_types_data.csv", index_col=0)
 
-    result = builder.build(df, user="test", default=True)
+    result = builder.build(df, user="test")
 
     assert result[0].edges
     assert result[1].edges

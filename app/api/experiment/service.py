@@ -13,6 +13,7 @@ from sklearn import preprocessing as pp
 from app import db
 from utils import project_root
 from .models import BayessianNet, Sample
+from app.api.bn_manager.service import SampleWorker
 
 
 class DataExtractor(object):
@@ -149,7 +150,7 @@ class BnBuilder(object):
         bn.fit_parameters(df, user=user)
         return bn
 
-    def build(self, df, user: str, default):
+    def build(self, df, user: str):
         bn_default = None
 
         # separate parameters for learning out of bn's parameters
@@ -160,10 +161,10 @@ class BnBuilder(object):
 
         bn = self.learn(df, user, **bn_params)
 
-        if default:
+        if self.parameters.get("compare_with_default", False):
             bn_params["classifier"] = None
             bn_params["regressor"] = None
-            bn_default = self.learn(df, user, default, **bn_params)
+            bn_default = self.learn(df, user, default=True, **bn_params)
 
         return bn, bn_default
 
@@ -293,8 +294,16 @@ def bn_learning(dataset, parameters, user):
     check = builder.params_validation(df.columns)
 
     if check:
-        bn, bn_default = builder.build(df, user, default=parameters.get("compare_with_default", False))
+        bn, bn_default = builder.build(df, user)
     else:
         return check, 500
 
     return bn, bn_default, df.shape[0], 200
+
+
+def is_default_cached(owner, net_name, dataset_name):
+    worker = SampleWorker(owner=owner, net_name=net_name, dataset_name=dataset_name, node=None)
+    if worker.get_default():
+        return True
+    else:
+        return False

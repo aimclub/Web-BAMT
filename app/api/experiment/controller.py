@@ -9,7 +9,7 @@ from werkzeug.exceptions import BadRequest, NotFound
 from app.api.auth.service import find_user_by_username
 from app.api.bn_manager.service import find_bns_by_user
 from . import STORAGE
-from .service import bn_learning, Sampler, Manager
+from .service import bn_learning, Sampler, Manager, is_default_cached
 from .str2callable import regressors, classifiers
 
 api = Namespace("experiment", description="Operations with BNs")
@@ -73,6 +73,10 @@ class BNResource(Resource):
             return {"message": "Scoring_func not defined"}, 400
 
         # ======= Main =========
+        if bn_params.get("compare_with_default", False):
+            if is_default_cached(owner, net_name=name, dataset_name=dataset):
+                bn_params.pop("compare_with_default")
+
         result = bn_learning(dataset=dataset, parameters=bn_params, user=owner)
 
         if result[-1] != 200:
