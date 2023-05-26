@@ -1,12 +1,11 @@
-import pytest
-
-from app.api.data_manager.models import Dataset
-from app import create_app, db
+import os
 from shutil import rmtree
 
-import os
-
+import pytest
 from werkzeug.datastructures import FileStorage
+
+from app import create_app, db
+from app.api.data_manager.models import Dataset
 
 
 class AuthActions(object):
