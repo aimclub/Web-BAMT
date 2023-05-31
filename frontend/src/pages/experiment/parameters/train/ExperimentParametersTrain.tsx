@@ -30,8 +30,8 @@ const ExperimentParametersTrain: FC<{
       dataset: values.dataset,
       bn_params: {
         scoring_function: values.score_function,
-        use_mixture: Boolean(values.mixture),
-        has_logit: Boolean(values.logit),
+        use_mixture: values.mixture,
+        has_logit: values.logit,
         classifier: values.classifier,
         regressor: values.regressor,
         params: {

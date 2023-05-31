@@ -13,8 +13,8 @@ export interface IExperimentParameters {
 
 export interface IExperimentBNParams {
   scoring_function: string;
-  use_mixture: boolean;
-  has_logit: boolean;
+  use_mixture: string;
+  has_logit: string;
   classifier: string;
   regressor: string;
   params: {
