@@ -1,18 +1,16 @@
-import pandas as pd
-import numpy as np
-
-from app.api.experiment.models import BayessianNet, Sample
-from app import db
-
 import os
-
-from sklearn.mixture import GaussianMixture
-
 from ast import literal_eval
+
+import numpy as np
+import pandas as pd
 from flask import current_app
-from utils import project_root
 from scipy import stats
+from sklearn.mixture import GaussianMixture
 from statsmodels.graphics.gofplots import ProbPlot
+
+from app import db
+from app.api.experiment.models import BayessianNet, Sample
+from utils import project_root
 
 
 class SampleWorker(object):
@@ -22,6 +20,19 @@ class SampleWorker(object):
         self.dataset_name = dataset_name
         self.node = node
         self.is_our = True if dataset_name in ["vk", "hack"] else False
+
+    def get_default(self):
+        # method returns default dataset if it exists
+        r = db.session.execute(
+            f"""
+            SELECT * FROM samples
+            WHERE owner='{self.owner}' and dataset_name='{self.dataset_name}' and is_default=1 ;
+            """
+        ).first()
+        if r:
+            return r
+        else:
+            return False
 
     def extract_sample_meta(self):
         r = db.session.execute(
@@ -94,7 +105,7 @@ class SampleWorker(object):
         data2_sorted = np.sort(data2)
 
         # Calculate quantiles
-        quantiles = np.linspace(0, 1, 100)
+        quantiles = np.linspace(0, 1, 20)
         quantiles_data1 = np.quantile(data1_sorted, quantiles)
         quantiles_data2 = np.quantile(data2_sorted, quantiles)
 
@@ -125,7 +136,18 @@ class SampleWorker(object):
 
         return df_proba, sample_proba
 
+    def ergaenzung(self, freq_sample, freq_df):
+        freq_sample_new = freq_sample.copy()
+        not_predicted = set(freq_df.index.tolist()) - set(freq_sample.index.tolist())
+
+        for column in not_predicted:
+            freq_sample_new[column] = 0.0
+
+        return freq_sample_new
+
     def get_display(self):
+        default_kl_div = None
+
         sample_meta = self.extract_sample_meta()
         truth_meta = self.extract_truth_meta()
 
@@ -136,25 +158,33 @@ class SampleWorker(object):
         else:
             series_from_sample = series_from_sample[self.node]
 
+        if self.get_default():
+            sample_series_default = self.extract_file(self.get_default().sample_loc, mode="sample")[self.node]
+        else:
+            sample_series_default = None
+
         series_from_dataset = self.extract_file(truth_meta.location, mode="dataset")[self.node]
         if literal_eval(truth_meta.map)[self.node] == "float":
             q1, q2 = self.get_data_for_qq_plot_cont(series_from_dataset, series_from_sample)
             kl_div = self.kl_divergence(*self.make_probas_cont(series_from_dataset, series_from_sample))
+            if isinstance(sample_series_default, pd.Series):
+                default_kl_div = self.kl_divergence(*self.make_probas_cont(series_from_dataset, sample_series_default))
         else:
             freq_sample = pd.value_counts(series_from_sample, normalize=True)
             freq_df = pd.value_counts(series_from_dataset, normalize=True)
 
-            not_predicted = set(freq_df.index.tolist()) - set(freq_sample.index.tolist())
-
-            for column in not_predicted:
-                freq_sample[column] = 0.0
+            freq_sample = self.ergaenzung(freq_sample, freq_df)
 
             q1, q2 = self.get_data_for_qq_plot_disc(freq_sample.tolist(), freq_df.tolist())
 
             kl_div = self.kl_divergence(freq_sample.values, freq_df.values)
+            if isinstance(sample_series_default, pd.Series):
+                freq_sample_default = self.ergaenzung(pd.value_counts(sample_series_default, normalize=True), freq_df)
+                default_kl_div = self.kl_divergence(freq_sample_default, freq_df.values)
+
         return {"data": [int(i) for i in q1],
                 "xvals": [int(i) for i in q2],
-                "metrics": {"kl_divergence": kl_div}}
+                "metrics": {"kl_divergence": kl_div, "classic_kl_div": default_kl_div}}
 
 
 def find_bns_by_user(owner):

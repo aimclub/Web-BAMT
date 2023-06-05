@@ -1,18 +1,16 @@
 import ast
-
-from json import dumps
 from io import BytesIO
+from json import dumps
 
 from flask import request, send_file
-
 from flask_accepts import responds
 from flask_restx import Namespace, Resource
 from werkzeug.exceptions import BadRequest, NotFound
 
+from app.api.auth.service import find_user_by_username
 from .schema import BNGetNamesSchema
 from .service import find_bns_by_user, remove_bn, find_bns_by_owner_and_name, find_bn_names_by_user, find_sample, \
     remove_samples, find_edges_by_owner_and_nets_names, SampleWorker
-from app.api.auth.service import find_user_by_username
 
 api = Namespace("BN_manager", description="BN store operations")
 

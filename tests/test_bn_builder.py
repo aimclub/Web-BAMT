@@ -42,14 +42,26 @@ def test_choose_network():
 
 
 def test_build():
-    builder = BnBuilder(parameters={"scoring_function": "K2", "use_mixture": False, "has_logit": False})
+    # this also tests that compare_with_default works normally
+    builder = BnBuilder(parameters={"scoring_function": "K2", "use_mixture": False, "has_logit": False,
+                                    "compare_with_default": True})
 
     df = pd.read_csv("test_types_data.csv", index_col=0)
 
     result = builder.build(df, user="test")
 
-    assert result[0]
-    assert result[1] == 10
+    assert result[0].edges
+    assert result[1].edges
 
     # save bn for manager test
     result[0].save(outdir="test_bn.json")
+
+
+def test_learn():
+    builder = BnBuilder(parameters={"scoring_function": ("K2", )})
+    df = pd.read_csv("test_types_data.csv", index_col=0)
+
+    # repeated because bn_learning have split in tests mod
+    bn = builder.learn(df, user="test", default=True, **builder.parameters)
+
+    assert bn.edges

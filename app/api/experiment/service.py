@@ -1,21 +1,19 @@
 import json
 import os
+
 import pandas as pd
-
-from bamt_special.networks.hybrid_bn import HybridBN
-from bamt_special.networks.discrete_bn import DiscreteBN
 from bamt_special.networks.continuous_bn import ContinuousBN
-
+from bamt_special.networks.discrete_bn import DiscreteBN
+from bamt_special.networks.hybrid_bn import HybridBN
 from bamt_special.preprocessors import Preprocessor
 from bamt_special.utils.GraphUtils import nodes_types
-
+from flask import current_app
 from sklearn import preprocessing as pp
 
-from .models import BayessianNet, Sample
-
 from app import db
-from flask import current_app
 from utils import project_root
+from .models import BayessianNet, Sample
+from app.api.bn_manager.service import SampleWorker
 
 
 class DataExtractor(object):
@@ -98,7 +96,7 @@ class BnBuilder(object):
         {<...> , {"params" : <...>}} -> {<...>}
         """
         for k, v in params['params'].items():
-            if k != "remove_init_edges":
+            if not k in ["remove_init_edges", "compare_with_default"]:
                 val = str(v)
             else:
                 val = v
@@ -117,14 +115,20 @@ class BnBuilder(object):
         info = p.info
         return discretized_data, info
 
-    def choose_network(self, info: dict):
+    def choose_network(self, info: dict, default: bool = False):
         if all("cont" == i for i in info.values()):
-            return ContinuousBN(use_mixture=self.parameters["use_mixture"])
+            if default:
+                return ContinuousBN()
+            else:
+                return ContinuousBN(use_mixture=self.parameters["use_mixture"])
         elif all(i in ["disc", "disc_num"] for i in info.values()):
             return DiscreteBN()
         else:
-            return HybridBN(use_mixture=self.parameters["use_mixture"],
-                            has_logit=self.parameters["has_logit"])
+            if default:
+                return HybridBN()
+            else:
+                return HybridBN(use_mixture=self.parameters["use_mixture"],
+                                has_logit=self.parameters["has_logit"])
 
     @staticmethod
     def make_obj(model_str):
@@ -133,39 +137,56 @@ class BnBuilder(object):
         from .str2callable import models
         return models[model_str]()
 
-    def build(self, df, user: str):
-        bn = self.choose_network(nodes_types(df))
+    def learn(self, df, user, default=False, **kwargs):
+        bn = self.choose_network(nodes_types(df), default=default)
 
         discretized_data, info = self.preprocessing(df)
         bn.add_nodes(info)
 
-        bn.add_edges(data=discretized_data, optimizer='HC',
-                     scoring_function=(self.parameters["scoring_function"],),
-                     classifier=self.make_obj(self.parameters.get("classifier", None)),
-                     regressor=self.make_obj(self.parameters.get("regressor", None)),
-                     params=self.parameters.get("params", None),
-                     progress_bar=False)
+        bn.add_edges(discretized_data, optimizer='HC', progress_bar=False, **kwargs)
 
         if self.parameters.get("params", False):
             self.unpack_params(self.parameters)
         bn.fit_parameters(df, user=user)
-        return bn, df.shape[0]
+        return bn
+
+    def build(self, df, user: str):
+        bn_default = None
+
+        # separate parameters for learning out of bn's parameters
+        bn_params = dict(scoring_function=(self.parameters["scoring_function"],),
+                         classifier=self.make_obj(self.parameters.get("classifier", None)),
+                         regressor=self.make_obj(self.parameters.get("regressor", None)),
+                         params=self.parameters.get("params", None))
+
+        bn = self.learn(df, user, **bn_params)
+
+        if self.parameters.get("compare_with_default", False):
+            bn_params["classifier"] = None
+            bn_params["regressor"] = None
+            bn_default = self.learn(df, user, default=True, **bn_params)
+
+        return bn, bn_default
 
 
 class Sampler(object):
-    def __init__(self, bn):
-        self.bn = bn
+    @staticmethod
+    def sample(df_shape, *bns):
+        samples = []
+        for bn in bns:
+            if not bn:
+                samples.append(None)
+                continue
+            sample = bn.sample(df_shape * 5, progress_bar=False)
 
-    def sample(self, df_shape):
-        sample = self.bn.sample(df_shape * 5, progress_bar=False)
+            pos_cols = []
+            for node, sign in bn.descriptor["signs"].items():
+                if sign == "pos":
+                    pos_cols.append(node)
 
-        pos_cols = []
-        for node, sign in self.bn.descriptor["signs"].items():
-            if sign == "pos":
-                pos_cols.append(node)
-
-        sample_filtered = sample[(sample[pos_cols] > 0).all(axis=1)]
-        return sample_filtered
+            sample_filtered = sample[(sample[pos_cols] > 0).all(axis=1)]
+            samples.append(sample_filtered)
+        return samples
 
 
 class Manager(object):
@@ -174,25 +195,28 @@ class Manager(object):
     """
 
     def __init__(self,
-                 bn, sample,
+                 bn, samples,
                  owner, net_name, dataset_name):
         self.bn = bn
-        self.sample = sample
+        self.samples = samples
         self.owner = owner
         self.net_name = net_name
         self.dataset_name = dataset_name
 
-    def save_sample(self):
-        self.sample.to_csv(os.path.join(current_app.config["SAMPLES_FOLDER"],
-                                        self.owner,
-                                        self.net_name + ".csv"))
+    def save_samples(self):
+        self.samples[0].to_csv(os.path.join(current_app.config["SAMPLES_FOLDER"],
+                                            self.owner,
+                                            self.net_name + ".csv"))
+        if isinstance(self.samples[1], (pd.DataFrame, pd.Series)):
+            self.samples[1].to_csv(os.path.join(current_app.config["SAMPLES_FOLDER"],
+                                                self.owner,
+                                                self.net_name + "_default.csv"))
 
     def is_sample(self):
         r = db.session.execute(
             f"""
             SELECT * FROM samples
-            WHERE owner='{self.owner}' and net_name='{self.net_name}' and dataset_name='{self.dataset_name}' and
-            dataset_name not in (1, 2);
+            WHERE owner='{self.owner}' and net_name='{self.net_name}' and dataset_name='{self.dataset_name}';
             """
         ).first()
         if r:
@@ -200,8 +224,34 @@ class Manager(object):
         else:
             return False
 
+    def is_default(self):
+        r = db.session.execute(
+            f"""
+            SELECT is_default FROM samples
+            WHERE owner='{self.owner}' and dataset_name='{self.dataset_name}';
+            """
+        ).first()
+
+        if r:
+            return True
+        else:
+            return False
+
     def packing(self, parameters):
         type_descriptor = {}
+        sample_loc = os.path.join(self.owner,
+                                  self.net_name + ".csv")
+        default_sample_to_db = None
+
+        is_default = parameters.get("compare_with_default", False)
+
+        if is_default:
+            default_sample_loc = os.path.join(self.owner,
+                                              self.net_name + "_default.csv")
+            default_sample_to_db = {"sample_loc": default_sample_loc, "owner": self.owner, "net_name": self.net_name,
+                                    "dataset_name": self.dataset_name,
+                                    "is_default": parameters.pop("compare_with_default")}
+
         for node in self.bn.nodes:
             type_descriptor[node.name] = node.type
 
@@ -209,18 +259,21 @@ class Manager(object):
                                 "descriptor": str(type_descriptor)}
         network_to_db = network | {"owner": self.owner, "name": self.net_name, "dataset_name": self.dataset_name}
 
-        sample_loc = os.path.join(self.owner,
-                                  self.net_name + ".csv")
         sample_to_db = {"sample_loc": sample_loc, "owner": self.owner, "net_name": self.net_name,
                         "dataset_name": self.dataset_name}
-        return network_to_db, sample_to_db
 
-    def update_db(self, network, sample):
+        return network_to_db, sample_to_db, default_sample_to_db
+
+    def update_db(self, network, sample, default_sample):
         bn = BayessianNet(**network)
 
         if not self.is_sample():
             sample = Sample(**sample)
             db.session.add(sample)
+
+        if not self.is_default() and default_sample:
+            sample_d = Sample(**default_sample)
+            db.session.add(sample_d)
 
         db.session.add(bn)
         db.session.commit()
@@ -239,9 +292,18 @@ def bn_learning(dataset, parameters, user):
 
     builder = BnBuilder(parameters=parameters)
     check = builder.params_validation(df.columns)
+
     if check:
-        bn, df_shape = builder.build(df, user)
+        bn, bn_default = builder.build(df, user)
     else:
         return check, 500
 
-    return bn, df_shape, 200
+    return bn, bn_default, df.shape[0], 200
+
+
+def is_default_cached(owner, net_name, dataset_name):
+    worker = SampleWorker(owner=owner, net_name=net_name, dataset_name=dataset_name, node=None)
+    if worker.get_default():
+        return True
+    else:
+        return False

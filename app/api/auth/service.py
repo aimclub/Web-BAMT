@@ -1,15 +1,14 @@
+import datetime
+import json
+import os
 from typing import Optional, Any, Dict
+
+import jwt
 from flask import current_app
 from werkzeug.security import generate_password_hash
 
-import datetime
-import jwt
-import json
-import os
-
-from .models import User
-
 from app import db
+from .models import User
 
 
 def save_changes(data: Optional[Any] = None) -> None:

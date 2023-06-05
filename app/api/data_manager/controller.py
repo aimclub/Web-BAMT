@@ -1,19 +1,18 @@
-from flask_restx import Namespace, Resource
+import os
+from io import StringIO
+from json import load
+
+import pandas as pd
 from flask import current_app
 from flask import request
+from flask_restx import Namespace, Resource
+
+from app.api.auth.service import find_user_by_username
 from utils import project_root
-
-import os
-import pandas as pd
-from io import StringIO
-
 from .schema import UploadSchema
 from .service import update_db, find_dataset_by_user_and_dataset_name, get_number_of_datasets, \
     automapping, get_dataset_meta_by_user, get_dataset_location, get_header_from_csv, check_db_fullness, \
     remove_dataset_from_database
-
-from app.api.auth.service import find_user_by_username
-from json import load
 
 api = Namespace("data_manager", description="operations with data")
 
