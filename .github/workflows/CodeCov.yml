@@ -23,8 +23,7 @@ jobs:
         pip install -r requirements.txt
     - name: Test with pytest
       run: |
-        cd tests
-        pytest
+        pytest --cov=bamt -s test/
     - name: Upload coverage to codecov
       uses: codecov/codecov-action@v2
       with:
