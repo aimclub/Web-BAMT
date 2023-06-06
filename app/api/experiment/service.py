@@ -79,13 +79,25 @@ class BnBuilder(object):
         self.parameters = parameters
 
     def params_validation(self, nodes_names):
+        print("Param validation start ", self.parameters)
+        if self.parameters.get("classifier", False) and not self.parameters.get("has_logit", False):
+            self.parameters["classifier"] = None
+
         if "params" in self.parameters.keys():
             if "init_nodes" in self.parameters["params"].keys():
-                if any(i not in nodes_names for i in self.parameters["params"]["init_nodes"]):
-                    return {"message": "Malformed init_nodes"}, 400
+                if not self.parameters["params"]["init_nodes"]:
+                    self.parameters["params"].pop("init_nodes")
+                else:
+                    if any(i not in nodes_names for i in self.parameters["params"]["init_nodes"]):
+                        return {"message": "Malformed init_nodes"}, 400
             if "init_edges" in self.parameters["params"].keys():
-                if any(j not in nodes_names for i in self.parameters["params"]["init_edges"] for j in i):
-                    return {"message": "Malformed init_edges"}, 400
+                if not self.parameters["params"]["init_edges"]:
+                    self.parameters["params"].pop("init_edges")
+                else:
+                    if any(j not in nodes_names for i in self.parameters["params"]["init_edges"] for j in i):
+                        return {"message": "Malformed init_edges"}, 400
+            if self.parameters["params"] == {}:
+                self.parameters.pop("params")
             return True
         else:
             return {"message": "Parameters were not found"}, 400
