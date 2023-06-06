@@ -31,6 +31,9 @@ class BNSchema(Schema):
     has_logit = fields.Boolean(attribute='has_logit', default=False)
     scoring_function = fields.String(attribute='scoring_function')
 
+    classifier = fields.String(default="LogisticRegression")
+    regressor = fields.String(default="LinearRegression")
+
     params = fields.Nested(ParamsSchema)
 
     # descriptor = fields.Dict(required=True)
