@@ -79,7 +79,6 @@ class BnBuilder(object):
         self.parameters = parameters
 
     def params_validation(self, nodes_names):
-        print("Param validation start ", self.parameters)
         if self.parameters.get("classifier", False) and not self.parameters.get("has_logit", False):
             self.parameters["classifier"] = None
 
