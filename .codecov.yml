@@ -1,5 +1,6 @@
-codecov:
-  token: ${{ secrets.CODECOV_TOKEN }}
-  file:
-    - ./target/site/jacoco/jacoco.xml
-  branch: master
+coverage:
+  status:
+    project:
+      default:
+        threshold: 1%
+    patch: false
