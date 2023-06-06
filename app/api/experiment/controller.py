@@ -12,6 +12,8 @@ from . import STORAGE
 from .service import bn_learning, Sampler, Manager, is_default_cached
 from .str2callable import regressors, classifiers
 
+from app.api.experiment.schema import BNSchema
+
 api = Namespace("experiment", description="Operations with BNs")
 
 
@@ -47,7 +49,8 @@ class BNResource(Resource):
         Note that if you need to learn
         """
         try:
-            bn_params = ast.literal_eval(bn_params)
+            bn_params = BNSchema(partial=("params",)) \
+                .load(data=ast.literal_eval(bn_params))
         except Exception:
             raise BadRequest("Malformed string")
 
