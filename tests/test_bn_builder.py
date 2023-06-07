@@ -54,7 +54,7 @@ def test_build():
     assert result[1].edges
 
     # save bn for manager test
-    result[0].save(outdir="test_bn.json")
+    # result[0].save(outdir="test_bn.json")
 
 
 def test_learn():
