@@ -5,7 +5,7 @@ import os
 
 def test_upload(client, app):
     file_correct = FileStorage(
-        stream=open("test_types_data.csv", "rb"),
+        stream=open("tests/test_types_data.csv", "rb"),
         filename="test_types_data.csv",
     )
 
@@ -52,7 +52,7 @@ def test_get_datasets(client, app):
     dataset_names = [f"test_dataset{i}" for i in range(3)]
     for name in dataset_names:
         file = FileStorage(
-            stream=open("test_types_data.csv", "rb"),
+            stream=open("tests/test_types_data.csv", "rb"),
             filename="test_types_data.csv",
         )
 
