@@ -5,7 +5,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.tree import DecisionTreeRegressor
 
-# from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier
 
 regressors = \
     {
@@ -20,7 +20,7 @@ classifiers = \
         "LogisticRegression": linear_model.LogisticRegression,
         "KNeighborsClassifier": KNeighborsClassifier,
         "DecisionTreeClassifier": DecisionTreeClassifier,
-        # "RandomForestClassifier": RandomForestClassifier
+        "RandomForestClassifier": RandomForestClassifier
     }
 
 models = regressors | classifiers
