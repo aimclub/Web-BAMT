@@ -46,7 +46,7 @@ def test_build():
     builder = BnBuilder(parameters={"scoring_function": "K2", "use_mixture": False, "has_logit": False,
                                     "compare_with_default": True})
 
-    df = pd.read_csv("test_types_data.csv", index_col=0)
+    df = pd.read_csv("tests/test_types_data.csv", index_col=0)
 
     result = builder.build(df, user="test")
 
@@ -59,7 +59,7 @@ def test_build():
 
 def test_learn():
     builder = BnBuilder(parameters={"scoring_function": ("K2", )})
-    df = pd.read_csv("test_types_data.csv", index_col=0)
+    df = pd.read_csv("tests/test_types_data.csv", index_col=0)
 
     # repeated because bn_learning have split in tests mod
     bn = builder.learn(df, user="test", default=True, **builder.parameters)

@@ -56,7 +56,7 @@ class DatasetActions(object):
 
     def register_dataset(self):
         file_correct = FileStorage(
-            stream=open("test_types_data.csv", "rb"),
+            stream=open("tests/test_types_data.csv", "rb"),
             filename="test_types_data.csv",
         )
 
@@ -112,7 +112,6 @@ def app():
         db.session.commit()
 
     yield app
-
     for dst in [app.config["DATASETS_FOLDER"], app.config["SAMPLES_FOLDER"]]:
         rmtree(dst)
 

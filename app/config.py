@@ -31,8 +31,8 @@ class TestingConfig(BaseConfig):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///{0}/app-test.sqlite".format(r"../tests")
 
-    DATASETS_FOLDER = os.path.join("..", "tests", "Datasets")
-    SAMPLES_FOLDER = os.path.join("..", "tests", "Samples")
+    DATASETS_FOLDER = os.path.join("tests", "Datasets")
+    SAMPLES_FOLDER = os.path.join("tests", "Samples")
 
 
 class ProductionConfig(BaseConfig):
