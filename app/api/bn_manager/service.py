@@ -142,36 +142,45 @@ class SampleWorker(object):
                                   [[i, i] for i in p],
                                   squared=False)
 
+    @staticmethod
+    def convert_to_intc(*args, series=False):
+        if series:
+            return [i.values.astype(np.intc) for i in args]
+        else:
+            return [i[:, 0].astype(np.intc) for i in args]
+
     def jensenshannon_div(self, discretizer, series_from_dataset, series_from_sample, series_sample_default):
         default_div = None
 
         if discretizer:
             dataset_discretized = discretizer.fit_transform(series_from_dataset.values.reshape(-1, 1))
             sample_discretized = discretizer.transform(series_from_sample.values.reshape(-1, 1))
-            sample_default_discretized = discretizer.transform(series_sample_default.values.reshape(-1, 1))
 
-            series_from_dataset = dataset_discretized[:, 0].astype(np.intc)
-            series_from_sample = sample_discretized[:, 0].astype(np.intc)
-            series_sample_default = sample_default_discretized[:, 0].astype(np.intc)
+            series_from_dataset, series_from_sample = self.convert_to_intc(dataset_discretized, sample_discretized)
 
-        if all([i.dtype == 'bool' for i in [series_from_dataset, series_from_sample, series_sample_default]]):
-            series_from_dataset = series_from_dataset.values.astype(np.intc)
-            series_from_sample = series_from_sample.values.astype(np.intc)
-            series_sample_default = series_sample_default.values.astype(np.intc)
-            # Not a pd.Series anymore!
+        if all([i.dtype == 'bool' for i in [series_from_dataset, series_from_sample]]):
+            series_from_dataset, series_from_sample = self.convert_to_intc(series_from_dataset, series_from_sample,
+                                                                           series=True)
 
         # FIX FOR PYITLIB
         try:
             div = divergence_jensenshannon(series_from_dataset, series_from_sample)
         except AssertionError:
             if isinstance(series_from_dataset, pd.Series):
-                raise AssertionError(
+                raise TypeError(
                     f"Data type error (input: {series_from_dataset.__class__}): {[series_from_dataset.dtypes, series_from_sample.dtypes]}")
             if isinstance(series_from_dataset, np.ndarray):
-                raise AssertionError(
+                raise TypeError(
                     f"Data type error (input: {series_from_dataset.__class__}): {[series_from_dataset.dtype, series_from_sample.dtype]}")
 
         if isinstance(series_sample_default, (np.ndarray, pd.Series)):
+            if discretizer:
+                sample_default_discretized = discretizer.transform(series_sample_default.values.reshape(-1, 1))
+                series_sample_default = self.convert_to_intc(sample_default_discretized)[0]
+
+            if series_sample_default.dtype == 'bool':
+                series_sample_default = self.convert_to_intc(series_sample_default, series=True)[0]
+
             default_div = divergence_jensenshannon(series_from_dataset, series_sample_default)
         return div, default_div
 
@@ -233,8 +242,9 @@ class SampleWorker(object):
         return {"data": [int(i) for i in q1],
                 "xvals": [int(i) for i in q2],
                 "metrics": {"jen_shan_div": round(jen_shan_div.item(), 3),
-                            "jen_shan_div_default": round(jen_shan_div_default.item(), 3),
-                            "std": std}}
+                            "jen_shan_div_default": round(jen_shan_div_default.item(),
+                                                          3) if jen_shan_div_default else None,
+                            "std": round(std, 3) if std else None}}
 
 
 def find_bns_by_user(owner):
