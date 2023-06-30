@@ -9,16 +9,21 @@ from .models import Dataset
 
 
 def automapping(raw_df: pd.DataFrame):
-    map = {}
-    for column in range(0, raw_df.shape[1]):
-        try:
-            val = float(raw_df.iloc[0, column])
-            t = "float"
-        except:
-            t = "str"
+    column_type = dict()
+    for c in raw_df.columns.to_list():
+        disc = ['str', 'O', 'b', 'categorical', 'object', 'bool']
+        disc_numerical = ['int32', 'int64']
+        cont = ['float32', 'float64']
+        if raw_df[c].dtype.name in disc:
+            column_type[c] = 'str'
+        elif raw_df[c].dtype.name in cont:
+            column_type[c] = 'float'
+        elif raw_df[c].dtype.name in disc_numerical:
+            column_type[c] = 'str'
+        else:
+            pass # error ??
 
-        map[raw_df.columns[column]] = t
-    return map
+    return column_type
 
 
 def update_db(package, map):

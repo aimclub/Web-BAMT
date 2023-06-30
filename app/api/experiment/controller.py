@@ -31,11 +31,11 @@ class BNResource(Resource):
                      "bn_params":
                          """
                          {"scoring_function": str, 
-                         "use_mixture": bool, 
-                         "has_logit": bool,
+                         "use_mixture": str or bool, 
+                         "has_logit": str or bool,
                          "classifier": str or None,
                          "regressor": str or None,
-                         "compare_with_default": bool,
+                         "compare_with_default": str or bool,
                          "params": {"remove_init_edges": bool or None,
                                  "init_edges": List[List[str]] or None,
                                  "init_nodes": List[str] or None
@@ -75,11 +75,11 @@ class BNResource(Resource):
         elif not "scoring_function" in bn_params.keys():
             return {"message": "Scoring_func not defined"}, 400
 
-        # ======= Main =========
         if bn_params.get("compare_with_default", False):
             if is_default_cached(owner, net_name=name, dataset_name=dataset):
                 bn_params.pop("compare_with_default")
 
+        # ======= Main =========
         result = bn_learning(dataset=dataset, parameters=bn_params, user=owner)
 
         if result[-1] != 200:

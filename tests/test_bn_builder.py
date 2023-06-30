@@ -42,7 +42,7 @@ def test_choose_network():
 
 
 def test_build():
-    # this also tests that compare_with_default works normally
+    # this also tests that compare_with_default works normal
     builder = BnBuilder(parameters={"scoring_function": "K2", "use_mixture": False, "has_logit": False,
                                     "compare_with_default": True})
 

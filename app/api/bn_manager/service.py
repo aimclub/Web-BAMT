@@ -5,7 +5,10 @@ import numpy as np
 import pandas as pd
 from flask import current_app
 from scipy import stats
-from sklearn.mixture import GaussianMixture
+from pyitlib.discrete_random_variable import divergence_jensenshannon
+from sklearn.metrics import mean_squared_error
+from sklearn import preprocessing
+
 from statsmodels.graphics.gofplots import ProbPlot
 
 from app import db
@@ -38,7 +41,11 @@ class SampleWorker(object):
         r = db.session.execute(
             f"""
             SELECT * FROM samples
-            WHERE owner='{self.owner}' and net_name='{self.net_name}' and dataset_name='{self.dataset_name}';
+            WHERE 
+            owner='{self.owner}' and
+             net_name='{self.net_name}' and
+              dataset_name='{self.dataset_name}' and 
+               is_default=0;
             """
         ).first()
 
@@ -105,49 +112,101 @@ class SampleWorker(object):
         data2_sorted = np.sort(data2)
 
         # Calculate quantiles
-        quantiles = np.linspace(0, 1, 20)
+        quantiles = np.linspace(0, 1, 10)
         quantiles_data1 = np.quantile(data1_sorted, quantiles)
         quantiles_data2 = np.quantile(data2_sorted, quantiles)
 
         return quantiles_data1, quantiles_data2
 
     @staticmethod
-    def get_data_for_qq_plot_disc(probas1, probas2):
-        x_sample = stats.multinomial.rvs(n=100, p=probas1, random_state=42)
-        x_theor = stats.multinomial.rvs(n=100, p=probas2, random_state=42)
+    def get_data_for_qq_plot_disc(series_from_sample, series_from_dataset):
+        freq_sample = pd.value_counts(series_from_sample, normalize=True)
+        freq_df = pd.value_counts(series_from_dataset, normalize=True)
+
+        freq_df = freq_df[freq_df.index.isin(freq_sample.index)]
+
+        x_sample = stats.multinomial.rvs(n=100, p=freq_sample, random_state=42)
+        x_theor = stats.multinomial.rvs(n=100, p=freq_df, random_state=42)
 
         return ProbPlot(x_sample).sample_quantiles, ProbPlot(x_theor).sample_quantiles
 
     @staticmethod
-    def kl_divergence(p, q):
-        return np.sum(np.where(p != 0, p * np.log(p / q), 0))
+    def kl_divergence_(p, q):
+        return np.sum(np.where((p != 0) & (q != 0),
+                               p * np.log(p / q),
+                               0))
 
-    def make_probas_cont(self, df_series, sample):
-        total = df_series.shape[0]
-        train, test = df_series.iloc[0:int(.8 * total)].values, df_series.iloc[int(.2 * total):].values
+    @staticmethod
+    def rmse_(p, q):
+        return mean_squared_error([[i, j] for i, j in zip(p, q)],
+                                  [[i, i] for i in p],
+                                  squared=False)
 
-        gaussian_mixture = GaussianMixture(n_components=3, random_state=42)
-        gaussian_mixture.fit(train.reshape(-1, 1))
+    @staticmethod
+    def convert_to_intc(*args, series=False):
+        if series:
+            return [i.values.astype(np.intc) for i in args]
+        else:
+            return [i[:, 0].astype(np.intc) for i in args]
 
-        df_proba = gaussian_mixture.predict_proba(test.reshape(-1, 1))
+    def jensenshannon_div(self, discretizer, series_from_dataset, series_from_sample, series_sample_default):
+        default_div = None
 
-        gaussian_mixture.fit(sample.values.reshape(-1, 1))
-        sample_proba = gaussian_mixture.predict_proba(test.reshape(-1, 1))
+        if discretizer:
+            dataset_discretized = discretizer.fit_transform(series_from_dataset.values.reshape(-1, 1))
+            sample_discretized = discretizer.transform(series_from_sample.values.reshape(-1, 1))
 
-        return df_proba, sample_proba
+            series_from_dataset, series_from_sample = self.convert_to_intc(dataset_discretized, sample_discretized)
 
-    def ergaenzung(self, freq_sample, freq_df):
-        freq_sample_new = freq_sample.copy()
-        not_predicted = set(freq_df.index.tolist()) - set(freq_sample.index.tolist())
+        if all([i.dtype == 'bool' for i in [series_from_dataset, series_from_sample]]):
+            series_from_dataset, series_from_sample = self.convert_to_intc(series_from_dataset, series_from_sample,
+                                                                           series=True)
 
-        for column in not_predicted:
-            freq_sample_new[column] = 0.0
+        # FIX FOR PYITLIB
+        try:
+            div = divergence_jensenshannon(series_from_dataset, series_from_sample)
+        except AssertionError:
+            if isinstance(series_from_dataset, pd.Series):
+                raise TypeError(
+                    f"Data type error (input: {series_from_dataset.__class__}): {[series_from_dataset.dtypes, series_from_sample.dtypes]}")
+            if isinstance(series_from_dataset, np.ndarray):
+                raise TypeError(
+                    f"Data type error (input: {series_from_dataset.__class__}): {[series_from_dataset.dtype, series_from_sample.dtype]}")
 
-        return freq_sample_new
+        if isinstance(series_sample_default, (np.ndarray, pd.Series)):
+            if discretizer:
+                sample_default_discretized = discretizer.transform(series_sample_default.values.reshape(-1, 1))
+                series_sample_default = self.convert_to_intc(sample_default_discretized)[0]
 
-    def get_display(self):
+            if series_sample_default.dtype == 'bool':
+                series_sample_default = self.convert_to_intc(series_sample_default, series=True)[0]
+
+            default_div = divergence_jensenshannon(series_from_dataset, series_sample_default)
+        return div, default_div
+
+    def kl_divergence(self, quantile_gen: callable, series_from_dataset, series_from_sample, sample_series_default):
         default_kl_div = None
 
+        q1, q2 = quantile_gen(series_from_sample, series_from_dataset)
+        kl_div = self.kl_divergence_(q1, q2)
+
+        if isinstance(sample_series_default, pd.Series):
+            q1_d, q2_d = quantile_gen(sample_series_default, series_from_dataset)
+            default_kl_div = self.kl_divergence_(q1_d, q2_d)
+        return kl_div, default_kl_div
+
+    def rmse(self, quantile_gen: callable, series_from_dataset, series_from_sample, sample_series_default):
+        default_rmse = None
+
+        q1, q2 = quantile_gen(series_from_sample, series_from_dataset)
+        rmse_val = self.rmse_(q1, q2)
+
+        if isinstance(sample_series_default, pd.Series):
+            q1_d, q2_d = quantile_gen(sample_series_default, series_from_dataset)
+            default_rmse = self.rmse_(q1_d, q2_d)
+        return rmse_val, default_rmse
+
+    def get_display(self):
         sample_meta = self.extract_sample_meta()
         truth_meta = self.extract_truth_meta()
 
@@ -164,27 +223,28 @@ class SampleWorker(object):
             sample_series_default = None
 
         series_from_dataset = self.extract_file(truth_meta.location, mode="dataset")[self.node]
+
         if literal_eval(truth_meta.map)[self.node] == "float":
-            q1, q2 = self.get_data_for_qq_plot_cont(series_from_dataset, series_from_sample)
-            kl_div = self.kl_divergence(*self.make_probas_cont(series_from_dataset, series_from_sample))
-            if isinstance(sample_series_default, pd.Series):
-                default_kl_div = self.kl_divergence(*self.make_probas_cont(series_from_dataset, sample_series_default))
+            quantile_generator = self.get_data_for_qq_plot_cont
+            discretizer = preprocessing.KBinsDiscretizer(n_bins=20, encode='ordinal', strategy='quantile')
+            std = series_from_dataset.std()
         else:
-            freq_sample = pd.value_counts(series_from_sample, normalize=True)
-            freq_df = pd.value_counts(series_from_dataset, normalize=True)
+            quantile_generator = self.get_data_for_qq_plot_disc
+            discretizer = None
+            std = None
 
-            freq_sample = self.ergaenzung(freq_sample, freq_df)
+        jen_shan_div, jen_shan_div_default = self.jensenshannon_div(discretizer,
+                                                                    series_from_dataset, series_from_sample,
+                                                                    sample_series_default)
 
-            q1, q2 = self.get_data_for_qq_plot_disc(freq_sample.tolist(), freq_df.tolist())
-
-            kl_div = self.kl_divergence(freq_sample.values, freq_df.values)
-            if isinstance(sample_series_default, pd.Series):
-                freq_sample_default = self.ergaenzung(pd.value_counts(sample_series_default, normalize=True), freq_df)
-                default_kl_div = self.kl_divergence(freq_sample_default, freq_df.values)
+        q1, q2 = quantile_generator(series_from_sample, series_from_dataset)
 
         return {"data": [int(i) for i in q1],
                 "xvals": [int(i) for i in q2],
-                "metrics": {"kl_divergence": kl_div, "classic_kl_div": default_kl_div}}
+                "metrics": {"jen_shan_div": round(jen_shan_div.item(), 3),
+                            "jen_shan_div_default": round(jen_shan_div_default.item(),
+                                                          3) if jen_shan_div_default else None,
+                            "std": round(std, 3) if std else None}}
 
 
 def find_bns_by_user(owner):
@@ -212,7 +272,7 @@ def find_edges_by_owner_and_nets_names(names: list, owner: str):
 
 
 def remove_samples(owner, name):
-    query_res = Sample.query.filter_by(owner=owner, net_name=name)
+    query_res = Sample.query.filter_by(owner=owner, net_name=name, is_default=0)
     rel_path = query_res.first().sample_loc
     abs_path = os.path.join(current_app.config["SAMPLES_FOLDER"], rel_path)
 

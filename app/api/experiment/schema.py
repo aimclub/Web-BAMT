@@ -35,5 +35,5 @@ class BNSchema(Schema):
     regressor = fields.String(default="LinearRegression")
 
     params = fields.Nested(ParamsSchema)
-
+    compare_with_default = fields.Boolean(attribute="compare_with_default")
     # descriptor = fields.Dict(required=True)

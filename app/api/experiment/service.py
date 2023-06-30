@@ -190,13 +190,13 @@ class Sampler(object):
                 continue
             sample = bn.sample(df_shape * 5, progress_bar=False)
 
-            pos_cols = []
-            for node, sign in bn.descriptor["signs"].items():
-                if sign == "pos":
-                    pos_cols.append(node)
-
-            sample_filtered = sample[(sample[pos_cols] > 0).all(axis=1)]
-            samples.append(sample_filtered)
+            # pos_cols = []
+            # for node, sign in bn.descriptor["signs"].items():
+            #     if sign == "pos":
+            #         pos_cols.append(node)
+            #
+            # sample_filtered = sample[(sample[pos_cols] > 0).all(axis=1)]
+            samples.append(sample)
         return samples
 
 
@@ -227,7 +227,11 @@ class Manager(object):
         r = db.session.execute(
             f"""
             SELECT * FROM samples
-            WHERE owner='{self.owner}' and net_name='{self.net_name}' and dataset_name='{self.dataset_name}';
+            WHERE 
+            owner='{self.owner}' and 
+             net_name='{self.net_name}' and 
+              dataset_name='{self.dataset_name}' and
+               is_default=0;
             """
         ).first()
         if r:
@@ -244,7 +248,8 @@ class Manager(object):
         ).first()
 
         if r:
-            return True
+            if r[0]:
+                return True
         else:
             return False
 
