@@ -52,7 +52,10 @@ const SampleСomparison = () => {
                 {Object.entries(data.metrics).map(([key, value]) => (
                   <p key={key} className={scss.item}>
                     <span>{key}</span>
-                    <span className={scss.value}>{value.toFixed(2)}</span>
+                    <span className={scss.value}>
+                      {/* TODO: check without compare_with_default */}
+                      {value ? value.toFixed(2) : String(value)}
+                    </span>
                   </p>
                 ))}
               </div>
