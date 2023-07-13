@@ -57,16 +57,23 @@ const ExperimentForm: FC<{
       owner: username,
     });
 
-  const { values, touched, errors, handleSubmit, handleChange, setValues } =
-    useFormik({
-      initialValues,
-      initialErrors: { logit: "" },
-      validationSchema,
-      onSubmit: (values) => {
-        if (isDisplayNameRepeat || isNetworkLimit) return;
-        onSubmit(values);
-      },
-    });
+  const {
+    values,
+    touched,
+    errors,
+    handleSubmit,
+    handleChange,
+    setValues,
+    setFieldValue,
+  } = useFormik<IExperimentFormValues>({
+    initialValues,
+    initialErrors: { logit: "" },
+    validationSchema,
+    onSubmit: (values) => {
+      if (isDisplayNameRepeat || isNetworkLimit) return;
+      onSubmit(values);
+    },
+  });
 
   const { data: rootNodes, isError: isErrorGetRootNodes } =
     data_managerAPI.useGetDatasetRootNodesQuery(
@@ -91,6 +98,14 @@ const ExperimentForm: FC<{
     dispatch(setNodes(createNodes(rootNodes?.root_nodes || [])));
     dispatch(setLinks([]));
   }, [dispatch, rootNodes]);
+
+  const isClassifierDisabled = useMemo<boolean>(() => {
+    if (values.logit === "True") {
+      setFieldValue("classifier", "");
+      return true;
+    }
+    return false;
+  }, [setFieldValue, values.logit]);
 
   useEffect(() => {
     setValues((prev) => ({ ...prev, root_nodes: initialValues.root_nodes }));
@@ -137,6 +152,9 @@ const ExperimentForm: FC<{
               error={touched[name] && !!errors[name]}
               helperText={touched[name] && errors[name]}
               infoText={info[name]}
+              disabled={
+                (name === "classifier" && isClassifierDisabled) || false
+              }
             />
           ))}
           <AppMultiSelect
@@ -155,7 +173,6 @@ const ExperimentForm: FC<{
             className={scss.switch}
             name="comparison"
             label="Comparison with the classical algorithm"
-            disabled
           />
         </div>
       </div>

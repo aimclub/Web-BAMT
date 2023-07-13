@@ -34,6 +34,7 @@ const ExperimentParametersTrain: FC<{
         has_logit: values.logit,
         classifier: values.classifier,
         regressor: values.regressor,
+        compare_with_default: values.comparison ? "True" : "False",
         params: {
           init_nodes: values.root_nodes,
           init_edges: links.map(({ source, target }) => [source, target]),

@@ -13,10 +13,11 @@ export interface IExperimentParameters {
 
 export interface IExperimentBNParams {
   scoring_function: string;
-  use_mixture: string;
-  has_logit: string;
+  use_mixture: ExperimentBooleanValue;
+  has_logit: ExperimentBooleanValue;
   classifier: string;
   regressor: string;
+  compare_with_default: ExperimentBooleanValue;
   params: {
     init_nodes: string[];
     init_edges: [string, string][];
@@ -32,14 +33,16 @@ export interface INetwork extends IExperimentBNParams {
   edges: [string, string][];
 }
 
+type ExperimentBooleanValue = "" | "True" | "False";
+
 export interface IExperimentFormValues {
   display_name: string;
   dataset: string;
-  regressor: "";
-  classifier: "";
-  logit: "";
-  mixture: "";
-  score_function: "";
+  regressor: string;
+  classifier: string;
+  logit: ExperimentBooleanValue;
+  mixture: ExperimentBooleanValue;
+  score_function: string;
   root_nodes: string[];
   comparison: boolean;
 }
