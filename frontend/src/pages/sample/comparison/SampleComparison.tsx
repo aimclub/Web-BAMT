@@ -53,7 +53,6 @@ const SampleСomparison = () => {
                   <p key={key} className={scss.item}>
                     <span>{key}</span>
                     <span className={scss.value}>
-                      {/* TODO: check without compare_with_default */}
                       {value ? value.toFixed(2) : String(value)}
                     </span>
                   </p>
