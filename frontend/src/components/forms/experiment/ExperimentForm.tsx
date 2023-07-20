@@ -100,7 +100,7 @@ const ExperimentForm: FC<{
   }, [dispatch, rootNodes]);
 
   const isClassifierDisabled = useMemo<boolean>(() => {
-    if (values.logit === "True") {
+    if (values.logit !== "True") {
       setFieldValue("classifier", "");
       return true;
     }
