@@ -44,7 +44,7 @@ patsy
 pgmpy
 pickleshare
 Pillow
-pomegranate
+
 prompt-toolkit
 pure-eval
 pycparser
@@ -52,6 +52,7 @@ Pygments
 PyJWT
 pyparsing
 pyrsistent
+pytest~=7.2.0
 python-dateutil
 pytz
 pyvis
@@ -72,4 +73,4 @@ urllib3==1.26.9
 wcwidth==0.2.5
 Werkzeug==2.1.1
 seaborn
-pytest~=7.2.0
+
