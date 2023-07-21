@@ -8,7 +8,7 @@ Web-Bamt
    * - team
      - | |ITMO| |NCCR|
    * - tests
-     - | |Build| |coverage|
+     - | |coverage|
    * - docs
      - |docs|
    * - license
@@ -27,7 +27,10 @@ Backend: Python, SQLite
 The main concept
 ^^^^^^^^^^^^^^^^^
 
-.. image:: https://user-images.githubusercontent.com/6116991/190323306-8a7b5308-b7d8-453e-8532-fd855db3cb9d.png
+.. image:: docs/web_bamt_logo.png
+    :align: center
+    :width: 290
+    :height: 300
 
 
 This tool is intended for the analysis of multidimensional distributions by building Bayesian networks, the structure of which is a directed acyclic graph, and the edges show the dependencies between features (nodes). The algorithmic core of the tool is a BAMT library. This core allows any user to build their own Bayesian networks on tabular data of any nature.
@@ -146,9 +149,6 @@ Citation
 .. |license| image:: https://img.shields.io/github/license/AimClub/Web-BAMT
    :alt: Supported Python Versions
    :target: https://github.com/aimclub/Web-BAMT/blob/main/LICENCE.md
-
-.. |Build| image:: https://github.com/aimclub/Web-BAMT/actions/workflows/CodeCov.yml/badge.svg
-   :target: https://github.com/aimclub/Web-BAMT/actions/workflows/CodeCov.yml
 
 .. |coverage| image:: https://codecov.io/gh/aimclub/Web-BAMT/branch/main/graph/badge.svg?token=1JUNI5I5LW
    :target: https://codecov.io/gh/aimclub/Web-BAMT
