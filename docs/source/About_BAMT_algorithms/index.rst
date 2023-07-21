@@ -59,7 +59,7 @@ Parametric learning algorithms
 Parametric learning of distributions is performed by the method of
 likelihood maximization in a fixed class of distributions.
 
-.. image:: img/parameter_learning.png
+.. image:: img/params_learning.png
     :align: center
 
 In classical Bayesian networks, at the nodes of a Bayesian network, distributions are

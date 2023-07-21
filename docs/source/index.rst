@@ -9,7 +9,7 @@ Welcome to Web-BAMT’s documentation!
 This site contains main documentation for the 
 `Web-BAMT <https://github.com/aimclub/Web-BAMT/>`_.
 
-.. image:: ../web_bamt_scheme.jpg
+.. image:: ../web_bamt_scheme.png
    :align: center
 
 The main goal of this product is to provide scientific, technical, and subject specialists
