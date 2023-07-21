@@ -29,6 +29,8 @@ The main concept
 
 .. image:: docs/web_bamt_logo.png
     :align: center
+    :width: 290
+    :height: 300
 
 
 This tool is intended for the analysis of multidimensional distributions by building Bayesian networks, the structure of which is a directed acyclic graph, and the edges show the dependencies between features (nodes). The algorithmic core of the tool is a BAMT library. This core allows any user to build their own Bayesian networks on tabular data of any nature.
