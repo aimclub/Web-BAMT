@@ -3,7 +3,6 @@ asttokens==2.0.5
 attrs==21.4.0
 bamt @ git+https://github.com/Roman223/bamt_special
 backcall==0.2.0
-bamt @ git+https://github.com/Roman223/bamt_special
 bcrypt==3.2.0
 certifi==2021.10.8
 cffi==1.15.0
@@ -53,7 +52,6 @@ pgmpy==0.1.20
 pickleshare==0.7.5
 Pillow==9.1.0
 pluggy==1.0.0
-pomegranate==0.14.8
 prompt-toolkit==3.0.29
 pure-eval==0.2.2
 pyarrow==11.0.0
