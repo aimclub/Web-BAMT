@@ -29,7 +29,7 @@ def find_user_by_token(token: str) -> Optional[User]:
 def create_user(username: str, password) -> User:
     password_hash: Optional[str] = None
     if password:
-        password_hash = generate_password_hash(password, method='sha256')
+        password_hash = generate_password_hash(password, method="sha256")
     new_user = User(username=username, password=password_hash)
     save_changes(new_user)
     return new_user
@@ -54,12 +54,8 @@ def set_user_data(user: User, token: Dict[str, Any]) -> None:
 
 def generate_token(user_id: int) -> str:
     payload = {
-        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=5),
-        'iat': datetime.datetime.utcnow(),
-        'sub': user_id
+        "exp": datetime.datetime.utcnow() + datetime.timedelta(days=0, seconds=5),
+        "iat": datetime.datetime.utcnow(),
+        "sub": user_id,
     }
-    return jwt.encode(
-        payload,
-        current_app.config.get('SECRET_KEY'),
-        algorithm='HS256'
-    )
+    return jwt.encode(payload, current_app.config.get("SECRET_KEY"), algorithm="HS256")
