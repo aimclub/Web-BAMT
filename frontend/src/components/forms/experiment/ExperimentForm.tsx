@@ -107,6 +107,14 @@ const ExperimentForm: FC<{
     return false;
   }, [setFieldValue, values.logit]);
 
+  const isRegressorDisabled = useMemo<boolean>(() => {
+    if (values.mixture === "True") {
+      setFieldValue("regressor", "");
+      return true;
+    }
+    return false;
+  }, [setFieldValue, values.mixture]);
+
   useEffect(() => {
     setValues((prev) => ({ ...prev, root_nodes: initialValues.root_nodes }));
   }, [setValues, values.dataset]);
@@ -153,7 +161,9 @@ const ExperimentForm: FC<{
               helperText={touched[name] && errors[name]}
               infoText={info[name]}
               disabled={
-                (name === "classifier" && isClassifierDisabled) || false
+                (name === "classifier" && isClassifierDisabled) ||
+                (name === "regressor" && isRegressorDisabled) ||
+                false
               }
             />
           ))}
