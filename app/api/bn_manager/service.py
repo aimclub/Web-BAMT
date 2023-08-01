@@ -5,7 +5,7 @@ from typing import Union, List, Optional
 import numpy as np
 import pandas as pd
 from flask import current_app
-from pyitlib.discrete_random_variable import divergence_jensenshannon
+from bamt_special.external.pyitlib.DiscreteRandomVariableUtils import divergence_jensenshannon
 from scipy import stats
 from sklearn import preprocessing
 from sklearn.metrics import mean_squared_error
