@@ -44,6 +44,7 @@ patsy
 pgmpy
 pickleshare
 Pillow
+
 prompt-toolkit
 pure-eval
 pycparser
@@ -51,6 +52,7 @@ Pygments
 PyJWT
 pyparsing
 pyrsistent
+pytest~=7.2.0
 python-dateutil
 pytz
 pyvis
