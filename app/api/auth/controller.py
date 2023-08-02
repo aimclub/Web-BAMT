@@ -14,7 +14,7 @@ class AuthTokenResource(Resource):
 
     @api.doc(responses={401: 'check log data'})
     def post(self):
-        """Link token to user.
+        """Authorize user.
 
         .. :quickref: AuthToken; Get Token
 
@@ -50,6 +50,7 @@ class SignInResource(Resource):
 
         :param username: user's name
         :param password: password
+        :param token: token
 
         :status codes:
             - **200 Success**
