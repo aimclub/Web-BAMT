@@ -22,9 +22,6 @@ class BNResource(Resource):
     """
     BN Resource
     """
-
-    # @api.doc(responses={200: 'success'})
-    # @api.doc(responses={400: 'failed'})
     @api.doc(params={"owner": "name of user",
                      "name": "name of net",
                      "dataset": "name of dataset",
@@ -43,10 +40,65 @@ class BNResource(Resource):
                          }
                          """})
     def get(self, owner, name, dataset, bn_params):
-        """
-        Train BN and sample from it, then save it to db.
+        """Train BN and sample from it, then save it to db.
 
-        Note that if you need to learn
+        :param owner: bn's owner
+        :param name: name of bayessian network
+        :param dataset: dataset name
+        :param bn_params: additional parameters
+
+        .. :quickref: BN; Train bayessian network
+
+        bn_params json:
+         .. code-block:: json
+
+            {
+                "scoring_function": "K2",
+                "use_mixture": "true" or True,
+                "has_logit": "true" or True,
+                "classifier": "LogisticRegression",
+                "regressor": "LinearRegression",
+                "compare_with_default": "true" or True,
+                "params": {
+                            "remove_init_edges": "true" or True or None,
+                            "init_edges": [["node1", "node2"], ["node2", "node3"], ["node3", "node4"]] or None,
+                            "init_nodes": ["node3", "node4"] or None
+                           }
+            }
+
+        :status codes:
+            - **200 Success** - returns trained network data (see below)
+            - **400 Bad request** -
+                - net name is too big
+                - use_mixture of has_logit or both or scoring_function is not defined
+            - **404 NotFound** - User is not found
+            - **406** - bn's limit reached
+            - **422** - check for uniqueness of name failed
+            - **500** - server error
+
+        network json:
+         .. code-block:: json
+
+            {
+                "network":
+                        {
+                         "name": name of net,
+                         "dataset_name": name of dataset bn trained on,
+                         "edges": edges,
+                         "nodes": nodes,
+                         "use_mixture": bool,
+                         "has_logit": bool,
+                         "classifier": str,
+                         "regressor": str,
+                         "params": {"init_edges": None or List[List[str]],
+                                    "init_nodes": None or List[str],
+                                    "white_list": FROZEN FEATURE,
+                                    "bl_add": FROZEN FEATURE,
+                                    "remove_init_edges": bool or none},
+                         "scoring_function": str,
+                         "descriptor": str, string with dictionary with pairs
+                         }
+            }
         """
         try:
             bn_params = BNSchema(partial=("params",)) \
@@ -109,6 +161,16 @@ class ModelsResource(Resource):
     @api.doc(responces={"models": "List of available models"})
     @api.doc(params={"model_type": "regressor or classifier"})
     def get(self):
+        """Get available models for nodes.
+
+        :param model_type: str, "regressor" or "classifier"
+
+        .. :quickref: Models; Get available models
+
+        :status codes:
+            - **200** - list with models as strings
+            - **500** - server error
+        """
         model_type = request.args.get("model_type")
         models = classifiers if model_type == "classifier" else regressors
         return {"models": list(models)}, 200

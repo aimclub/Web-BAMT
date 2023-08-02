@@ -27,7 +27,26 @@ class DataUploaderResource(Resource):
         """
         Put dataset's link into db.
 
-        Dataset itself is put inside folder of user, into db stores only links
+        Dataset itself is put inside folder of user, into db stores only links.
+
+        .. :quickref: DataUploader; Upload dataset
+
+        :param name: name of dataset
+        :param owner: user's name
+        :param description: Description of dataset
+        :param content: Raw file
+
+        :status codes:
+            - **200 Success**
+            - **400 BadRequest** -
+                - name of dataset must be unique
+                - dataset contains "Unnamed:0" column
+                - dataset contains too many rows and/or columns
+            - **404 NotFound**
+                - no file or user not found
+                - empty file or conversion error
+            - **405** - dataset's limit reached
+            - **422 BadRequest** - cannot read the file
         """
 
         errors = UploadSchema().validate(request.form, partial=("content",))
@@ -52,9 +71,6 @@ class DataUploaderResource(Resource):
 
         if find_dataset_by_user_and_dataset_name(user=owner, name=name):
             return {"message": "The name for dataset must be unique"}, 400
-
-        if not find_user_by_username(username=owner):
-            return {"message": "User not found."}, 404
 
         try:
             df = pd.read_csv(
@@ -98,8 +114,16 @@ class DatasetObserverResource(Resource):
     }
     )
     def get(self):
-        """
-        Get a list with user's datasets
+        """Get a list with user's datasets.
+
+        .. :quickref: DatasetObserver; Get dataset description
+
+        :param user: username
+
+        :status codes:
+            - **200 Success** - return dict with {dataset.name:dataset.description}
+            - **404 NotFound**
+            - **422** - user wasn't found in request body
         """
         user = request.args.get("user", None)
         if not user:
@@ -123,6 +147,17 @@ class DatasetRemoverResource(Resource):
     def delete(self):
         """
         Remove dataset.
+
+        .. :quickref: DatasetRemover; Remove dataset
+
+        :param name: dataset name
+        :param user: username
+
+        :status codes:
+            - **200 Success**
+            - **400 BadRequest** - Empty location provided
+            - **403** - Attempt to delete our data
+            - **404 NotFound** - Dataset was not found in database
         """
 
         name = request.args.get("name")
@@ -152,7 +187,17 @@ class RootNodesResource(Resource):
         Return all possible root nodes.
 
         Note that under vk and hack names we store our datasets.
-        If you want to get them, you don't need to pass an owner
+        If you want to get them, you don't need to pass an owner.
+
+        .. :quickref: RootNodes; Get root nodes from dataset
+
+        :param name: dataset name
+        :param owner: OPTIONAL owner doesn't accept if dataset is ours.
+
+        :status codes:
+            - **200 Success** - return json {"root_nodes": List[str]}
+            - **400 BadRequest** - Empty parameters or empty location
+            - **404 NotFound**
         """
 
         name = request.args.get("name", None)
@@ -187,8 +232,11 @@ class RootNodesResource(Resource):
 @api.route("/check_fullness")
 class CheckFullnessResource(Resource):
     def get(self):
-        """
-        Return True if the upload_folder is the same as the list of locations from the database
+        """Return True if the upload_folder is the same as the list of locations from the database.
+
+        .. :quickref: CheckFullness; Check database fullness
+
+        :return: if corrupted returns a paths, if not returns message "Database is full."
         """
         result, diff = check_db_fullness({"datasets": current_app.config["DATASETS_FOLDER"],
                                           "samples": current_app.config["SAMPLES_FOLDER"]})
