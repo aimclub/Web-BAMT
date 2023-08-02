@@ -13,6 +13,16 @@ class BaseConfig:
     SAMPLES_FOLDER = os.getenv("SAMPLES_FOLDER")
 
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+    SQLALCHEMY_DATABASE_URI = "sqlite:///{0}/app-dev.sqlite".format(basedir)
+
+
+class RTDConfig(BaseConfig):
+    CONFIG_NAME = "rtd"
+    DATASETS_FOLDER = "Datasets"
+    SAMPLES_FOLDER = "Samples"
+
+    DEBUG = False
+    TESTING = False
 
 
 class DevelopmentConfig(BaseConfig):
@@ -21,7 +31,6 @@ class DevelopmentConfig(BaseConfig):
     SECRET_KEY = "3d6f45a5fc12445dbac2f59c3b6c7cb1"
     DEBUG = True
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = "sqlite:///{0}/app-dev.sqlite".format(basedir)
 
 
 class TestingConfig(BaseConfig):
@@ -40,13 +49,13 @@ class ProductionConfig(BaseConfig):
     SECRET_KEY = os.getenv("PROD_SECRET_KEY", "I'm Ron Burgundy?")
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = "sqlite:///{0}/app-prod.sqlite".format(basedir)
 
 
 EXPORT_CONFIGS: List[Type[BaseConfig]] = [
     DevelopmentConfig,
     TestingConfig,
     ProductionConfig,
+    RTDConfig
 ]
 
 config_by_name = {cfg.CONFIG_NAME: cfg for cfg in EXPORT_CONFIGS}
