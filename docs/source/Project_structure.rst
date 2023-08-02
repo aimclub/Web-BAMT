@@ -6,8 +6,7 @@ GLOBALS
 
 **DATABASE: SQLite**
 
-| ``SAMPLE_SIZE=442`` (max = 442 due to size of train dataset);
-| ``CASE_ID=0`` stands for geological dataset, ``CASE_ID=1`` - for social dataset.
+| ``SAMPLE_SIZE=size of dataframe * 5``
 
 | PREPROCESSING (in this version it remains constant and not available for user to tune)
 | First, we encode discrete data, then discretize continuous data.
@@ -36,8 +35,13 @@ we use them only in dev stage. Each module follows this pattern:
 2. Service. File with core functions
 3. Models. File with declarations of tables in database
 4. Schema. File with docs.
-   
-   We have ordered the modules accoring their usage in main scenario.
+5. Other elements for particular route group.
+
+Quick API reference
++++++++++++++++++++
+
+.. qrefflask:: app:create_app('rtd')
+   :undoc-static:
 
 AuthMod
 ++++++++
@@ -47,8 +51,8 @@ This module provides a communication between user and auth system.
 Controller
 -----------
 
-| ``get_token(email, password)``: get token by email and password;
-| ``signup(email, password)``: registrate user in database.
+.. autoflask:: app:create_app('rtd')
+    :modules: app.api.auth.controller
 
 Models
 -------
@@ -60,33 +64,18 @@ Service
 
 Here we defined functions to work with auth system.
 
-Example
--------
-
-Demonstarte an instanse of pretrained network.
-
-Controller
-----------
-
-``get_example(case_id)``: return a network pretrained with
-
 Experiment
------------
+++++++++++
 
-One of the most important module in applictaion. It is responsible for training 
+One of the most important module in application. It is responsible for training
 bayssian network, sample from it.
 
 
 Controller
 -----------
 
-``get(owner, name, case_id, bn_params)`` : validate input, train network, 
-sample from it and save data.
-
-.. note::
-
-    | In this version we have to unify format of sample (actually, there are 2 types: ``discrete`` and ``continuous``). We descritize continouos data, bins equal to output of :py:class:`np.histogram_bin_edges()` on train dataset for better comparison.
-    | ``get_root_nodes(case_id)``: return initial nodes from dataset.
+.. autoflask:: app:create_app('rtd')
+    :modules: app.api.experiment.controller
 
 Models
 ------
@@ -98,8 +87,8 @@ Service
 
 Core functions to fit bayessian network and save them.
 
-bn_manager
-----------
+BN manager
++++++++++++
 
 Module provides operations with bayessian networks in database such as: 
 find BN(-s) if exists, delete, put and train.
@@ -107,50 +96,33 @@ find BN(-s) if exists, delete, put and train.
 Controller
 ----------
 
-| ``get_BN(owner)``: return a list of bn(-s) (with data about them);
-| ``get_BN_names(owner)``: return a list of bn(-s) names user owns;
-| ``get_sample(owner, name, node)``: return an sample data array with ``size=SAMPLE_SIZE``;
-| ``remove(owner, name)``: remove bn (and its sample) from database.
+.. autoflask:: app:create_app('rtd')
+    :modules: app.api.bn_manager.controller
 
+Service
+--------
 
+Core functions to work with samples.
+It contains SampleWorker class that provide sample analysis and processing.
 
+Data manager
++++++++++++++
 
+Module provides operations with data such as:
+(up)-, (down-) load datasets, their removal and preprocessing.
 
+Controller
+----------
 
+.. autoflask:: app:create_app('rtd')
+    :modules: app.api.data_manager.controller
 
+Models
+------
 
+Declare tables with datasets.
 
+Service
+--------
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Core functions to upload datasets and save them.

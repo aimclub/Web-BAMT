@@ -12,9 +12,9 @@
 
 import datetime
 import sys
-#from pathlib import Path
+from pathlib import Path
 
-#sys.path.insert(0, str(Path(__file__).parent / '../../'))
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 # -- Project information -----------------------------------------------------
 
@@ -42,7 +42,9 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.autodoc.typehints',
     'sphinx.ext.graphviz',
-    'sphinx.ext.todo'
+    'sphinx.ext.todo',
+    'sphinxcontrib.autohttp.flask',
+    'sphinxcontrib.autohttp.flaskqref'
     ]
 
 templates_path = ['_templates']

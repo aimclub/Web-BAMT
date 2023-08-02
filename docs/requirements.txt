@@ -1,3 +1,4 @@
+bamt @ git+https://github.com/Roman223/bamt_special
 aniso8601
 asttokens
 attrs
@@ -17,7 +18,9 @@ Flask
 flask-accepts
 Flask-Login
 flask-restx
+flask-cors
 Flask-SQLAlchemy
+flask-seeder
 fonttools
 gmr
 greenlet
@@ -58,7 +61,6 @@ pytz
 pyvis
 PyYAML
 requests
-scikit-learn
 seaborn
 six
 SQLAlchemy
@@ -72,5 +74,4 @@ typing_extensions==4.1.1
 urllib3==1.26.9
 wcwidth==0.2.5
 Werkzeug==2.1.1
-seaborn
 
