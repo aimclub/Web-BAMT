@@ -7,7 +7,7 @@ from app import db
 
 @dataclass
 class Dataset(db.Model):
-    __tablename__ = 'datasets'
+    __tablename__ = "datasets"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     owner = db.Column(db.String)
@@ -19,4 +19,6 @@ class Dataset(db.Model):
 
     # hyperparams = db.Column(JSON)
     def __repr__(self):
-        return f"Dataset(name='{self.name}', user='{self.owner}', loc='{self.location}')"
+        return (
+            f"Dataset(name='{self.name}', user='{self.owner}', loc='{self.location}')"
+        )

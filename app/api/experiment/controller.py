@@ -22,11 +22,13 @@ class BNResource(Resource):
     """
     BN Resource
     """
-    @api.doc(params={"owner": "name of user",
-                     "name": "name of net",
-                     "dataset": "name of dataset",
-                     "bn_params":
-                         """
+
+    @api.doc(
+        params={
+            "owner": "name of user",
+            "name": "name of net",
+            "dataset": "name of dataset",
+            "bn_params": """
                          {"scoring_function": str, 
                          "use_mixture": str or bool, 
                          "has_logit": str or bool,
@@ -38,7 +40,9 @@ class BNResource(Resource):
                                  "init_nodes": List[str] or None
                                  }
                          }
-                         """})
+                         """,
+        }
+    )
     def get(self, owner, name, dataset, bn_params):
         """Train BN and sample from it, then save it to db.
 
@@ -101,8 +105,9 @@ class BNResource(Resource):
             }
         """
         try:
-            bn_params = BNSchema(partial=("params",)) \
-                .load(data=ast.literal_eval(bn_params))
+            bn_params = BNSchema(partial=("params",)).load(
+                data=ast.literal_eval(bn_params)
+            )
         except Exception:
             raise BadRequest("Malformed string")
 
@@ -142,8 +147,7 @@ class BNResource(Resource):
         sampler = Sampler()
         samples = sampler.sample(df_shape, bn, bn_default)
 
-        manager = Manager(bn, samples, owner=owner,
-                          net_name=name, dataset_name=dataset)
+        manager = Manager(bn, samples, owner=owner, net_name=name, dataset_name=dataset)
         manager.save_samples()
 
         package = manager.packing(bn_params)

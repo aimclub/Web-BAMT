@@ -9,15 +9,25 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 from app.api.auth.service import find_user_by_username
 from .schema import BNGetNamesSchema
-from .service import find_bns_by_user, remove_bn, find_bns_by_owner_and_name, find_bn_names_by_user, find_sample, \
-    remove_samples, find_edges_by_owner_and_nets_names, SampleWorker
+from .service import (
+    find_bns_by_user,
+    remove_bn,
+    find_bns_by_owner_and_name,
+    find_bn_names_by_user,
+    find_sample,
+    remove_samples,
+    find_edges_by_owner_and_nets_names,
+    SampleWorker,
+)
 
 api = Namespace("BN_manager", description="BN store operations")
 
 
 @api.route("/get_BN/<string:owner>")
 class BNManagerResource(Resource):
-    @api.doc(responses={200: """
+    @api.doc(
+        responses={
+            200: """
             {"networks": 
                 {"number": {
                     "name": name of net,
@@ -36,8 +46,8 @@ class BNManagerResource(Resource):
                     "scoring_function": str,
                     "descriptor": str}}
             }"""
-                        }
-             )
+        }
+    )
     def get(self, owner):
         """Get BN Data.
 
@@ -77,12 +87,16 @@ class BNManagerResource(Resource):
             raise NotFound("User not found.")
         nets = find_bns_by_user(owner=owner)
 
-        return {"networks": {n: net.unpack()["network"] for n, net in enumerate(nets)}}, 200
+        return {
+            "networks": {n: net.unpack()["network"] for n, net in enumerate(nets)}
+        }, 200
 
 
 @api.route("/download_BN")
 class BNDownloaderResource(Resource):
-    @api.doc(responses={200: """
+    @api.doc(
+        responses={
+            200: """
             {"network": 
                 {
                     "name": name of net,
@@ -101,9 +115,9 @@ class BNDownloaderResource(Resource):
                     "scoring_function": str,
                     "descriptor": str}
             }"""
-                        }
-             )
-    @api.doc(params={'user': 'username', 'bn_name': 'name of bn'})
+        }
+    )
+    @api.doc(params={"user": "username", "bn_name": "name of bn"})
     def get(self):
         """Download BN.
 
@@ -133,11 +147,13 @@ class BNDownloaderResource(Resource):
         if not nets:
             raise NotFound("Network was not found.")
 
-        file = BytesIO(dumps(nets[0].unpack()).encode('utf-8'))
-        return send_file(path_or_file=file,
-                         mimetype="application/octet-stream",
-                         download_name=f"{bn_name}.json",
-                         as_attachment=True)
+        file = BytesIO(dumps(nets[0].unpack()).encode("utf-8"))
+        return send_file(
+            path_or_file=file,
+            mimetype="application/octet-stream",
+            download_name=f"{bn_name}.json",
+            as_attachment=True,
+        )
 
 
 @api.route("/get_BN_names/<string:owner>")
@@ -185,15 +201,21 @@ class BNRemoverResource(Resource):
         return {"message": "Success"}
 
 
-@api.route("/get_display_data/<string:owner>/<string:net_name>/<string:dataset_name>/<string:node>")
+@api.route(
+    "/get_display_data/<string:owner>/<string:net_name>/<string:dataset_name>/<string:node>"
+)
 class SamplerResource(Resource):
-    @api.doc(responses={401: 'No User found'})
-    @api.doc(responses={200: """
+    @api.doc(responses={401: "No User found"})
+    @api.doc(
+        responses={
+            200: """
     {'data': List, 
      'xvals': List,
      'metrics': {metric: val},
      'type': Str}
-                              """})
+                              """
+        }
+    )
     def get(self, owner, net_name, dataset_name, node):
         """Get real and sampled data.
 
@@ -230,8 +252,7 @@ class SamplerResource(Resource):
 
 @api.route("/get_equal_edges")
 class BNAnalyserResource(Resource):
-    @api.doc(params={"names": "List[str], names of nets",
-                     "owner": "net holder name"})
+    @api.doc(params={"names": "List[str], names of nets", "owner": "net holder name"})
     def get(self):
         """get different edges between 2 nets.
 
@@ -262,7 +283,7 @@ class BNAnalyserResource(Resource):
             edges.append(ast.literal_eval(out[i_net][0]))
 
         if sorted(edges[0]) == sorted(edges[1]):
-            return {'message': "Nets are equal"}
+            return {"message": "Nets are equal"}
 
         edges0 = set(map(tuple, edges[0]))
         edges1 = set(map(tuple, edges[1]))

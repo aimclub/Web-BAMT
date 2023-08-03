@@ -5,7 +5,9 @@ import numpy as np
 import pandas as pd
 from flask import current_app
 from scipy import stats
-from bamt_special.external.pyitlib.DiscreteRandomVariableUtils import divergence_jensenshannon
+from bamt_special.external.pyitlib.DiscreteRandomVariableUtils import (
+    divergence_jensenshannon,
+)
 from sklearn.metrics import mean_squared_error
 from sklearn import preprocessing
 
@@ -132,15 +134,13 @@ class SampleWorker(object):
 
     @staticmethod
     def kl_divergence_(p, q):
-        return np.sum(np.where((p != 0) & (q != 0),
-                               p * np.log(p / q),
-                               0))
+        return np.sum(np.where((p != 0) & (q != 0), p * np.log(p / q), 0))
 
     @staticmethod
     def rmse_(p, q):
-        return mean_squared_error([[i, j] for i, j in zip(p, q)],
-                                  [[i, i] for i in p],
-                                  squared=False)
+        return mean_squared_error(
+            [[i, j] for i, j in zip(p, q)], [[i, i] for i in p], squared=False
+        )
 
     @staticmethod
     def convert_to_intc(*args, series=False):
@@ -149,18 +149,31 @@ class SampleWorker(object):
         else:
             return [i[:, 0].astype(np.intc) for i in args]
 
-    def jensenshannon_div(self, discretizer, series_from_dataset, series_from_sample, series_sample_default):
+    def jensenshannon_div(
+        self,
+        discretizer,
+        series_from_dataset,
+        series_from_sample,
+        series_sample_default,
+    ):
         default_div = None
 
         if discretizer:
-            dataset_discretized = discretizer.fit_transform(series_from_dataset.values.reshape(-1, 1))
-            sample_discretized = discretizer.transform(series_from_sample.values.reshape(-1, 1))
+            dataset_discretized = discretizer.fit_transform(
+                series_from_dataset.values.reshape(-1, 1)
+            )
+            sample_discretized = discretizer.transform(
+                series_from_sample.values.reshape(-1, 1)
+            )
 
-            series_from_dataset, series_from_sample = self.convert_to_intc(dataset_discretized, sample_discretized)
+            series_from_dataset, series_from_sample = self.convert_to_intc(
+                dataset_discretized, sample_discretized
+            )
 
-        if all([i.dtype == 'bool' for i in [series_from_dataset, series_from_sample]]):
-            series_from_dataset, series_from_sample = self.convert_to_intc(series_from_dataset, series_from_sample,
-                                                                           series=True)
+        if all([i.dtype == "bool" for i in [series_from_dataset, series_from_sample]]):
+            series_from_dataset, series_from_sample = self.convert_to_intc(
+                series_from_dataset, series_from_sample, series=True
+            )
 
         # FIX FOR PYITLIB
         try:
@@ -168,23 +181,39 @@ class SampleWorker(object):
         except AssertionError:
             if isinstance(series_from_dataset, pd.Series):
                 raise TypeError(
-                    f"Data type error (input: {series_from_dataset.__class__}): {[series_from_dataset.dtypes, series_from_sample.dtypes]}")
+                    f"Data type error (input: {series_from_dataset.__class__}): {[series_from_dataset.dtypes, series_from_sample.dtypes]}"
+                )
             if isinstance(series_from_dataset, np.ndarray):
                 raise TypeError(
-                    f"Data type error (input: {series_from_dataset.__class__}): {[series_from_dataset.dtype, series_from_sample.dtype]}")
+                    f"Data type error (input: {series_from_dataset.__class__}): {[series_from_dataset.dtype, series_from_sample.dtype]}"
+                )
 
         if isinstance(series_sample_default, (np.ndarray, pd.Series)):
             if discretizer:
-                sample_default_discretized = discretizer.transform(series_sample_default.values.reshape(-1, 1))
-                series_sample_default = self.convert_to_intc(sample_default_discretized)[0]
+                sample_default_discretized = discretizer.transform(
+                    series_sample_default.values.reshape(-1, 1)
+                )
+                series_sample_default = self.convert_to_intc(
+                    sample_default_discretized
+                )[0]
 
-            if series_sample_default.dtype == 'bool':
-                series_sample_default = self.convert_to_intc(series_sample_default, series=True)[0]
+            if series_sample_default.dtype == "bool":
+                series_sample_default = self.convert_to_intc(
+                    series_sample_default, series=True
+                )[0]
 
-            default_div = divergence_jensenshannon(series_from_dataset, series_sample_default)
+            default_div = divergence_jensenshannon(
+                series_from_dataset, series_sample_default
+            )
         return div, default_div
 
-    def kl_divergence(self, quantile_gen: callable, series_from_dataset, series_from_sample, sample_series_default):
+    def kl_divergence(
+        self,
+        quantile_gen: callable,
+        series_from_dataset,
+        series_from_sample,
+        sample_series_default,
+    ):
         default_kl_div = None
 
         q1, q2 = quantile_gen(series_from_sample, series_from_dataset)
@@ -195,7 +224,13 @@ class SampleWorker(object):
             default_kl_div = self.kl_divergence_(q1_d, q2_d)
         return kl_div, default_kl_div
 
-    def rmse(self, quantile_gen: callable, series_from_dataset, series_from_sample, sample_series_default):
+    def rmse(
+        self,
+        quantile_gen: callable,
+        series_from_dataset,
+        series_from_sample,
+        sample_series_default,
+    ):
         default_rmse = None
 
         q1, q2 = quantile_gen(series_from_sample, series_from_dataset)
@@ -218,33 +253,44 @@ class SampleWorker(object):
             series_from_sample = series_from_sample[self.node]
 
         if self.get_default():
-            sample_series_default = self.extract_file(self.get_default().sample_loc, mode="sample")[self.node]
+            sample_series_default = self.extract_file(
+                self.get_default().sample_loc, mode="sample"
+            )[self.node]
         else:
             sample_series_default = None
 
-        series_from_dataset = self.extract_file(truth_meta.location, mode="dataset")[self.node]
+        series_from_dataset = self.extract_file(truth_meta.location, mode="dataset")[
+            self.node
+        ]
 
         if literal_eval(truth_meta.map)[self.node] == "float":
             quantile_generator = self.get_data_for_qq_plot_cont
-            discretizer = preprocessing.KBinsDiscretizer(n_bins=20, encode='ordinal', strategy='quantile')
+            discretizer = preprocessing.KBinsDiscretizer(
+                n_bins=20, encode="ordinal", strategy="quantile"
+            )
             std = series_from_dataset.std()
         else:
             quantile_generator = self.get_data_for_qq_plot_disc
             discretizer = None
             std = None
 
-        jen_shan_div, jen_shan_div_default = self.jensenshannon_div(discretizer,
-                                                                    series_from_dataset, series_from_sample,
-                                                                    sample_series_default)
+        jen_shan_div, jen_shan_div_default = self.jensenshannon_div(
+            discretizer, series_from_dataset, series_from_sample, sample_series_default
+        )
 
         q1, q2 = quantile_generator(series_from_sample, series_from_dataset)
 
-        return {"data": [int(i) for i in q1],
-                "xvals": [int(i) for i in q2],
-                "metrics": {"jen_shan_div": round(jen_shan_div.item(), 3),
-                            "jen_shan_div_default": round(jen_shan_div_default.item(),
-                                                          3) if jen_shan_div_default else None,
-                            "std": round(std, 3) if std else None}}
+        return {
+            "data": [int(i) for i in q1],
+            "xvals": [int(i) for i in q2],
+            "metrics": {
+                "jen_shan_div": round(jen_shan_div.item(), 3),
+                "jen_shan_div_default": round(jen_shan_div_default.item(), 3)
+                if jen_shan_div_default
+                else None,
+                "std": round(std, 3) if std else None,
+            },
+        }
 
 
 def find_bns_by_user(owner):
@@ -261,7 +307,11 @@ def find_bn_names_by_user(owner):
 
 
 def find_sample(owner, net_name):
-    return Sample.query.filter_by(owner=owner, net_name=net_name).with_entities(Sample.sample_loc).first()
+    return (
+        Sample.query.filter_by(owner=owner, net_name=net_name)
+        .with_entities(Sample.sample_loc)
+        .first()
+    )
 
 
 def find_edges_by_owner_and_nets_names(names: list, owner: str):

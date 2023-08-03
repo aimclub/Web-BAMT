@@ -15,8 +15,15 @@ def test_params_validation():
 
     nodes_names = [f"node{i}" for i in range(8)]
 
-    assert BnBuilder(params_default | true_init_nodes | true_init_edges).params_validation(nodes_names)
-    assert BnBuilder(params_default | false_init_nodes | false_init_edges).params_validation(nodes_names)[1] == 400
+    assert BnBuilder(
+        params_default | true_init_nodes | true_init_edges
+    ).params_validation(nodes_names)
+    assert (
+        BnBuilder(
+            params_default | false_init_nodes | false_init_edges
+        ).params_validation(nodes_names)[1]
+        == 400
+    )
 
 
 def test_make_obj():
@@ -35,16 +42,25 @@ def test_choose_network():
 
     cont_info = {f"node{i}": "cont" for i in range(8)}
     disc_info = {f"node{i}": np.random.choice(["disc", "disc_num"]) for i in range(8)}
-    hyb_info = {f"node{i}": np.random.choice(["disc", "disc_num", "cont"]) for i in range(8)}
+    hyb_info = {
+        f"node{i}": np.random.choice(["disc", "disc_num", "cont"]) for i in range(8)
+    }
 
-    assert [builder.choose_network(info).type for info in [cont_info, disc_info, hyb_info]] == \
-           ["Continuous", "Discrete", "Hybrid"]
+    assert [
+        builder.choose_network(info).type for info in [cont_info, disc_info, hyb_info]
+    ] == ["Continuous", "Discrete", "Hybrid"]
 
 
 def test_build():
     # this also tests that compare_with_default works normal
-    builder = BnBuilder(parameters={"scoring_function": "K2", "use_mixture": False, "has_logit": False,
-                                    "compare_with_default": True})
+    builder = BnBuilder(
+        parameters={
+            "scoring_function": "K2",
+            "use_mixture": False,
+            "has_logit": False,
+            "compare_with_default": True,
+        }
+    )
 
     df = pd.read_csv("tests/test_types_data.csv", index_col=0)
 
@@ -58,7 +74,7 @@ def test_build():
 
 
 def test_learn():
-    builder = BnBuilder(parameters={"scoring_function": ("K2", )})
+    builder = BnBuilder(parameters={"scoring_function": ("K2",)})
     df = pd.read_csv("tests/test_types_data.csv", index_col=0)
 
     # repeated because bn_learning have split in tests mod

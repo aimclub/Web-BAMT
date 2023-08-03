@@ -15,17 +15,16 @@ class AuthActions(object):
 
     def register_user(self):
         return self._client.post(
-            'api/auth/signup', json={'username': 'test', 'password': 'a'}
+            "api/auth/signup", json={"username": "test", "password": "a"}
         )
 
-    def login(self, username='test', password='test'):
+    def login(self, username="test", password="test"):
         return self._client.post(
-            'api/auth/signin',
-            data={'username': username, 'password': password}
+            "api/auth/signin", data={"username": username, "password": password}
         )
 
     def logout(self):
-        return self._client.get('/auth/logout')
+        return self._client.get("/auth/logout")
 
 
 class BNActions(object):
@@ -38,12 +37,15 @@ class BNActions(object):
                 "owner": "test",
                 "name": "test",
                 "dataset": "hack",
-                "bn_params": {"has_logit": False,
-                              "use_mixture": False,
-                              "scoring_function": "K2"}
+                "bn_params": {
+                    "has_logit": False,
+                    "use_mixture": False,
+                    "scoring_function": "K2",
+                },
             }
         responce = self._client.get(
-            f"api/experiment/{params['owner']}/{params['name']}/{params['dataset']}/{params['bn_params']}")
+            f"api/experiment/{params['owner']}/{params['name']}/{params['dataset']}/{params['bn_params']}"
+        )
         if responce.status_code != 200:
             raise Exception(f"Error on experiment: {responce.json}")
         else:
@@ -64,12 +66,11 @@ class DatasetActions(object):
             "name": "test_dataset",
             "content": file_correct,
             "owner": "test",
-            "description": "test dataset"}
+            "description": "test dataset",
+        }
 
         rv = self._client.post(
-            "api/data_manager/upload",
-            data=package,
-            content_type="multipart/form-data"
+            "api/data_manager/upload", data=package, content_type="multipart/form-data"
         )
 
 
@@ -85,21 +86,39 @@ def auth(client):
 
 @pytest.fixture(scope="session")
 def app():
-    dataset_hack = Dataset(name="hack",
-                           owner="dev",
-                           location=os.path.join("data", "hack_processed_with_rf.csv"),
-                           map={'Tectonic regime': 'str', 'Period': 'str', 'Lithology': 'str',
-                                'Structural setting': 'str', 'Gross': 'float', 'Netpay': 'float',
-                                'Porosity': 'float',
-                                'Permeability': 'float', 'Depth': 'float'})
+    dataset_hack = Dataset(
+        name="hack",
+        owner="dev",
+        location=os.path.join("data", "hack_processed_with_rf.csv"),
+        map={
+            "Tectonic regime": "str",
+            "Period": "str",
+            "Lithology": "str",
+            "Structural setting": "str",
+            "Gross": "float",
+            "Netpay": "float",
+            "Porosity": "float",
+            "Permeability": "float",
+            "Depth": "float",
+        },
+    )
 
-    dataset_vk = Dataset(name="vk",
-                         owner="dev",
-                         location=os.path.join("data", "vk_data.csv"),
-                         map={'age': 'float', 'sex': 'str', 'has_pets': 'str', 'is_parent': 'str',
-                              'relation': 'str',
-                              'is_driver': 'str', 'tr_per_month': 'float', 'median_tr': 'float',
-                              'mean_tr': 'float'})
+    dataset_vk = Dataset(
+        name="vk",
+        owner="dev",
+        location=os.path.join("data", "vk_data.csv"),
+        map={
+            "age": "float",
+            "sex": "str",
+            "has_pets": "str",
+            "is_parent": "str",
+            "relation": "str",
+            "is_driver": "str",
+            "tr_per_month": "float",
+            "median_tr": "float",
+            "mean_tr": "float",
+        },
+    )
 
     app = create_app("test")
 

@@ -18,12 +18,12 @@ sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 # -- Project information -----------------------------------------------------
 
-project = 'Web-BAMT'
-copyright = '2022-{}, NSS Lab'.format(datetime.datetime.now().year)
-author = 'NSS Lab'
+project = "Web-BAMT"
+copyright = "2022-{}, NSS Lab".format(datetime.datetime.now().year)
+author = "NSS Lab"
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.1'
+release = "0.0.1"
 
 # Configuration file for the Sphinx documentation builder.
 #
@@ -33,29 +33,28 @@ release = '0.0.1'
 
 extensions = [
     "myst_parser",
-    'sphinx_rtd_theme',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.coverage',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.mathjax',
-    'sphinx.ext.autosummary',
-    'sphinx.ext.autodoc.typehints',
-    'sphinx.ext.graphviz',
-    'sphinx.ext.todo',
-    'sphinxcontrib.autohttp.flask',
-    'sphinxcontrib.autohttp.flaskqref'
-    ]
+    "sphinx_rtd_theme",
+    "sphinx.ext.autodoc",
+    "sphinx.ext.coverage",
+    "sphinx.ext.napoleon",
+    "sphinx.ext.viewcode",
+    "sphinx.ext.mathjax",
+    "sphinx.ext.autosummary",
+    "sphinx.ext.autodoc.typehints",
+    "sphinx.ext.graphviz",
+    "sphinx.ext.todo",
+    "sphinxcontrib.autohttp.flask",
+    "sphinxcontrib.autohttp.flaskqref",
+]
 
-templates_path = ['_templates']
+templates_path = ["_templates"]
 exclude_patterns = []
-
 
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_rtd_theme'
+html_theme = "sphinx_rtd_theme"
 # html_static_path = ['_static']
 
 # -- Extension configuration -------------------------------------------------
@@ -75,13 +74,13 @@ napoleon_use_rtype = True
 napoleon_attr_annotations = False
 
 autodoc_default_options = {
-    'members': True,
-    'undoc-members': False,
-    'show-inheritance': True,
-    'member-order': 'bysource',
-    'ignore-module-all': True,
+    "members": True,
+    "undoc-members": False,
+    "show-inheritance": True,
+    "member-order": "bysource",
+    "ignore-module-all": True,
 }
-autoclass_content = 'class'
-autodoc_typehints = 'signature'
-autodoc_typehints_format = 'short'
-autodoc_mock_imports = ['objgraph', 'memory_profiler', 'gprof2dot', 'snakeviz']
+autoclass_content = "class"
+autodoc_typehints = "signature"
+autodoc_typehints_format = "short"
+autodoc_mock_imports = ["objgraph", "memory_profiler", "gprof2dot", "snakeviz"]

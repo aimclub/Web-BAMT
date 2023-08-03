@@ -10,19 +10,31 @@ from flask_restx import Namespace, Resource
 from app.api.auth.service import find_user_by_username
 from utils import project_root
 from .schema import UploadSchema
-from .service import update_db, find_dataset_by_user_and_dataset_name, get_number_of_datasets, \
-    automapping, get_dataset_meta_by_user, get_dataset_location, get_header_from_csv, check_db_fullness, \
-    remove_dataset_from_database
+from .service import (
+    update_db,
+    find_dataset_by_user_and_dataset_name,
+    get_number_of_datasets,
+    automapping,
+    get_dataset_meta_by_user,
+    get_dataset_location,
+    get_header_from_csv,
+    check_db_fullness,
+    remove_dataset_from_database,
+)
 
 api = Namespace("data_manager", description="operations with data")
 
 
 @api.route("/upload")
 class DataUploaderResource(Resource):
-    @api.doc(params={"name": "Dataset name",
-                     "owner": "Name of user",
-                     "description": "Description of dataset",
-                     "content": "Raw file"})
+    @api.doc(
+        params={
+            "name": "Dataset name",
+            "owner": "Name of user",
+            "description": "Description of dataset",
+            "content": "Raw file",
+        }
+    )
     def post(self):
         """
         Put dataset's link into db.
@@ -73,9 +85,7 @@ class DataUploaderResource(Resource):
             return {"message": "The name for dataset must be unique"}, 400
 
         try:
-            df = pd.read_csv(
-                StringIO(uploaded_file),
-                index_col=0)
+            df = pd.read_csv(StringIO(uploaded_file), index_col=0)
         except Exception:
             return {"message": "Cannot read the file"}, 422
 
@@ -95,23 +105,31 @@ class DataUploaderResource(Resource):
 
         df.to_csv(dst)
 
-        update_db({"name": name, "owner": owner, "location": relpath,
-                   "description": description}, mp)
+        update_db(
+            {
+                "name": name,
+                "owner": owner,
+                "location": relpath,
+                "description": description,
+            },
+            mp,
+        )
 
         return {"message": "Success"}, 200
 
 
 @api.route("/get_datasets")
 class DatasetObserverResource(Resource):
-    @api.doc(params={'user': 'username'})
-    @api.doc(responses={
-        500: "User not passed",
-        200: """
+    @api.doc(params={"user": "username"})
+    @api.doc(
+        responses={
+            500: "User not passed",
+            200: """
         {
             {'dataset_name': str, 'description': Text}}
         }
-        """
-    }
+        """,
+        }
     )
     def get(self):
         """Get a list with user's datasets.
@@ -139,11 +157,14 @@ class DatasetObserverResource(Resource):
 
 @api.route("/remove_dataset")
 class DatasetRemoverResource(Resource):
-    @api.doc(params={"name": "dataset name",
-                     "owner": "user name"},
-             responses={200: "Success",
-                        403: "Attempt to delete our data",
-                        404: "Dataset was not found in database."})
+    @api.doc(
+        params={"name": "dataset name", "owner": "user name"},
+        responses={
+            200: "Success",
+            403: "Attempt to delete our data",
+            404: "Dataset was not found in database.",
+        },
+    )
     def delete(self):
         """
         Remove dataset.
@@ -178,10 +199,13 @@ class DatasetRemoverResource(Resource):
 
 @api.route("/get_root_nodes")
 class RootNodesResource(Resource):
-    @api.doc(params={"name": "dataset name",
-                     "owner": "user name (if their)"},
-             responses={200: "{'root_nodes': List}",
-                        404: "Dataset was not found in database."})
+    @api.doc(
+        params={"name": "dataset name", "owner": "user name (if their)"},
+        responses={
+            200: "{'root_nodes': List}",
+            404: "Dataset was not found in database.",
+        },
+    )
     def get(self):
         """
         Return all possible root nodes.
@@ -206,7 +230,9 @@ class RootNodesResource(Resource):
             return {"message": "request error."}, 400
 
         if name == "hack":
-            relpath = os.path.relpath(os.path.join("data", "hack_processed_with_rf.csv"))
+            relpath = os.path.relpath(
+                os.path.join("data", "hack_processed_with_rf.csv")
+            )
             source = project_root()
         elif name == "vk":
             relpath = os.path.relpath(os.path.join("data", "vk_data.csv"))
@@ -238,11 +264,19 @@ class CheckFullnessResource(Resource):
 
         :return: if corrupted returns a paths, if not returns message "Database is full."
         """
-        result, diff = check_db_fullness({"datasets": current_app.config["DATASETS_FOLDER"],
-                                          "samples": current_app.config["SAMPLES_FOLDER"]})
+        result, diff = check_db_fullness(
+            {
+                "datasets": current_app.config["DATASETS_FOLDER"],
+                "samples": current_app.config["SAMPLES_FOLDER"],
+            }
+        )
 
         if not result:
-            return {"message": {"datasets": f"Corrupted records: {diff['datasets']}",
-                                "samples": f"Corrupted records: {diff['samples']}"}}, 200
+            return {
+                "message": {
+                    "datasets": f"Corrupted records: {diff['datasets']}",
+                    "samples": f"Corrupted records: {diff['samples']}",
+                }
+            }, 200
         else:
             return {"message": "Database is full."}, 200

@@ -11,17 +11,17 @@ from .models import Dataset
 def automapping(raw_df: pd.DataFrame):
     column_type = dict()
     for c in raw_df.columns.to_list():
-        disc = ['str', 'O', 'b', 'categorical', 'object', 'bool']
-        disc_numerical = ['int32', 'int64']
-        cont = ['float32', 'float64']
+        disc = ["str", "O", "b", "categorical", "object", "bool"]
+        disc_numerical = ["int32", "int64"]
+        cont = ["float32", "float64"]
         if raw_df[c].dtype.name in disc:
-            column_type[c] = 'str'
+            column_type[c] = "str"
         elif raw_df[c].dtype.name in cont:
-            column_type[c] = 'float'
+            column_type[c] = "float"
         elif raw_df[c].dtype.name in disc_numerical:
-            column_type[c] = 'str'
+            column_type[c] = "str"
         else:
-            pass # error ??
+            pass  # error ??
 
     return column_type
 
@@ -50,15 +50,24 @@ def remove_dataset_from_database(owner, name):
 
 
 def get_dataset_meta_by_user(user):
-    return {dataset.name: dataset.description for dataset in Dataset.query.filter_by(owner=user).all()}
+    return {
+        dataset.name: dataset.description
+        for dataset in Dataset.query.filter_by(owner=user).all()
+    }
 
 
-def get_number_of_datasets(user: str, ) -> int:
+def get_number_of_datasets(
+    user: str,
+) -> int:
     return len(Dataset.query.filter_by(owner=user).all())
 
 
 def get_dataset_location(owner: str, name: str):
-    data = Dataset.query.filter_by(owner=owner, name=name).with_entities(Dataset.location).first()
+    data = (
+        Dataset.query.filter_by(owner=owner, name=name)
+        .with_entities(Dataset.location)
+        .first()
+    )
     return data
 
 
@@ -74,8 +83,7 @@ def check_db_fullness(folders_mapped: dict):
     failed = False
     result = {i: {} for i in folders_mapped.keys()}
     for table, upload_folder in folders_mapped.items():
-        query = \
-            f"""
+        query = f"""
         SELECT {"location" if table == "datasets" else "sample_loc"} FROM {table}
         {"WHERE id not in (1, 2)" if table == "datasets" else ""};
         """

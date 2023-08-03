@@ -3,7 +3,13 @@ from flask_restx import Namespace, Resource
 from werkzeug.exceptions import BadRequest, Unauthorized
 from werkzeug.security import check_password_hash
 
-from .service import create_user, find_user_by_username, generate_token, set_user_data, create_user_space
+from .service import (
+    create_user,
+    find_user_by_username,
+    generate_token,
+    set_user_data,
+    create_user_space,
+)
 
 api = Namespace("Auth", description="Token Operations")
 
@@ -12,7 +18,7 @@ api = Namespace("Auth", description="Token Operations")
 class AuthTokenResource(Resource):
     """auth"""
 
-    @api.doc(responses={401: 'check log data'})
+    @api.doc(responses={401: "check log data"})
     def post(self):
         """Authorize user.
 
@@ -26,8 +32,8 @@ class AuthTokenResource(Resource):
             - **400 Unauthorized** - NotFound or incorrect password
         """
         obtained = request.get_json()
-        username = obtained['username']
-        password = obtained['password']
+        username = obtained["username"]
+        password = obtained["password"]
 
         if not isinstance(username, str):
             raise BadRequest(f"{username.__class__}")
@@ -42,7 +48,7 @@ class AuthTokenResource(Resource):
 
 @api.route("/signin")
 class SignInResource(Resource):
-    @api.doc(responses={401: 'No User found'})
+    @api.doc(responses={401: "No User found"})
     def put(self):
         """Link token to user.
 
@@ -73,10 +79,8 @@ class SignInResource(Resource):
 class RegisterResource(Resource):
     """Registration"""
 
-    @api.doc(responses={200: 'registration successful',
-                        400: 'user already exists'})
-    @api.doc(params={"username": "name of user",
-                     "password": "password"})
+    @api.doc(responses={200: "registration successful", 400: "user already exists"})
+    @api.doc(params={"username": "name of user", "password": "password"})
     def post(self):
         """User registration.
 
@@ -96,8 +100,8 @@ class RegisterResource(Resource):
         obtained = request.get_json()
         if not "username" in obtained.keys() and "password" in obtained.keys():
             return {"message": "Request error."}, 400
-        username = obtained['username']
-        password = obtained['password']
+        username = obtained["username"]
+        password = obtained["password"]
         if not isinstance(username, str):
             return {"message": f"{username.__class__}"}, 400
         if username == "dev":
