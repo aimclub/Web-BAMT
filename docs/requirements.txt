@@ -25,7 +25,7 @@ fonttools
 gmr
 greenlet
 idna
-
+sphinxcontrib-httpdomain
 itsdangerous
 jedi
 Jinja2
