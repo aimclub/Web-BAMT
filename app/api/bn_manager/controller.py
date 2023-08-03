@@ -49,10 +49,42 @@ class BNManagerResource(Resource):
         }
     )
     def get(self, owner):
-        """Get BN Data"""
+        """Get BN Data.
 
-        # if not find_user_by_token(token=obtained["token"]):
-        #     raise BadRequest("No token was found")
+        .. :quickref: BNManager; Get dict with bns of user and their info
+
+        :param owner: bn's owner
+
+        :status codes:
+            - **200 Success** - return user's bns and info about them
+            - **404 NotFound**
+        network json:
+         .. code-block:: json
+
+            {
+                "networks":
+                        {"number": {
+                                     "name": name of net,
+                                     "dataset_name": name of dataset bn trained on,
+                                     "edges": edges,
+                                     "nodes": nodes,
+                                     "use_mixture": bool,
+                                     "has_logit": bool,
+                                     "classifier": str,
+                                     "regressor": str,
+                                     "params": {"init_edges": None or List[List[str]],
+                                                "init_nodes": None or List[str],
+                                                "white_list": FROZEN FEATURE,
+                                                "bl_add": FROZEN FEATURE,
+                                                "remove_init_edges": bool or none},
+                                     "scoring_function": str,
+                                     "descriptor": str, string with dictionary with pairs
+                                    }
+                        }
+            }
+        """
+        if not find_user_by_username(username=owner):
+            raise NotFound("User not found.")
         nets = find_bns_by_user(owner=owner)
 
         return {
@@ -87,13 +119,26 @@ class BNDownloaderResource(Resource):
     )
     @api.doc(params={"user": "username", "bn_name": "name of bn"})
     def get(self):
-        """Download BN"""
+        """Download BN.
+
+        .. :quickref: BNDownloader; Download bn
+
+        :param user: username
+        :param bn_name: name of bn
+
+        :status codes:
+            - **200 Success** - send file
+            - **400 Bad request** - user or bn_name wasn't found in request
+            - **404 Bad request** -
+                - user or bn_name wasn't found
+                - network was not find
+        """
 
         user = request.args.get("user", None)
         bn_name = request.args.get("bn_name", None)
 
         if not (user and bn_name):
-            raise BadRequest("User or bn_name wasn't found.")
+            raise BadRequest("User or bn_name wasn't found in request.")
 
         if not find_user_by_username(username=user):
             raise NotFound("User not found.")
@@ -115,7 +160,16 @@ class BNDownloaderResource(Resource):
 class BNGetNamesManagerResource(Resource):
     @responds(schema=BNGetNamesSchema, status_code=200, api=api)
     def get(self, owner):
-        """Get BN names to validate uniqueness"""
+        """Get BN names to validate uniqueness.
+
+        .. :quickref: BNGetNamesManager; Get list with names of bns
+
+        :param owner: net holder
+
+        :status codes:
+            - **200 Success** - return {"networks": list with names of nets for owner}
+            - **404 NotFound** - user not found.
+        """
 
         if not find_user_by_username(owner):
             raise BadRequest("No user was found")
@@ -126,10 +180,18 @@ class BNGetNamesManagerResource(Resource):
 
 @api.route("/remove/<string:owner>/<string:name>")
 class BNRemoverResource(Resource):
-    # @accepts(api=api)
-    # @api.doc(responses={401: 'No User found'})
     def delete(self, owner, name):
-        """Delete bn and her samples"""
+        """Delete bn and its samples.
+
+        .. :quickref: BNRemover; Remove bn
+
+        :param owner: username
+        :param name: name of bayessian network
+
+        :status codes:
+            - **200 Success**
+            - **404 NotFound** - net was not found
+        """
 
         if not find_bns_by_owner_and_name(owner=owner, name=name):
             raise NotFound("No net was found")
@@ -155,7 +217,30 @@ class SamplerResource(Resource):
         }
     )
     def get(self, owner, net_name, dataset_name, node):
-        """Get real and sampled data"""
+        """Get real and sampled data.
+
+        .. :quickref: Sampler; Get data to display on x- and y-axis and metrics
+
+        :param owner: username
+        :param net_name: name of network
+        :param dataset_name: name of dataset
+        :param node: name of node
+
+        :status codes:
+            - **200 Success** - return json with data to display
+            - **400 Bad Request**
+            - **404 NotFound** - Sample wasn't found.
+
+        display json:
+         .. code-block:: json
+
+            {
+                'data': List with data for y-axis,
+                'xvals': List with data for x-axis,
+                'metrics': {metric: val},
+                'type': Str, type of node
+            }
+        """
         if not find_sample(owner, net_name):
             return {"message": "Sample not found in database."}, 404
         worker = SampleWorker(owner, net_name, dataset_name, node)
@@ -169,7 +254,18 @@ class SamplerResource(Resource):
 class BNAnalyserResource(Resource):
     @api.doc(params={"names": "List[str], names of nets", "owner": "net holder name"})
     def get(self):
-        """get different edges between 2 nets"""
+        """get different edges between 2 nets.
+
+        .. :quickref: BNAnalyser; Get difference between 2 networks
+
+        :param names: nets name as List[str]
+        :param owner: owner of nets
+
+        :status codes:
+            - **400 Bad request**
+            - **404 Nets wasn't found**
+        :return: {"equal_edges": List of strings with nodes}
+        """
         names = request.args.get("names", None)
         owner = request.args.get("owner", None)
 

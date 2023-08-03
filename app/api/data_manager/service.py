@@ -24,7 +24,6 @@ def automapping(raw_df: DataFrame):
             column_type[c] = "str"
         else:
             raise TypeError(f"Unknown type: {raw_df[c].dtype}")
-
     return column_type
 
 
@@ -49,6 +48,7 @@ def remove_dataset_from_database(owner: str, name: str) -> Optional[bool]:
     Dataset.query.filter_by(owner=owner, name=name).delete()
     db.session.commit()
     return True
+
 
 
 def get_dataset_meta_by_user(user: str):

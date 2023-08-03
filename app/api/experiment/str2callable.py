@@ -5,6 +5,7 @@ from sklearn.linear_model import ElasticNet
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.tree import DecisionTreeRegressor
+from sklearn.ensemble import RandomForestClassifier
 
 regressors = {
     "LinearRegression": linear_model.LinearRegression,

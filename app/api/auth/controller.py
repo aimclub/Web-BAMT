@@ -20,7 +20,17 @@ class AuthTokenResource(Resource):
 
     @api.doc(responses={401: "check log data"})
     def post(self):
-        """Get token by user login data"""
+        """Authorize user.
+
+        .. :quickref: AuthToken; Get Token
+
+        :param username: user's name
+        :param password: password
+
+        :status codes:
+            - **200 Success** - returns {"token": token}.
+            - **400 Unauthorized** - NotFound or incorrect password
+        """
         obtained = request.get_json()
         username = obtained["username"]
         password = obtained["password"]
@@ -40,7 +50,18 @@ class AuthTokenResource(Resource):
 class SignInResource(Resource):
     @api.doc(responses={401: "No User found"})
     def put(self):
-        """Link token to user"""
+        """Link token to user.
+
+        .. :quickref: SignIn; Sign in
+
+        :param username: user's name
+        :param password: password
+        :param token: token
+
+        :status codes:
+            - **200 Success**
+            - **400 NotFound**
+        """
         obtained = request.get_json()
         username = obtained["username"]
         token = obtained["token"]
@@ -61,7 +82,21 @@ class RegisterResource(Resource):
     @api.doc(responses={200: "registration successful", 400: "user already exists"})
     @api.doc(params={"username": "name of user", "password": "password"})
     def post(self):
-        """User registration"""
+        """User registration.
+
+        .. :quickref: Register; Registration
+
+        :param username: user's name
+        :param password: password
+
+        :status codes:
+            - **200 Success** - registration successful.
+            - 400 Bad request
+                  - Forbidden name
+                  - Empty body
+                  - User not found
+                  - User already exists
+        """
         obtained = request.get_json()
         if not "username" in obtained.keys() and "password" in obtained.keys():
             return {"message": "Request error."}, 400
