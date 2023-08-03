@@ -21,8 +21,7 @@ def test_params_validation():
     assert (
         BnBuilder(
             params_default | false_init_nodes | false_init_edges
-        ).params_validation(nodes_names)[1]
-        == 400
+        ).params_validation(nodes_names)[1] == 400
     )
 
 
