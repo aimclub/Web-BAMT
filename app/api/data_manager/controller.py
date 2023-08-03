@@ -20,6 +20,8 @@ from .service import (
     get_header_from_csv,
     check_db_fullness,
     remove_dataset_from_database,
+    remove_cache_folder,
+    remove_cache_db,
 )
 
 api = Namespace("data_manager", description="operations with data")
@@ -280,3 +282,22 @@ class CheckFullnessResource(Resource):
             }, 200
         else:
             return {"message": "Database is full."}, 200
+
+
+@api.route("/wipe_cache")
+@api.doc(params={"owner": "user name"}, responses={200: "Success"})
+class CacheCleanerResource(Resource):
+    def delete(self):
+        """
+        Clean cached samples
+        """
+
+        user = request.args.get("owner")
+
+        if not find_user_by_username(user):
+            return {"message": "User not found!"}, 404
+
+        remove_cache_folder(owner=user)
+        remove_cache_db(owner=user)
+
+        return {"message": "Success"}, 200

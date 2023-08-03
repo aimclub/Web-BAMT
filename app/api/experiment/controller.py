@@ -8,11 +8,10 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 from app.api.auth.service import find_user_by_username
 from app.api.bn_manager.service import find_bns_by_user
+from app.api.experiment.schema import BNSchema
 from . import STORAGE
 from .service import bn_learning, Sampler, Manager, is_default_cached
 from .str2callable import regressors, classifiers
-
-from app.api.experiment.schema import BNSchema
 
 api = Namespace("experiment", description="Operations with BNs")
 
@@ -22,7 +21,6 @@ class BNResource(Resource):
     """
     BN Resource
     """
-
     @api.doc(
         params={
             "owner": "name of user",
@@ -30,7 +28,7 @@ class BNResource(Resource):
             "dataset": "name of dataset",
             "bn_params": """
                          {"scoring_function": str, 
-                         "use_mixture": str or bool, 
+                         "use_mixture": str or bool,
                          "has_logit": str or bool,
                          "classifier": str or None,
                          "regressor": str or None,

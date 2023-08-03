@@ -1,10 +1,10 @@
 from sklearn import linear_model
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import ElasticNet
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.tree import DecisionTreeRegressor
-
 from sklearn.ensemble import RandomForestClassifier
 
 regressors = {

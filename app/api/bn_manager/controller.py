@@ -282,9 +282,6 @@ class BNAnalyserResource(Resource):
         for i_net in range(len(out)):
             edges.append(ast.literal_eval(out[i_net][0]))
 
-        if sorted(edges[0]) == sorted(edges[1]):
-            return {"message": "Nets are equal"}
-
         edges0 = set(map(tuple, edges[0]))
         edges1 = set(map(tuple, edges[1]))
 

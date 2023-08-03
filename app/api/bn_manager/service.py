@@ -1,16 +1,21 @@
 import os
 from ast import literal_eval
+from typing import Union, List, Optional
 
 import numpy as np
 import pandas as pd
 from flask import current_app
+from bamt_special.external.pyitlib.DiscreteRandomVariableUtils import divergence_jensenshannon
 from scipy import stats
+
 from bamt_special.external.pyitlib.DiscreteRandomVariableUtils import (
     divergence_jensenshannon,
 )
 from sklearn.metrics import mean_squared_error
-from sklearn import preprocessing
 
+from sklearn import preprocessing
+from sklearn.metrics import mean_squared_error
+from sqlalchemy.engine.result import Result
 from statsmodels.graphics.gofplots import ProbPlot
 
 from app import db
@@ -19,6 +24,8 @@ from utils import project_root
 
 
 class SampleWorker(object):
+    """This class was intended to provide a samples with specific conditions."""
+
     def __init__(self, owner, net_name, dataset_name, node):
         self.owner = owner
         self.net_name = net_name
@@ -26,7 +33,7 @@ class SampleWorker(object):
         self.node = node
         self.is_our = True if dataset_name in ["vk", "hack"] else False
 
-    def get_default(self):
+    def get_default(self) -> Union[Result, bool]:
         # method returns default dataset if it exists
         r = db.session.execute(
             f"""
@@ -39,14 +46,14 @@ class SampleWorker(object):
         else:
             return False
 
-    def extract_sample_meta(self):
+    def extract_sample_meta(self) -> Result:
         r = db.session.execute(
             f"""
             SELECT * FROM samples
-            WHERE 
+            WHERE
             owner='{self.owner}' and
              net_name='{self.net_name}' and
-              dataset_name='{self.dataset_name}' and 
+              dataset_name='{self.dataset_name}' and
                is_default=0;
             """
         ).first()
@@ -55,7 +62,7 @@ class SampleWorker(object):
             raise FileNotFoundError
         return r
 
-    def extract_truth_meta(self):
+    def extract_truth_meta(self) -> Result:
         if not self.is_our:
             meta = db.session.execute(
                 f"""
@@ -91,23 +98,6 @@ class SampleWorker(object):
         return df
 
     @staticmethod
-    def get_data_for_barplot(data, bins):
-        numeric_values = []
-        category_vals = []
-
-        for bin_min, bin_max in bins:
-            n = 0
-            for value in data:
-                if bin_min <= value <= bin_max:
-                    n += 1
-                else:
-                    continue
-
-            numeric_values.append(n / len(data))
-            category_vals.append(f"{round(bin_min, 2)} - {round(bin_max, 2)}")
-        return {"data": numeric_values, "xvals": category_vals}
-
-    @staticmethod
     def get_data_for_qq_plot_cont(data1, data2):
         # Sort the data
         data1_sorted = np.sort(data1)
@@ -133,17 +123,17 @@ class SampleWorker(object):
         return ProbPlot(x_sample).sample_quantiles, ProbPlot(x_theor).sample_quantiles
 
     @staticmethod
-    def kl_divergence_(p, q):
+    def kl_divergence_(p, q) -> float:
         return np.sum(np.where((p != 0) & (q != 0), p * np.log(p / q), 0))
 
     @staticmethod
-    def rmse_(p, q):
+    def rmse_(p, q) -> float:
         return mean_squared_error(
             [[i, j] for i, j in zip(p, q)], [[i, i] for i in p], squared=False
         )
 
     @staticmethod
-    def convert_to_intc(*args, series=False):
+    def convert_to_intc(*args, series: bool = False) -> List:
         if series:
             return [i.values.astype(np.intc) for i in args]
         else:
@@ -151,11 +141,11 @@ class SampleWorker(object):
 
     def jensenshannon_div(
         self,
-        discretizer,
-        series_from_dataset,
-        series_from_sample,
-        series_sample_default,
-    ):
+        discretizer: callable,
+        series_from_dataset: pd.Series,
+        series_from_sample: pd.Series,
+        series_sample_default: Optional[Union[pd.Series, np.ndarray]],
+    ) -> tuple[np.ndarray, Optional[np.ndarray]]:
         default_div = None
 
         if discretizer:
@@ -180,13 +170,14 @@ class SampleWorker(object):
             div = divergence_jensenshannon(series_from_dataset, series_from_sample)
         except AssertionError:
             if isinstance(series_from_dataset, pd.Series):
-                raise TypeError(
-                    f"Data type error (input: {series_from_dataset.__class__}): {[series_from_dataset.dtypes, series_from_sample.dtypes]}"
-                )
-            if isinstance(series_from_dataset, np.ndarray):
-                raise TypeError(
-                    f"Data type error (input: {series_from_dataset.__class__}): {[series_from_dataset.dtype, series_from_sample.dtype]}"
-                )
+                content = [series_from_dataset.dtypes, series_from_sample.dtypes]
+            elif isinstance(series_from_dataset, np.ndarray):
+                content = [series_from_dataset.dtype, series_from_sample.dtype]
+            else:
+                content = "Unknown data type for dataset's series."
+            raise TypeError(
+                f"Data type error (input: {series_from_dataset.__class__}): {content}"
+            )
 
         if isinstance(series_sample_default, (np.ndarray, pd.Series)):
             if discretizer:
@@ -293,20 +284,20 @@ class SampleWorker(object):
         }
 
 
-def find_bns_by_user(owner):
+def find_bns_by_user(owner: str):
     nets = BayessianNet.query.filter_by(owner=owner).all()
     return nets
 
 
-def find_bns_by_owner_and_name(owner, name):
+def find_bns_by_owner_and_name(owner: str, name: str):
     return BayessianNet.query.filter_by(owner=owner, name=name).all()
 
 
-def find_bn_names_by_user(owner):
+def find_bn_names_by_user(owner: str):
     return BayessianNet.query.filter_by(owner=owner).with_entities(BayessianNet.name)
 
 
-def find_sample(owner, net_name):
+def find_sample(owner: str, net_name: str):
     return (
         Sample.query.filter_by(owner=owner, net_name=net_name)
         .with_entities(Sample.sample_loc)
@@ -316,12 +307,12 @@ def find_sample(owner, net_name):
 
 def find_edges_by_owner_and_nets_names(names: list, owner: str):
     names_str = str(names).replace("[", "(").replace("]", ")")
-    query = f"""SELECT nets.edges FROM nets WHERE nets.owner='{owner}' and nets.name in {names_str}"""
+    query = f"""SELECT nets.edges FROM nets WHERE nets.owner='{owner}' and nets.name in {names_str};"""
     edges = db.session.execute(query).fetchall()
     return edges
 
 
-def remove_samples(owner, name):
+def remove_samples(owner: str, name: str):
     query_res = Sample.query.filter_by(owner=owner, net_name=name, is_default=0)
     rel_path = query_res.first().sample_loc
     abs_path = os.path.join(current_app.config["SAMPLES_FOLDER"], rel_path)
@@ -331,6 +322,6 @@ def remove_samples(owner, name):
     db.session.commit()
 
 
-def remove_bn(owner, name):
+def remove_bn(owner: str, name: str):
     BayessianNet.query.filter_by(owner=owner, name=name).delete()
     db.session.commit()

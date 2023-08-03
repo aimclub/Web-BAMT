@@ -11,9 +11,9 @@ from flask import current_app
 from sklearn import preprocessing as pp
 
 from app import db
+from app.api.bn_manager.service import SampleWorker
 from utils import project_root
 from .models import BayessianNet, Sample
-from app.api.bn_manager.service import SampleWorker
 
 
 class DataExtractor(object):
@@ -247,9 +247,9 @@ class Manager(object):
         r = db.session.execute(
             f"""
             SELECT * FROM samples
-            WHERE 
-            owner='{self.owner}' and 
-             net_name='{self.net_name}' and 
+            WHERE
+            owner='{self.owner}' and
+             net_name='{self.net_name}' and
               dataset_name='{self.dataset_name}' and
                is_default=0;
             """
@@ -278,7 +278,7 @@ class Manager(object):
         sample_loc = os.path.join(self.owner, self.net_name + ".csv")
         default_sample_to_db = None
 
-        is_default = parameters.get("compare_with_default", False)
+        is_default = parameters.pop("compare_with_default", False)
 
         if is_default:
             default_sample_loc = os.path.join(
@@ -289,7 +289,7 @@ class Manager(object):
                 "owner": self.owner,
                 "net_name": self.net_name,
                 "dataset_name": self.dataset_name,
-                "is_default": parameters.pop("compare_with_default"),
+                "is_default": is_default,
             }
 
         for node in self.bn.nodes:
