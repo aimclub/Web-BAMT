@@ -11,9 +11,9 @@ from flask import current_app
 from sklearn import preprocessing as pp
 
 from app import db
+from app.api.bn_manager.service import SampleWorker
 from utils import project_root
 from .models import BayessianNet, Sample
-from app.api.bn_manager.service import SampleWorker
 
 
 class DataExtractor(object):
@@ -32,14 +32,12 @@ class DataExtractor(object):
         :return:
         """
         if not self.is_our:
-            query = \
-                f"""
+            query = f"""
             SELECT location, map from datasets 
             WHERE owner='{user}' and name='{self.dataset}';
             """
         else:
-            query = \
-                f"""
+            query = f"""
             SELECT location, map from datasets 
             WHERE owner='dev' and name='{self.dataset}';
             """
@@ -59,7 +57,9 @@ class DataExtractor(object):
         if self.is_our:
             loc = os.path.join(project_root(), os.path.relpath(meta["location"]))
         else:
-            loc = os.path.join(current_app.config["DATASETS_FOLDER"], os.path.relpath(meta["location"]))
+            loc = os.path.join(
+                current_app.config["DATASETS_FOLDER"], os.path.relpath(meta["location"])
+            )
         dataset = pd.read_csv(loc, **hyperparams)
 
         if dataset.empty:
@@ -79,7 +79,9 @@ class BnBuilder(object):
         self.parameters = parameters
 
     def params_validation(self, nodes_names):
-        if self.parameters.get("classifier", False) and not self.parameters.get("has_logit", False):
+        if self.parameters.get("classifier", False) and not self.parameters.get(
+            "has_logit", False
+        ):
             self.parameters["classifier"] = None
 
         if "params" in self.parameters.keys():
@@ -87,13 +89,20 @@ class BnBuilder(object):
                 if not self.parameters["params"]["init_nodes"]:
                     self.parameters["params"].pop("init_nodes")
                 else:
-                    if any(i not in nodes_names for i in self.parameters["params"]["init_nodes"]):
+                    if any(
+                        i not in nodes_names
+                        for i in self.parameters["params"]["init_nodes"]
+                    ):
                         return {"message": "Malformed init_nodes"}, 400
             if "init_edges" in self.parameters["params"].keys():
                 if not self.parameters["params"]["init_edges"]:
                     self.parameters["params"].pop("init_edges")
                 else:
-                    if any(j not in nodes_names for i in self.parameters["params"]["init_edges"] for j in i):
+                    if any(
+                        j not in nodes_names
+                        for i in self.parameters["params"]["init_edges"]
+                        for j in i
+                    ):
                         return {"message": "Malformed init_edges"}, 400
             if self.parameters["params"] == {}:
                 self.parameters.pop("params")
@@ -106,7 +115,7 @@ class BnBuilder(object):
         params unpacking for saving into db
         {<...> , {"params" : <...>}} -> {<...>}
         """
-        for k, v in params['params'].items():
+        for k, v in params["params"].items():
             if not k in ["remove_init_edges", "compare_with_default"]:
                 val = str(v)
             else:
@@ -118,9 +127,11 @@ class BnBuilder(object):
 
     def preprocessing(self, data):
         encoder = pp.LabelEncoder()
-        discretizer = pp.KBinsDiscretizer(n_bins=5, encode='ordinal', strategy='quantile')
+        discretizer = pp.KBinsDiscretizer(
+            n_bins=5, encode="ordinal", strategy="quantile"
+        )
 
-        p = Preprocessor([('encoder', encoder), ('discretizer', discretizer)])
+        p = Preprocessor([("encoder", encoder), ("discretizer", discretizer)])
 
         discretized_data, est = p.apply(data)
         info = p.info
@@ -138,14 +149,17 @@ class BnBuilder(object):
             if default:
                 return HybridBN()
             else:
-                return HybridBN(use_mixture=self.parameters["use_mixture"],
-                                has_logit=self.parameters["has_logit"])
+                return HybridBN(
+                    use_mixture=self.parameters["use_mixture"],
+                    has_logit=self.parameters["has_logit"],
+                )
 
     @staticmethod
     def make_obj(model_str):
         if not model_str:
             return None
         from .str2callable import models
+
         return models[model_str]()
 
     def learn(self, df, user, default=False, **kwargs):
@@ -154,7 +168,7 @@ class BnBuilder(object):
         discretized_data, info = self.preprocessing(df)
         bn.add_nodes(info)
 
-        bn.add_edges(discretized_data, optimizer='HC', progress_bar=False, **kwargs)
+        bn.add_edges(discretized_data, optimizer="HC", progress_bar=False, **kwargs)
 
         if self.parameters.get("params", False):
             self.unpack_params(self.parameters)
@@ -165,10 +179,12 @@ class BnBuilder(object):
         bn_default = None
 
         # separate parameters for learning out of bn's parameters
-        bn_params = dict(scoring_function=(self.parameters["scoring_function"],),
-                         classifier=self.make_obj(self.parameters.get("classifier", None)),
-                         regressor=self.make_obj(self.parameters.get("regressor", None)),
-                         params=self.parameters.get("params", None))
+        bn_params = dict(
+            scoring_function=(self.parameters["scoring_function"],),
+            classifier=self.make_obj(self.parameters.get("classifier", None)),
+            regressor=self.make_obj(self.parameters.get("regressor", None)),
+            params=self.parameters.get("params", None),
+        )
 
         bn = self.learn(df, user, **bn_params)
 
@@ -205,9 +221,7 @@ class Manager(object):
     This class supposed to convert input to the database format and send it there.
     """
 
-    def __init__(self,
-                 bn, samples,
-                 owner, net_name, dataset_name):
+    def __init__(self, bn, samples, owner, net_name, dataset_name):
         self.bn = bn
         self.samples = samples
         self.owner = owner
@@ -215,21 +229,27 @@ class Manager(object):
         self.dataset_name = dataset_name
 
     def save_samples(self):
-        self.samples[0].to_csv(os.path.join(current_app.config["SAMPLES_FOLDER"],
-                                            self.owner,
-                                            self.net_name + ".csv"))
+        self.samples[0].to_csv(
+            os.path.join(
+                current_app.config["SAMPLES_FOLDER"], self.owner, self.net_name + ".csv"
+            )
+        )
         if isinstance(self.samples[1], (pd.DataFrame, pd.Series)):
-            self.samples[1].to_csv(os.path.join(current_app.config["SAMPLES_FOLDER"],
-                                                self.owner,
-                                                self.net_name + "_default.csv"))
+            self.samples[1].to_csv(
+                os.path.join(
+                    current_app.config["SAMPLES_FOLDER"],
+                    self.owner,
+                    self.net_name + "_default.csv",
+                )
+            )
 
     def is_sample(self):
         r = db.session.execute(
             f"""
             SELECT * FROM samples
-            WHERE 
-            owner='{self.owner}' and 
-             net_name='{self.net_name}' and 
+            WHERE
+            owner='{self.owner}' and
+             net_name='{self.net_name}' and
               dataset_name='{self.dataset_name}' and
                is_default=0;
             """
@@ -255,28 +275,43 @@ class Manager(object):
 
     def packing(self, parameters):
         type_descriptor = {}
-        sample_loc = os.path.join(self.owner,
-                                  self.net_name + ".csv")
+        sample_loc = os.path.join(self.owner, self.net_name + ".csv")
         default_sample_to_db = None
 
-        is_default = parameters.get("compare_with_default", False)
+        is_default = parameters.pop("compare_with_default", False)
 
         if is_default:
-            default_sample_loc = os.path.join(self.owner,
-                                              self.net_name + "_default.csv")
-            default_sample_to_db = {"sample_loc": default_sample_loc, "owner": self.owner, "net_name": self.net_name,
-                                    "dataset_name": self.dataset_name,
-                                    "is_default": parameters.pop("compare_with_default")}
+            default_sample_loc = os.path.join(
+                self.owner, self.net_name + "_default.csv"
+            )
+            default_sample_to_db = {
+                "sample_loc": default_sample_loc,
+                "owner": self.owner,
+                "net_name": self.net_name,
+                "dataset_name": self.dataset_name,
+                "is_default": is_default,
+            }
 
         for node in self.bn.nodes:
             type_descriptor[node.name] = node.type
 
-        network = parameters | {"edges": str(self.bn.edges), "nodes": str(self.bn.nodes_names),
-                                "descriptor": str(type_descriptor)}
-        network_to_db = network | {"owner": self.owner, "name": self.net_name, "dataset_name": self.dataset_name}
+        network = parameters | {
+            "edges": str(self.bn.edges),
+            "nodes": str(self.bn.nodes_names),
+            "descriptor": str(type_descriptor),
+        }
+        network_to_db = network | {
+            "owner": self.owner,
+            "name": self.net_name,
+            "dataset_name": self.dataset_name,
+        }
 
-        sample_to_db = {"sample_loc": sample_loc, "owner": self.owner, "net_name": self.net_name,
-                        "dataset_name": self.dataset_name}
+        sample_to_db = {
+            "sample_loc": sample_loc,
+            "owner": self.owner,
+            "net_name": self.net_name,
+            "dataset_name": self.dataset_name,
+        }
 
         return network_to_db, sample_to_db, default_sample_to_db
 
@@ -318,7 +353,9 @@ def bn_learning(dataset, parameters, user):
 
 
 def is_default_cached(owner, net_name, dataset_name):
-    worker = SampleWorker(owner=owner, net_name=net_name, dataset_name=dataset_name, node=None)
+    worker = SampleWorker(
+        owner=owner, net_name=net_name, dataset_name=dataset_name, node=None
+    )
     if worker.get_default():
         return True
     else:

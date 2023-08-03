@@ -6,7 +6,7 @@ from app import db
 
 @dataclass
 class BayessianNet(db.Model):
-    __tablename__ = 'nets'
+    __tablename__ = "nets"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     owner = db.Column(db.String)
@@ -31,28 +31,36 @@ class BayessianNet(db.Model):
     descriptor = db.Column(db.Text)
 
     def unpack(self):
-        return {"network": {
-            "name": self.name,
-            "dataset_name": self.dataset_name,
-            "edges": literal_eval(self.edges),
-            "nodes": literal_eval(self.nodes),
-            "use_mixture": self.use_mixture,
-            "has_logit": self.has_logit,
-            "classifier": self.classifier,
-            "regressor": self.regressor,
-            "params": {"init_edges": literal_eval(self.init_edges) if self.init_edges else None,
-                       "init_nodes": literal_eval(self.init_nodes) if self.init_nodes else None,
-                       # "white_list": data.white_list,
-                       # "bl_add": data.bl_add,
-                       "remove_init_edges": self.remove_init_edges},
-            "scoring_function": self.scoring_function,
-            "descriptor": literal_eval(self.descriptor)}
+        return {
+            "network": {
+                "name": self.name,
+                "dataset_name": self.dataset_name,
+                "edges": literal_eval(self.edges),
+                "nodes": literal_eval(self.nodes),
+                "use_mixture": self.use_mixture,
+                "has_logit": self.has_logit,
+                "classifier": self.classifier,
+                "regressor": self.regressor,
+                "params": {
+                    "init_edges": literal_eval(self.init_edges)
+                    if self.init_edges
+                    else None,
+                    "init_nodes": literal_eval(self.init_nodes)
+                    if self.init_nodes
+                    else None,
+                    # "white_list": data.white_list,
+                    # "bl_add": data.bl_add,
+                    "remove_init_edges": self.remove_init_edges,
+                },
+                "scoring_function": self.scoring_function,
+                "descriptor": literal_eval(self.descriptor),
+            }
         }
 
 
 @dataclass
 class Sample(db.Model):
-    __tablename__ = 'samples'
+    __tablename__ = "samples"
     id = db.Column(db.Integer, primary_key=True)
     owner = db.Column(db.String)
     net_name = db.Column(db.String)

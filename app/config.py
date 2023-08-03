@@ -17,8 +17,7 @@ class BaseConfig:
 
 class DevelopmentConfig(BaseConfig):
     CONFIG_NAME = "dev"
-    # SECRET_KEY = os.getenv("DEV_SECRET_KEY", "Dev secret")
-    SECRET_KEY = "3d6f45a5fc12445dbac2f59c3b6c7cb1"
+    SECRET_KEY = os.getenv("DEV_SECRET_KEY", "Dev secret")
     DEBUG = True
     TESTING = True
     SQLALCHEMY_DATABASE_URI = "sqlite:///{0}/app-dev.sqlite".format(basedir)
@@ -37,7 +36,9 @@ class TestingConfig(BaseConfig):
 
 class ProductionConfig(BaseConfig):
     CONFIG_NAME = "prod"
-    SECRET_KEY = os.getenv("PROD_SECRET_KEY", "I'm Ron Burgundy?")
+    SECRET_KEY = os.getenv(
+        "PROD_SECRET_KEY", "Die Ungewissheit verwandelt sich in Freiheit."
+    )
     DEBUG = False
     TESTING = False
     SQLALCHEMY_DATABASE_URI = "sqlite:///{0}/app-prod.sqlite".format(basedir)

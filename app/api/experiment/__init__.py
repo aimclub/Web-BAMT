@@ -1,6 +1,8 @@
 from bamt_special.config import config
 
-STORAGE = config.get('NODES', 'models_storage', fallback='models_storage is not defined')
+STORAGE = config.get(
+    "NODES", "models_storage", fallback="models_storage is not defined"
+)
 
 BASE_ROUTE = "api/experiment"
 

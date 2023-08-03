@@ -8,11 +8,10 @@ from werkzeug.exceptions import BadRequest, NotFound
 
 from app.api.auth.service import find_user_by_username
 from app.api.bn_manager.service import find_bns_by_user
+from app.api.experiment.schema import BNSchema
 from . import STORAGE
 from .service import bn_learning, Sampler, Manager, is_default_cached
 from .str2callable import regressors, classifiers
-
-from app.api.experiment.schema import BNSchema
 
 api = Namespace("experiment", description="Operations with BNs")
 
@@ -25,13 +24,14 @@ class BNResource(Resource):
 
     # @api.doc(responses={200: 'success'})
     # @api.doc(responses={400: 'failed'})
-    @api.doc(params={"owner": "name of user",
-                     "name": "name of net",
-                     "dataset": "name of dataset",
-                     "bn_params":
-                         """
+    @api.doc(
+        params={
+            "owner": "name of user",
+            "name": "name of net",
+            "dataset": "name of dataset",
+            "bn_params": """
                          {"scoring_function": str, 
-                         "use_mixture": str or bool, 
+                         "use_mixture": str or bool,
                          "has_logit": str or bool,
                          "classifier": str or None,
                          "regressor": str or None,
@@ -41,7 +41,9 @@ class BNResource(Resource):
                                  "init_nodes": List[str] or None
                                  }
                          }
-                         """})
+                         """,
+        }
+    )
     def get(self, owner, name, dataset, bn_params):
         """
         Train BN and sample from it, then save it to db.
@@ -49,8 +51,9 @@ class BNResource(Resource):
         Note that if you need to learn
         """
         try:
-            bn_params = BNSchema(partial=("params",)) \
-                .load(data=ast.literal_eval(bn_params))
+            bn_params = BNSchema(partial=("params",)).load(
+                data=ast.literal_eval(bn_params)
+            )
         except Exception:
             raise BadRequest("Malformed string")
 
@@ -90,8 +93,7 @@ class BNResource(Resource):
         sampler = Sampler()
         samples = sampler.sample(df_shape, bn, bn_default)
 
-        manager = Manager(bn, samples, owner=owner,
-                          net_name=name, dataset_name=dataset)
+        manager = Manager(bn, samples, owner=owner, net_name=name, dataset_name=dataset)
         manager.save_samples()
 
         package = manager.packing(bn_params)

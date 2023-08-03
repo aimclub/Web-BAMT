@@ -6,7 +6,9 @@ class BNResSchema(Schema):
 
     class NetworkSchema(Schema):
         nodes = fields.List(cls_or_instance=fields.String)
-        edges = fields.List(cls_or_instance=fields.Tuple((fields.String, fields.String)))
+        edges = fields.List(
+            cls_or_instance=fields.Tuple((fields.String, fields.String))
+        )
 
     network = fields.Nested(NetworkSchema)
     sample = fields.Dict()
@@ -22,14 +24,15 @@ class ParamsSchema(Schema):
 
 class BNSchema(Schema):
     """Bayesian Network schema"""
+
     # nodes = fields.List(cls_or_instance=fields.String, required=True)
     # edges = fields.List(cls_or_instance=fields.List(fields.String), required=True)
     # owner = fields.String(attribute='owner', required=True)
     # name = fields.String(required=True)
 
-    use_mixture = fields.Boolean(attribute='use_mixture', default=False)
-    has_logit = fields.Boolean(attribute='has_logit', default=False)
-    scoring_function = fields.String(attribute='scoring_function')
+    use_mixture = fields.Boolean(attribute="use_mixture", default=False)
+    has_logit = fields.Boolean(attribute="has_logit", default=False)
+    scoring_function = fields.String(attribute="scoring_function")
 
     classifier = fields.String(default="LogisticRegression")
     regressor = fields.String(default="LinearRegression")
