@@ -63,7 +63,7 @@ Next, a network instance is created and training (structure and parameters) is p
 
 ``bn = Nets.HybridBN(has_logit=False, use_mixture=True)``
 
-``bn.add_edges(discretized_data,  scoring_function=('K2',K2Score))``
+``bn.add_edges(discretized_data)``
 
 ``bn.fit_parameters(data)``
 
@@ -81,7 +81,7 @@ At the moment, the web demo is only accessible from the ITMO University network.
 Documentation
 ^^^^^^^^^^^^^^
 
-More information about BAMT and Web-BAMT can be found `here <https://web-bamt.readthedocs.io/en/latest/>`_.
+More information about BAMT and Web-BAMT can be found `at Web-BAMT docs here <https://web-bamt.readthedocs.io/en/latest/>`_ and `at BAMT docs here <https://bamt.readthedocs.io/en/latest/>`_.
 
 Contacts
 ^^^^^^^^^
