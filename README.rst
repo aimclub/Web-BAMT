@@ -44,12 +44,9 @@ Main features:
 5. Generation of synthetic data;
 6. Modularity, extensibility, integrability with ML tools;
 7. Combination of a lightweight API for the end user and advanced configuration for research applications.
-
-Features in development:
-
-1. Loading your own training dataset;
-2. Define regression and classification models in parametric learning;
-3. Development of advanced distribution analytics and visual comparison of different networks.
+8. Loading your own training dataset;
+9. Define regression and classification models in parametric learning;
+10. Development of advanced distribution analytics and visual comparison of different networks.
 
 A more detailed description of the algorithms can be found `here <https://github.com/aimclub/Web-BAMT/wiki/About-BAMT-algorithms>`_.
 
@@ -60,13 +57,13 @@ If you want to train your Bayesian network on your data, first install the packa
 
 Then the necessary classes are imported from the library:
 
-``import bamt.Networks as Nets``
+``from bamt.networks.hybrid_bn import HybridBN``
 
 Next, a network instance is created and training (structure and parameters) is performed:
 
 ``bn = Nets.HybridBN(has_logit=False, use_mixture=True)``
 
-``bn.add_edges(discretized_data,  scoring_function=('K2',K2Score))``
+``bn.add_edges(discretized_data)``
 
 ``bn.fit_parameters(data)``
 
@@ -84,7 +81,7 @@ At the moment, the web demo is only accessible from the ITMO University network.
 Documentation
 ^^^^^^^^^^^^^^
 
-More information about BAMT and Web-BAMT can be found `here <https://web-bamt.readthedocs.io/en/latest/>`_.
+More information about BAMT and Web-BAMT can be found `at Web-BAMT docs here <https://web-bamt.readthedocs.io/en/latest/>`_ and `at BAMT docs here <https://bamt.readthedocs.io/en/latest/>`_.
 
 Contacts
 ^^^^^^^^^
