@@ -44,12 +44,9 @@ Main features:
 5. Generation of synthetic data;
 6. Modularity, extensibility, integrability with ML tools;
 7. Combination of a lightweight API for the end user and advanced configuration for research applications.
-
-Features in development:
-
-1. Loading your own training dataset;
-2. Define regression and classification models in parametric learning;
-3. Development of advanced distribution analytics and visual comparison of different networks.
+8. Loading your own training dataset;
+9. Define regression and classification models in parametric learning;
+10. Development of advanced distribution analytics and visual comparison of different networks.
 
 A more detailed description of the algorithms can be found `here <https://github.com/aimclub/Web-BAMT/wiki/About-BAMT-algorithms>`_.
 
@@ -60,7 +57,7 @@ If you want to train your Bayesian network on your data, first install the packa
 
 Then the necessary classes are imported from the library:
 
-``import bamt.Networks as Nets``
+``from bamt.networks.hybrid_bn import HybridBN``
 
 Next, a network instance is created and training (structure and parameters) is performed:
 
