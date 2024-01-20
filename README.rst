@@ -150,7 +150,7 @@ Citation
 .. |coverage| image:: https://codecov.io/gh/aimclub/Web-BAMT/branch/main/graph/badge.svg?token=1JUNI5I5LW
    :target: https://codecov.io/gh/aimclub/Web-BAMT
 
-.. |mirror| image:: https://camo.githubusercontent.com/9bd7b8c5b418f1364e72110a83629772729b29e8f3393b6c86bff237a6b784f6/68747470733a2f2f62616467656e2e6e65742f62616467652f6769746c61622f6d6972726f722f6f72616e67653f69636f6e3d6769746c6162
+.. |mirror| image:: https://img.shields.io/badge/mirror-GitLab-orange
    :target: https://gitlab.actcognitive.org/itmo-nirma-code/Web-BAMT
 
 
