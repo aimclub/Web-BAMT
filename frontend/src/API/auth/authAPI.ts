@@ -12,7 +12,7 @@ export const authAPI = createApi({
         url: URLendpoints.AUTH_LOGIN,
         method: "POST",
         body: {
-          email: data.email,
+          username: data.email,
           password: data.password,
         },
       }),
@@ -22,7 +22,7 @@ export const authAPI = createApi({
         url: URLendpoints.AUTH_LOGIN,
         method: "PUT",
         body: {
-          email: data.email,
+          username: data.email,
           token: data.token,
         },
       }),
@@ -32,7 +32,7 @@ export const authAPI = createApi({
         url: URLendpoints.AUTH_REGISTER,
         method: "POST",
         body: {
-          email: data.email,
+          username: data.email,
           password: data.password,
         },
       }),
