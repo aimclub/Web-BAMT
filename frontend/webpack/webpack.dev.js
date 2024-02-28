@@ -5,7 +5,7 @@ const ESLintPlugin = require("eslint-webpack-plugin");
 module.exports = {
   mode: "development",
   devServer: {
-    port: 3001,
+    port: 3000,
     open: true,
     hot: true,
     compress: true,
